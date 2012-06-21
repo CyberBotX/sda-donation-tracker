@@ -103,6 +103,7 @@ namespace SDA_DonationTracker
 			this.PasswordTextBox.Name = "PasswordTextBox";
 			this.PasswordTextBox.Size = new System.Drawing.Size(200, 20);
 			this.PasswordTextBox.TabIndex = 7;
+			this.PasswordTextBox.UseSystemPasswordChar = true;
 			// 
 			// ConnectBtn
 			// 
