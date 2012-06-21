@@ -7,7 +7,7 @@ namespace SDA_DonationTracker
 	{
 		public Form1()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 
 			this.StatusBarLabel.Text = "Testing...";
 		}
@@ -15,6 +15,12 @@ namespace SDA_DonationTracker
 		private void QuitMenuItem_Click(object sender, EventArgs e)
 		{
 			this.Close();
+		}
+
+		private void ConnectToDBMenuItem_Click(object sender, EventArgs e)
+		{
+			ConnectToDBForm connectToDBForm = new ConnectToDBForm();
+			connectToDBForm.ShowDialog(this);
 		}
 	}
 }
