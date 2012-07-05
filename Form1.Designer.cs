@@ -33,10 +33,11 @@ namespace SDA_DonationTracker
 			this.TabControl = new System.Windows.Forms.TabControl();
 			this.MenuBar = new System.Windows.Forms.MenuStrip();
 			this.FileMenuHeader = new System.Windows.Forms.ToolStripMenuItem();
+			this.ConnectToDBMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.DisconnectFromDBMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.QuitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.ConnectToDBMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.StatusBar.SuspendLayout();
 			this.MenuBar.SuspendLayout();
 			this.SuspendLayout();
@@ -81,17 +82,33 @@ namespace SDA_DonationTracker
 			// 
 			this.FileMenuHeader.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ConnectToDBMenuItem,
+            this.DisconnectFromDBMenuItem,
             this.QuitMenuItem});
 			this.FileMenuHeader.Name = "FileMenuHeader";
 			this.FileMenuHeader.Size = new System.Drawing.Size(35, 20);
 			this.FileMenuHeader.Text = "&File";
+			// 
+			// ConnectToDBMenuItem
+			// 
+			this.ConnectToDBMenuItem.Name = "ConnectToDBMenuItem";
+			this.ConnectToDBMenuItem.Size = new System.Drawing.Size(212, 22);
+			this.ConnectToDBMenuItem.Text = "&Connect to Database...";
+			this.ConnectToDBMenuItem.Click += new System.EventHandler(this.ConnectToDBMenuItem_Click);
+			// 
+			// DisconnectFromDBMenuItem
+			// 
+			this.DisconnectFromDBMenuItem.Name = "DisconnectFromDBMenuItem";
+			this.DisconnectFromDBMenuItem.Size = new System.Drawing.Size(212, 22);
+			this.DisconnectFromDBMenuItem.Text = "&Disconnect from Database...";
+			this.DisconnectFromDBMenuItem.Visible = false;
+			this.DisconnectFromDBMenuItem.Click += new System.EventHandler(this.DisconnectFromDBMenuItem_Click);
 			// 
 			// QuitMenuItem
 			// 
 			this.QuitMenuItem.Name = "QuitMenuItem";
 			this.QuitMenuItem.ShortcutKeyDisplayString = "";
 			this.QuitMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-			this.QuitMenuItem.Size = new System.Drawing.Size(188, 22);
+			this.QuitMenuItem.Size = new System.Drawing.Size(212, 22);
 			this.QuitMenuItem.Text = "&Quit";
 			this.QuitMenuItem.Click += new System.EventHandler(this.QuitMenuItem_Click);
 			// 
@@ -108,13 +125,6 @@ namespace SDA_DonationTracker
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
 			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
 			this.aboutToolStripMenuItem.Text = "&About...";
-			// 
-			// ConnectToDBMenuItem
-			// 
-			this.ConnectToDBMenuItem.Name = "ConnectToDBMenuItem";
-			this.ConnectToDBMenuItem.Size = new System.Drawing.Size(188, 22);
-			this.ConnectToDBMenuItem.Text = "&Connect to Database...";
-			this.ConnectToDBMenuItem.Click += new System.EventHandler(this.ConnectToDBMenuItem_Click);
 			// 
 			// Form1
 			// 
@@ -149,6 +159,7 @@ namespace SDA_DonationTracker
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem ConnectToDBMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem DisconnectFromDBMenuItem;
 	}
 }
 
