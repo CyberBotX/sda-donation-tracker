@@ -56,8 +56,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http">
+      <HintPath>lib\System.Net.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -68,25 +74,66 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectToDBForm.cs">
+    <Compile Include="BindingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BindingControl.Designer.cs">
+      <DependentUpon>BindingControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConnectOpenIDManualForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConnectToDBForm.Designer.cs">
-      <DependentUpon>ConnectToDBForm.cs</DependentUpon>
+    <Compile Include="ConnectOpenIDManualForm.Designer.cs">
+      <DependentUpon>ConnectOpenIDManualForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="ContextStatus.cs" />
+    <Compile Include="DonorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DonorPanel.Designer.cs">
+      <DependentUpon>DonorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel.cs" />
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormBinding.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ConnectToDBForm.resx">
-      <DependentUpon>ConnectToDBForm.cs</DependentUpon>
+    <Compile Include="SearchContext.cs" />
+    <Compile Include="SearchDonorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchDonorPanel.Designer.cs">
+      <DependentUpon>SearchDonorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TabCtlEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TableBinding.cs" />
+    <Compile Include="TabPageEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TrackerContext.cs" />
+    <Compile Include="Util.cs" />
+    <Compile Include="util\EnumerableUtil.cs" />
+    <Compile Include="WebClientEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <EmbeddedResource Include="BindingControl.resx">
+      <DependentUpon>BindingControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="ConnectOpenIDManualForm.resx">
+      <DependentUpon>ConnectOpenIDManualForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DonorPanel.resx">
+      <DependentUpon>DonorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -98,6 +145,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SearchDonorPanel.resx">
+      <DependentUpon>SearchDonorPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -131,6 +181,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
