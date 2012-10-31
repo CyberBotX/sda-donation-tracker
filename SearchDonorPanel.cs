@@ -10,24 +10,33 @@ using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
+    // TODO: 
+    // - generalize this using a model class to represent any entity
+    // object, to cut down on repetition.  It should take a set of strings
+    // identifying which fields to search on, and which fields to show in the results
+    // - Create specific uses of that general search model, such as the SearchTab, which 
+    // has a 'navigate to' button, that activates on selection, etc...
+
     public partial class SearchDonorPanel : UserControl
     {
         public TrackerContext Context;
         private TableBinding TableBinding;
         private SearchContext CurrentSearch;
 
-        // TODO: need to add a mutex to indicate when a search is active, and lock on that
-        // it should also lock the search buttons while a search is active, and then unlock
-        // when the search is complete
-
-        // TODO: generalize this using a model class to represent any entity
-        // object, to cut down on repetition
-
-        public SearchDonorPanel()
+        public SearchDonorPanel(TrackerContext context)
         {
+            Context = context;
+
             InitializeComponent();
 
             TableBinding = new TableBinding(ResultsView, "firstName", "lastName", "alias", "email");
+            TableBinding.AddAssociatedControl(BasicSearchText);
+            TableBinding.AddAssociatedControl(SearchButton);
+            TableBinding.AddAssociatedControl(BasicSearchButton);
+            TableBinding.AddAssociatedControl(FirstNameText);
+            TableBinding.AddAssociatedControl(LastNameText);
+            TableBinding.AddAssociatedControl(AliasText);
+            TableBinding.AddAssociatedControl(EmailText);
         }
 
         private Dictionary<string,string> GetSearchParams()
@@ -58,8 +67,10 @@ namespace SDA_DonationTracker
             CurrentSearch.OnComplete += (results) =>
             {
                 TableBinding.LoadArray(results);
+                TableBinding.EnableControls();
             };
 
+            TableBinding.DisableControls();
             CurrentSearch.Begin();
         }
 
@@ -72,9 +83,14 @@ namespace SDA_DonationTracker
             CurrentSearch.OnComplete += (results) =>
             {
                 TableBinding.LoadArray(results);
+                TableBinding.EnableControls();
             };
 
+            TableBinding.DisableControls();
             CurrentSearch.Begin();
         }
+
+        // TODO: add an OnSelect event to the table, s.t. external controls can embed this
+        // and use the search results
     }
 }

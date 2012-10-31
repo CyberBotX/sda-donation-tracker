@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
-    public class TableBinding
+    public class TableBinding : BindingContext
     {
         private DataGridView DataGrid;
         private string[] Columns;
@@ -20,6 +20,7 @@ namespace SDA_DonationTracker
         public TableBinding(DataGridView dataGrid, params string[] columns)
         {
             DataGrid = dataGrid;
+            AddAssociatedControl(dataGrid);
             Columns = columns.Select(s => s.ToLower()).ToArray();
 
             LoadArray(new JArray());

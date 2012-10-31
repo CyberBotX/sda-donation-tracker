@@ -44,7 +44,10 @@ namespace SDA_DonationTracker
 
         public void Abort()
         {
-            Connection.Abort();
+            if (Busy)
+            {
+                Connection.Abort();
+            }
         }
 
         private void Impl_RunSearch()

@@ -43,7 +43,7 @@ namespace SDA_DonationTracker
         string RetreiveField();
     }
 
-    public class FormBinding
+    public class FormBinding : BindingContext
     {
         private readonly string FieldsField = "fields";
 
@@ -57,6 +57,7 @@ namespace SDA_DonationTracker
 
         public void AddBinding(string fieldName, TextBoxBase textBox)
         {
+            AddAssociatedControl(textBox);
             Bindings.Add(fieldName, new TextBoxBinding(fieldName, textBox));
         }
 
@@ -64,7 +65,7 @@ namespace SDA_DonationTracker
         {
             LoadedData = data;
 
-            JObject fields = data.Value<JObject>("fields");
+            JObject fields = data.Value<JObject>(FieldsField);
 
             foreach (var entry in Bindings.Values)
             {

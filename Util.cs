@@ -7,9 +7,33 @@ namespace SDA_DonationTracker
 {
     public static class Util
     {
+        public static IEnumerable<KeyValuePair<string, string>> CreateSearchParams(params string[] stuff)
+        {
+            KeyValuePair<string, string>[] list = new KeyValuePair<string, string>[stuff.Length / 2];
+
+            for (int i = 0; i < stuff.Length; i += 2)
+            {
+                list[i / 2] = new KeyValuePair<string, string>(stuff[i / 2], stuff[i / 2 + 1]);
+            }
+
+            return list;
+        }
+
+        public static IEnumerable<T> Concat1<T>(this IEnumerable<T> self, T toAdd)
+        {
+            return self.Concat(new T[]{ toAdd });
+        }
+
         public static string JoinSeperated(this IEnumerable<string> self, string join)
         {
-            return self.Aggregate("", (x, y) => x + join + y);
+            if (self.Any())
+            {
+                return self.Aggregate((x, y) => x + join + y);
+            }
+            else
+            {
+                return "";
+            }
         }
 
         public static string SymbolToNatural(this string self)

@@ -11,10 +11,18 @@ namespace SDA_DonationTracker
 {
     public class TrackerContext
     {
-        private WebClientEx Client = new WebClientEx(new CookieContainer());
-        public bool SessionSet { get; private set; }
+        private static readonly string[] EventModels = { "choice", "challenge", "choicebid", "challengebid", "donation", "prize", "run" };
+
+        private Cookie ClientCookie = null;
+        public bool SessionSet { get { return ClientCookie != null; } }
         public Uri Domain { get; private set; }
         public string SessionId { get; private set; }
+        public int EventId { get; set; }
+
+        public TrackerContext()
+        {
+            EventId = 0;
+        }
 
         public void SetSessionId(string sessionId, string domain)
         {
@@ -23,21 +31,37 @@ namespace SDA_DonationTracker
             Domain = new Uri("http://" + domain + "/");
             SessionId = sessionId;
 
-            Cookie c = new Cookie();
-            c.Name = "sessionid";
-            c.Value = SessionId;
-            c.Path = "/";
-            c.Domain = domain;
-            c.HttpOnly = true;
+            ClientCookie = new Cookie();
+            ClientCookie.Name = "sessionid";
+            ClientCookie.Value = SessionId;
+            ClientCookie.Path = "/";
+            ClientCookie.Domain = domain;
+            ClientCookie.HttpOnly = true;
+
+            JArray results = RunSearch("event", Util.CreateSearchParams());
             
-            Client.Cookies.Add(c);
-            SessionSet = true;
+            if (results.Count > 0)
+            {
+                EventId = results.Select(x => x.Value<int>("id")).Aggregate(0, (x, y) => Math.Max(x, y));
+            }
         }
 
         public void ClearSessionId()
         {
-            Client.Cookies = new CookieContainer();
-            SessionSet = false;
+            ClientCookie = null;
+        }
+
+        public bool IsEventModel(string model)
+        {
+            foreach (var v in EventModels)
+            {
+                if (string.Equals(v, model, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private Uri CreateSearchUri(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
@@ -45,8 +69,20 @@ namespace SDA_DonationTracker
             return new Uri(Domain, "tracker/search/?type=" + model + "&" + searchParams.Where(x => !string.IsNullOrEmpty(x.Value)).Select(x => x.Key.ToLower() + "=" + x.Value).JoinSeperated("&"));
         }
 
+        private WebClientEx CreateClient()
+        {
+            var client = new WebClientEx();
+            client.Cookies.Add(ClientCookie);
+            return client;
+        }
+
         public JArray RunSearch(string model, IEnumerable<KeyValuePair<string,string>> searchParams)
         {
+            if (IsEventModel(model))
+            {
+                searchParams.Concat1(new KeyValuePair<string, string>("event", EventId.ToString()));
+            }
+            
             if (!SessionSet)
             {
                 throw new Exception("Error, session is not set.");
@@ -54,7 +90,9 @@ namespace SDA_DonationTracker
 
             Uri u = CreateSearchUri(model, searchParams);
 
-            string data = Client.DownloadString(u);
+            var client = CreateClient();
+
+            string data = client.DownloadString(u);
             JArray result = JArray.Parse(data);
 
             return result;

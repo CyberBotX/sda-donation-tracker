@@ -8,12 +8,12 @@ namespace SDA_DonationTracker
 {
     public class WebClientEx : WebClient
     {
-        public WebClientEx(CookieContainer container)
+        public WebClientEx()
         {
-            this.Cookies = container;
+            Cookies = new CookieContainer();
         }
 
-        public CookieContainer Cookies = new CookieContainer();
+        public CookieContainer Cookies{ get; private set; } 
 
         protected override WebRequest GetWebRequest(Uri address)
         {

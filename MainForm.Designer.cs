@@ -30,16 +30,17 @@ namespace SDA_DonationTracker
 		{
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.StatusBarLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.TabControl = new SDA_DonationTracker.TabCtlEx();
             this.MenuBar = new System.Windows.Forms.MenuStrip();
             this.FileMenuHeader = new System.Windows.Forms.ToolStripMenuItem();
             this.TrackertestManualMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TrackerDisconnectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.QuitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SearchMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.donorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SelectEventMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TabControl = new SDA_DonationTracker.TabCtlEx();
             this.StatusBar.SuspendLayout();
             this.MenuBar.SuspendLayout();
             this.SuspendLayout();
@@ -59,25 +60,11 @@ namespace SDA_DonationTracker
             this.StatusBarLabel.Size = new System.Drawing.Size(0, 17);
             this.StatusBarLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // TabControl
-            // 
-            this.TabControl.ConfirmOnClose = true;
-            this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.TabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TabControl.ItemSize = new System.Drawing.Size(230, 24);
-            this.TabControl.Location = new System.Drawing.Point(0, 24);
-            this.TabControl.Name = "TabControl";
-            this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(292, 227);
-            this.TabControl.TabIndex = 0;
-            this.TabControl.TabStop = false;
-            // 
             // MenuBar
             // 
             this.MenuBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenuHeader,
-            this.searchToolStripMenuItem,
+            this.SearchMenu,
             this.helpToolStripMenuItem});
             this.MenuBar.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.MenuBar.Location = new System.Drawing.Point(0, 0);
@@ -90,6 +77,7 @@ namespace SDA_DonationTracker
             // 
             this.FileMenuHeader.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TrackertestManualMenuItem,
+            this.SelectEventMenuItem,
             this.TrackerDisconnectMenuItem,
             this.QuitMenuItem});
             this.FileMenuHeader.Name = "FileMenuHeader";
@@ -122,17 +110,17 @@ namespace SDA_DonationTracker
             // 
             // searchToolStripMenuItem
             // 
-            this.searchToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SearchMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.donorToolStripMenuItem});
-            this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-            this.searchToolStripMenuItem.Text = "Search";
-            this.searchToolStripMenuItem.Visible = false;
+            this.SearchMenu.Name = "searchToolStripMenuItem";
+            this.SearchMenu.Size = new System.Drawing.Size(54, 20);
+            this.SearchMenu.Text = "Search";
+            this.SearchMenu.Visible = false;
             // 
             // donorToolStripMenuItem
             // 
             this.donorToolStripMenuItem.Name = "donorToolStripMenuItem";
-            this.donorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.donorToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.donorToolStripMenuItem.Text = "Donor";
             this.donorToolStripMenuItem.Click += new System.EventHandler(this.donorToolStripMenuItem_Click);
             // 
@@ -147,10 +135,32 @@ namespace SDA_DonationTracker
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.aboutToolStripMenuItem.Text = "&About...";
             // 
-            // Form1
+            // selectEventToolStripMenuItem
+            // 
+            this.SelectEventMenuItem.Name = "selectEventToolStripMenuItem";
+            this.SelectEventMenuItem.Size = new System.Drawing.Size(311, 22);
+            this.SelectEventMenuItem.Text = "Select Event";
+            this.SelectEventMenuItem.Visible = false;
+            this.SelectEventMenuItem.Click += new System.EventHandler(this.selectEventToolStripMenuItem_Click);
+            // 
+            // TabControl
+            // 
+            this.TabControl.ConfirmOnClose = true;
+            this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.TabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TabControl.ItemSize = new System.Drawing.Size(230, 24);
+            this.TabControl.Location = new System.Drawing.Point(0, 24);
+            this.TabControl.Name = "TabControl";
+            this.TabControl.SelectedIndex = 0;
+            this.TabControl.Size = new System.Drawing.Size(292, 227);
+            this.TabControl.TabIndex = 0;
+            this.TabControl.TabStop = false;
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -161,7 +171,7 @@ namespace SDA_DonationTracker
             this.DoubleBuffered = true;
             this.HelpButton = true;
             this.MainMenuStrip = this.MenuBar;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "SDA Donation Tracker";
             this.StatusBar.ResumeLayout(false);
             this.StatusBar.PerformLayout();
@@ -184,8 +194,9 @@ namespace SDA_DonationTracker
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem TrackertestManualMenuItem;
         private System.Windows.Forms.ToolStripMenuItem TrackerDisconnectMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SearchMenu;
         private System.Windows.Forms.ToolStripMenuItem donorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SelectEventMenuItem;
 	}
 }
 

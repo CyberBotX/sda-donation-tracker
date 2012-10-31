@@ -31,18 +31,18 @@
             this.SearchButton = new System.Windows.Forms.Button();
             this.FirstNameLabel = new System.Windows.Forms.Label();
             this.FirstNameText = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.SearchParamsTable = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.BasicSearchButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.EmailLabel = new System.Windows.Forms.Label();
-            this.AliasText = new System.Windows.Forms.TextBox();
             this.LastNameText = new System.Windows.Forms.TextBox();
             this.EmailText = new System.Windows.Forms.TextBox();
+            this.AliasText = new System.Windows.Forms.TextBox();
             this.BasicSearchText = new System.Windows.Forms.TextBox();
             this.ResultsView = new System.Windows.Forms.DataGridView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.SearchParamsTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ResultsView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -79,36 +79,36 @@
             this.FirstNameText.Size = new System.Drawing.Size(327, 20);
             this.FirstNameText.TabIndex = 3;
             // 
-            // tableLayoutPanel1
+            // SearchParamsTable
             // 
-            this.tableLayoutPanel1.AutoSize = true;
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.BasicSearchButton, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.SearchButton, 1, 6);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.FirstNameLabel, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.EmailLabel, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.LastNameText, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.FirstNameText, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.EmailText, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.AliasText, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.BasicSearchText, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 7;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(397, 188);
-            this.tableLayoutPanel1.TabIndex = 0;
+            this.SearchParamsTable.AutoSize = true;
+            this.SearchParamsTable.ColumnCount = 2;
+            this.SearchParamsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.SearchParamsTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.SearchParamsTable.Controls.Add(this.label1, 0, 4);
+            this.SearchParamsTable.Controls.Add(this.BasicSearchButton, 1, 1);
+            this.SearchParamsTable.Controls.Add(this.SearchButton, 1, 6);
+            this.SearchParamsTable.Controls.Add(this.label2, 0, 5);
+            this.SearchParamsTable.Controls.Add(this.FirstNameLabel, 0, 3);
+            this.SearchParamsTable.Controls.Add(this.EmailLabel, 0, 2);
+            this.SearchParamsTable.Controls.Add(this.LastNameText, 1, 4);
+            this.SearchParamsTable.Controls.Add(this.FirstNameText, 1, 3);
+            this.SearchParamsTable.Controls.Add(this.EmailText, 1, 2);
+            this.SearchParamsTable.Controls.Add(this.AliasText, 1, 5);
+            this.SearchParamsTable.Controls.Add(this.BasicSearchText, 0, 0);
+            this.SearchParamsTable.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SearchParamsTable.Location = new System.Drawing.Point(0, 0);
+            this.SearchParamsTable.Name = "SearchParamsTable";
+            this.SearchParamsTable.RowCount = 7;
+            this.SearchParamsTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.SearchParamsTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.SearchParamsTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.SearchParamsTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.SearchParamsTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.SearchParamsTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.SearchParamsTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.SearchParamsTable.Size = new System.Drawing.Size(397, 188);
+            this.SearchParamsTable.TabIndex = 0;
             // 
             // label1
             // 
@@ -149,14 +149,6 @@
             this.EmailLabel.TabIndex = 5;
             this.EmailLabel.Text = "Email";
             // 
-            // AliasText
-            // 
-            this.AliasText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AliasText.Location = new System.Drawing.Point(67, 136);
-            this.AliasText.Name = "AliasText";
-            this.AliasText.Size = new System.Drawing.Size(327, 20);
-            this.AliasText.TabIndex = 5;
-            // 
             // LastNameText
             // 
             this.LastNameText.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -173,9 +165,17 @@
             this.EmailText.Size = new System.Drawing.Size(327, 20);
             this.EmailText.TabIndex = 2;
             // 
+            // AliasText
+            // 
+            this.AliasText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AliasText.Location = new System.Drawing.Point(67, 136);
+            this.AliasText.Name = "AliasText";
+            this.AliasText.Size = new System.Drawing.Size(327, 20);
+            this.AliasText.TabIndex = 5;
+            // 
             // BasicSearchText
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.BasicSearchText, 2);
+            this.SearchParamsTable.SetColumnSpan(this.BasicSearchText, 2);
             this.BasicSearchText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BasicSearchText.Location = new System.Drawing.Point(3, 3);
             this.BasicSearchText.Name = "BasicSearchText";
@@ -202,7 +202,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.tableLayoutPanel1);
+            this.splitContainer1.Panel1.Controls.Add(this.SearchParamsTable);
             // 
             // splitContainer1.Panel2
             // 
@@ -218,8 +218,8 @@
             this.Controls.Add(this.splitContainer1);
             this.Name = "SearchDonorPanel";
             this.Size = new System.Drawing.Size(931, 425);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.SearchParamsTable.ResumeLayout(false);
+            this.SearchParamsTable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ResultsView)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
@@ -235,7 +235,7 @@
         private System.Windows.Forms.Button SearchButton;
         private System.Windows.Forms.Label FirstNameLabel;
         private System.Windows.Forms.TextBox FirstNameText;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel SearchParamsTable;
         private System.Windows.Forms.DataGridView ResultsView;
         private System.Windows.Forms.TextBox AliasText;
         private System.Windows.Forms.TextBox LastNameText;
