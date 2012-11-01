@@ -1,61 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
-    public partial class SelectEventDialog : Form
-    {
-        private MainForm MainForm;
-        private TrackerContext Context;
-        private ListBinding<JTokenListElement> ListBinding;
-        private SearchContext CurrentSearch;
+	public partial class SelectEventDialog : Form
+	{
+		private MainForm MainForm;
+		private TrackerContext Context;
+		private ListBinding<JTokenListElement> ListBinding;
+		private SearchContext CurrentSearch;
 
-        public SelectEventDialog(MainForm mainForm, TrackerContext context)
-        {
-            InitializeComponent();
+		public SelectEventDialog(MainForm mainForm, TrackerContext context)
+		{
+			this.InitializeComponent();
 
-            MainForm = mainForm;
+			this.MainForm = mainForm;
 
-            ListBinding = new ListBinding<JTokenListElement>(EventsList, x => new JTokenListElement(x, "name"), "Display");
-            ListBinding.AddSelectionControl(SelectButton);
+			this.ListBinding = new ListBinding<JTokenListElement>(this.EventsList, x => new JTokenListElement(x, "name"), "Display");
+			this.ListBinding.AddSelectionControl(this.SelectButton);
 
-            Context = context;
+			this.Context = context;
 
-            CurrentSearch = Context.DeferredSearch("event", new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("q", "") });
+			this.CurrentSearch = this.Context.DeferredSearch("event", new Dictionary<string, string> { { "q", "" } });
 
-            CurrentSearch.OnComplete += (results) =>
-            {
-                ListBinding.LoadArray(results);
-                ListBinding.EnableControls();
-            };
+			this.CurrentSearch.OnComplete += results =>
+			{
+				this.ListBinding.LoadArray(results);
+				this.ListBinding.EnableControls();
+			};
 
-            ListBinding.DisableControls();
-            CurrentSearch.Begin();
-        }
+			this.ListBinding.DisableControls();
+			this.CurrentSearch.Begin();
+		}
 
-        private void SelectButton_Click(object sender, EventArgs e)
-        {
-            JTokenListElement[] results = ListBinding.GetSelections().ToArray();
+		private void SelectButton_Click(object sender, EventArgs e)
+		{
+			JTokenListElement[] results = this.ListBinding.GetSelections().ToArray();
 
-            if (results.Length == 1)
-            {
-                Context.EventId = results[0].Source.Value<int>("pk");
-                MainForm.ResetMenus();
-                Close();
-            }
-        }
+			if (results.Length == 1)
+			{
+				this.Context.EventId = results[0].Source.Value<int>("pk");
+				this.MainForm.ResetMenus();
+				this.Close();
+			}
+		}
 
-        private void CancelButton_Click(object sender, EventArgs e)
-        {
-            CurrentSearch.Abort();
-            Close();
-        }
-    }
+		private void CancelButton_Click(object sender, EventArgs e)
+		{
+			this.CurrentSearch.Abort();
+			this.Close();
+		}
+	}
 }

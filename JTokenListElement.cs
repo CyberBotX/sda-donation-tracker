@@ -1,27 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
-    public class JTokenListElement
-    {
-        public JToken Source { get; private set; }
-        private string[] Fields;
+	public class JTokenListElement
+	{
+		public JToken Source
+		{
+			get;
+			private set;
+		}
+		private string[] Fields;
 
-        public JTokenListElement(JToken source, params string[] fields)
-        {
-            Source = source;
-            Fields = fields.ToArray();
-        }
+		public JTokenListElement(JToken source, params string[] fields)
+		{
+			this.Source = source;
+			this.Fields = fields;
+		}
 
-        public string Display { get { return this.ToString(); } }
+		public string Display
+		{
+			get
+			{
+				return this.ToString();
+			}
+		}
 
-        public override string ToString()
-        {
-            return Fields.Length > 0 ? Fields.Select(s => Source.Value<JToken>("fields").Value<string>(s)).JoinSeperated(":") : Source.ToString();
-        }
-    }
+		public override string ToString()
+		{
+			return this.Fields.Length > 0 ? string.Join(":", this.Fields.Select(s => this.Source.Value<JToken>("fields").Value<string>(s))) : this.Source.ToString();
+		}
+	}
 }

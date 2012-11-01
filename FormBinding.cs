@@ -1,77 +1,77 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json.Linq;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
-    public class TextBoxBinding : FieldBinding
-    {
-        public TextBoxBase TextBox { get; private set; }
-        public string Field { get; private set; }
+	public class TextBoxBinding : FieldBinding
+	{
+		public TextBoxBase TextBox
+		{
+			get;
+			private set;
+		}
+		public string Field
+		{
+			get;
+			private set;
+		}
 
-        public TextBoxBinding(string field, TextBoxBase textBox)
-        {
-            Field = field;
-            TextBox = textBox;
-        }
+		public TextBoxBinding(string field, TextBoxBase textBox)
+		{
+			this.Field = field;
+			this.TextBox = textBox;
+		}
 
-        public void LoadField(string data)
-        {
-            TextBox.Invoke(new SetTextDelegate(ImplSetText), data);
-        }
+		public void LoadField(string data)
+		{
+			this.TextBox.Invoke(new SetTextDelegate(this.ImplSetText), data);
+		}
 
-        public string RetreiveField()
-        {
-            return TextBox.Text;
-        }
+		public string RetreiveField()
+		{
+			return this.TextBox.Text;
+		}
 
-        private delegate void SetTextDelegate(string data);
+		private delegate void SetTextDelegate(string data);
 
-        private void ImplSetText(string data)
-        {
-            TextBox.Text = data;
-        }
-    }
+		private void ImplSetText(string data)
+		{
+			this.TextBox.Text = data;
+		}
+	}
 
-    public interface FieldBinding
-    {
-        string Field { get; }
-        void LoadField(string data);
-        string RetreiveField();
-    }
+	public interface FieldBinding
+	{
+		string Field
+		{
+			get;
+		}
+		void LoadField(string data);
+		string RetreiveField();
+	}
 
-    public class FormBinding : BindingContext
-    {
-        private readonly string FieldsField = "fields";
+	public class FormBinding : BindingContext
+	{
+		private readonly string FieldsField = "fields";
 
-        private Dictionary<string, FieldBinding> Bindings;
-        private JToken LoadedData;
+		private Dictionary<string, FieldBinding> Bindings = new Dictionary<string, FieldBinding>();
+		private JToken LoadedData;
 
-        public FormBinding()
-        {
-            Bindings = new Dictionary<string, FieldBinding>(StringComparer.OrdinalIgnoreCase);
-        }
+		public void AddBinding(string fieldName, TextBoxBase textBox)
+		{
+			this.AddAssociatedControl(textBox);
+			this.Bindings.Add(fieldName, new TextBoxBinding(fieldName, textBox));
+		}
 
-        public void AddBinding(string fieldName, TextBoxBase textBox)
-        {
-            AddAssociatedControl(textBox);
-            Bindings.Add(fieldName, new TextBoxBinding(fieldName, textBox));
-        }
+		public void LoadObject(JToken data)
+		{
+			this.LoadedData = data;
 
-        public void LoadObject(JToken data)
-        {
-            LoadedData = data;
+			JObject fields = data.Value<JObject>(FieldsField);
 
-            JObject fields = data.Value<JObject>(FieldsField);
-
-            foreach (var entry in Bindings.Values)
-            {
-                string value = fields.Value<string>(entry.Field);
-                entry.LoadField(value);
-            }
-        }
-    }
+			foreach (FieldBinding entry in this.Bindings.Values)
+				entry.LoadField(fields.Value<string>(entry.Field));
+		}
+	}
 }

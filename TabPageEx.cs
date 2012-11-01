@@ -1,28 +1,24 @@
-using System;
 using System.ComponentModel;
-using System.Collections;
-using System.Diagnostics;
 using System.Windows.Forms;
-using System.Drawing.Drawing2D;
-using System.Drawing;
+
 namespace SDA_DonationTracker
 {
 	/// <summary>
 	/// Summary description for TabPage.
 	/// </summary>
-	public class TabPageEx : System.Windows.Forms.TabPage
+	public class TabPageEx : TabPage
 	{
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.Container components = null;
-      public TabPageEx(System.ComponentModel.IContainer container)
+		private Container components = null;
+		public TabPageEx(IContainer container)
 		{
 			///
 			/// Required for Windows.Forms Class Composition Designer support
 			///
 			container.Add(this);
-			InitializeComponent();
+			this.InitializeComponent();
 
 			//
 			// TODO: Add any constructor code after InitializeComponent call
@@ -34,8 +30,8 @@ namespace SDA_DonationTracker
 			///
 			/// Required for Windows.Forms Class Composition Designer support
 			///
-			InitializeComponent();
-         
+			this.InitializeComponent();
+
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
@@ -44,20 +40,13 @@ namespace SDA_DonationTracker
 		/// <summary> 
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
+			if (disposing && this.components != null)
+				this.components.Dispose();
+			base.Dispose(disposing);
 		}
 
-   
-      
 		#region Component Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
@@ -65,38 +54,34 @@ namespace SDA_DonationTracker
 		/// </summary>
 		private void InitializeComponent()
 		{
-			components = new System.ComponentModel.Container();
-               
-         
+			this.components = new Container();
 		}
-        public override string Text
-        {
-            get
-            {
-                return base.Text+"                                                 ";
-            }
-            set
-            {
-                base.Text = value;
-            }
-        }
-        private ContextMenu ctxtMenu = null;
-        public ContextMenu Menu
-        {
-            get
-            {
-                return this.ctxtMenu;
-            }
-            set
-            {
 
-                this.ctxtMenu = value;
-            }
-        }
-        
-          
-      
+		public override string Text
+		{
+			get
+			{
+				return base.Text + "                                                 ";
+			}
+			set
+			{
+				base.Text = value;
+			}
+		}
 
+		private ContextMenu ctxtMenu = null;
+		public ContextMenu Menu
+		{
+			get
+			{
+				return this.ctxtMenu;
+			}
+			set
+			{
+
+				this.ctxtMenu = value;
+			}
+		}
 		#endregion
 	}
 }

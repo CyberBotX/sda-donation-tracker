@@ -9,103 +9,111 @@ using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
-    public class TrackerContext
-    {
-        private static readonly string[] EventModels = { "choice", "challenge", "choicebid", "challengebid", "donation", "prize", "run" };
+	public class TrackerContext
+	{
+		private static readonly string[] EventModels = { "choice", "challenge", "choicebid", "challengebid", "donation", "prize", "run" };
 
-        private Cookie ClientCookie = null;
-        public bool SessionSet { get { return ClientCookie != null; } }
-        public Uri Domain { get; private set; }
-        public string SessionId { get; private set; }
-        public int EventId { get; set; }
+		private Cookie ClientCookie = null;
+		public bool SessionSet
+		{
+			get
+			{
+				return this.ClientCookie != null;
+			}
+		}
+		public Uri Domain
+		{
+			get;
+			private set;
+		}
+		public string SessionId
+		{
+			get;
+			private set;
+		}
+		public int EventId
+		{
+			get;
+			set;
+		}
 
-        public TrackerContext()
-        {
-            EventId = 0;
-        }
+		public TrackerContext()
+		{
+			this.EventId = 0;
+		}
 
-        public void SetSessionId(string sessionId, string domain)
-        {
-            ClearSessionId();
+		public void SetSessionId(string sessionId, string domain)
+		{
+			this.ClearSessionId();
 
-            Domain = new Uri("http://" + domain + "/");
-            SessionId = sessionId;
+			this.Domain = new Uri(string.Format("http://{0}/", domain));
+			this.SessionId = sessionId;
 
-            ClientCookie = new Cookie();
-            ClientCookie.Name = "sessionid";
-            ClientCookie.Value = SessionId;
-            ClientCookie.Path = "/";
-            ClientCookie.Domain = domain;
-            ClientCookie.HttpOnly = true;
+			this.ClientCookie = new Cookie()
+			{
+				Name = "sessionid",
+				Value = this.SessionId,
+				Path = "/",
+				Domain = domain,
+				HttpOnly = true
+			};
 
-            JArray results = RunSearch("event", Util.CreateSearchParams());
-            
-            if (results.Count > 0)
-            {
-                EventId = results.Select(x => x.Value<int>("id")).Aggregate(0, (x, y) => Math.Max(x, y));
-            }
-        }
+			JArray results = this.RunSearch("event", Util.CreateSearchParams());
 
-        public void ClearSessionId()
-        {
-            ClientCookie = null;
-        }
+			if (results.Count > 0)
+				this.EventId = results.Select(x => x.Value<int>("id")).Max();
+		}
 
-        public bool IsEventModel(string model)
-        {
-            foreach (var v in EventModels)
-            {
-                if (string.Equals(v, model, StringComparison.OrdinalIgnoreCase))
-                {
-                    return true;
-                }
-            }
+		public void ClearSessionId()
+		{
+			this.ClientCookie = null;
+		}
 
-            return false;
-        }
+		public bool IsEventModel(string model)
+		{
+			foreach (string v in TrackerContext.EventModels)
+				if (string.Equals(v, model, StringComparison.OrdinalIgnoreCase))
+					return true;
 
-        private Uri CreateSearchUri(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
-        {
-            return new Uri(Domain, "tracker/search/?type=" + model + "&" + searchParams.Where(x => !string.IsNullOrEmpty(x.Value)).Select(x => x.Key.ToLower() + "=" + x.Value).JoinSeperated("&"));
-        }
+			return false;
+		}
 
-        private WebClientEx CreateClient()
-        {
-            var client = new WebClientEx();
-            client.Cookies.Add(ClientCookie);
-            return client;
-        }
+		private Uri CreateSearchUri(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
+		{
+			return new Uri(Domain, string.Format("tracker/search/?type={0}&{1}", model,
+				string.Join("&", searchParams.Where(x => !string.IsNullOrEmpty(x.Value)).Select(x => x.Key.ToLower() + "=" + x.Value))));
+		}
 
-        public JArray RunSearch(string model, IEnumerable<KeyValuePair<string,string>> searchParams)
-        {
-            if (IsEventModel(model))
-            {
-                searchParams.Concat1(new KeyValuePair<string, string>("event", EventId.ToString()));
-            }
-            
-            if (!SessionSet)
-            {
-                throw new Exception("Error, session is not set.");
-            }
+		private WebClientEx CreateClient()
+		{
+			WebClientEx client = new WebClientEx();
+			client.Cookies.Add(this.ClientCookie);
+			return client;
+		}
 
-            Uri u = CreateSearchUri(model, searchParams);
+		public JArray RunSearch(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
+		{
+			if (this.IsEventModel(model))
+				searchParams.Concat1(new KeyValuePair<string, string>("event", this.EventId.ToString()));
 
-            var client = CreateClient();
+			if (!this.SessionSet)
+				throw new Exception("Error, session is not set.");
 
-            string data = client.DownloadString(u);
-            JArray result = JArray.Parse(data);
+			Uri u = this.CreateSearchUri(model, searchParams);
 
-            return result;
-        }
+			WebClientEx client = this.CreateClient();
 
-        public SearchContext DeferredSearch(string model, IEnumerable<KeyValuePair<string,string>> searchParams)
-        {
-            if (!SessionSet)
-            {
-                return null;
-            }
+			string data = client.DownloadString(u);
 
-            return new SearchContext(this, model, searchParams);
-        }
-    }
+			return JArray.Parse(data);
+		}
+
+		public SearchContext DeferredSearch(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
+		{
+			if (!this.SessionSet)
+				return null;
+
+			return new SearchContext(this, model, searchParams);
+		}
+	}
 }

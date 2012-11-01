@@ -1,132 +1,119 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
-    public class ListBinding<T> : BindingContext
-    {
-        private List<Control> SelectionControls = new List<Control>();
-        private ListBox List;
-        private Func<JToken, T> Builder;
-        public string DisplayProperty { get { return List.DisplayMember; } }
+	public class ListBinding<T> : BindingContext
+	{
+		private List<Control> SelectionControls = new List<Control>();
+		private ListBox List;
+		private Func<JToken, T> Builder;
+		public string DisplayProperty
+		{
+			get
+			{
+				return this.List.DisplayMember;
+			}
+		}
 
-        public bool AllowMultiSelect
-        {
-            get
-            {
-                return List.SelectionMode == SelectionMode.MultiExtended;
-            }
+		public bool AllowMultiSelect
+		{
+			get
+			{
+				return this.List.SelectionMode == SelectionMode.MultiExtended;
+			}
 
-            set
-            {
-                List.SelectionMode = value ? SelectionMode.MultiExtended : SelectionMode.One;
-            }
-        }
+			set
+			{
+				this.List.SelectionMode = value ? SelectionMode.MultiExtended : SelectionMode.One;
+			}
+		}
 
-        public ListBinding(ListBox list, Func<JToken, T> builder, string displayProperty)
-        {
-            Builder = builder;
-            List = list;
+		public ListBinding(ListBox list, Func<JToken, T> builder, string displayProperty)
+		{
+			this.Builder = builder;
+			this.List = list;
 
-            AddAssociatedControl(List);
-            List.SelectionMode = SelectionMode.One;
-            List.DisplayMember = displayProperty;
+			this.AddAssociatedControl(this.List);
+			this.List.SelectionMode = SelectionMode.One;
+			this.List.DisplayMember = displayProperty;
 
-            List.SelectedValueChanged += (e, o) =>
-            {
-                if (OnSelection != null)
-                {
-                    OnSelection.Invoke(GetSelections());
-                }
-            };
+			this.List.SelectedValueChanged += (e, o) =>
+			{
+				if (this.OnSelection != null)
+					this.OnSelection.Invoke(this.GetSelections());
+			};
 
-            OnSelection += (v) =>
-            {
-                if (v.Count() > 0)
-                {
-                    EnableSelectionControls();
-                }
-                else
-                {
-                    DisableSelectionControls();
-                }
-            };
+			this.OnSelection += v =>
+			{
+				if (v.Count() > 0)
+					this.EnableSelectionControls();
+				else
+					this.DisableSelectionControls();
+			};
 
-            LoadArray(new JArray());
-        }
+			this.LoadArray(new JArray());
+		}
 
-        public void AddSelectionControl(Control c)
-        {
-            SelectionControls.Add(c);
-        }
+		public void AddSelectionControl(Control c)
+		{
+			this.SelectionControls.Add(c);
+		}
 
-        public override void DisableControls()
-        {
-            List.ClearSelected();
-            DisableSelectionControls();
-            base.DisableControls();
-        }
+		public override void DisableControls()
+		{
+			this.List.ClearSelected();
+			this.DisableSelectionControls();
+			base.DisableControls();
+		}
 
-        public void LoadArray(JArray results)
-        {
-            T[] newContent = results.Select(Builder).ToArray();
+		public void LoadArray(JArray results)
+		{
+			T[] newContent = results.Select(this.Builder).ToArray();
 
-            if (List.InvokeRequired)
-            {
-                List.Invoke(new SetListContentCallback(SetListContent), List, newContent);
-            }
-            else
-            {
-                SetListContent(List, newContent);
-            }
-        }
+			if (this.List.InvokeRequired)
+				this.List.Invoke(new SetListContentCallback(this.SetListContent), this.List, newContent);
+			else
+				this.SetListContent(this.List, newContent);
+		}
 
-        public event Action<IEnumerable<T>> OnSelection;
+		public event Action<IEnumerable<T>> OnSelection;
 
-        public IEnumerable<T> GetSelections()
-        {
-            return List.SelectedItems.Cast<T>();
-        }
+		public IEnumerable<T> GetSelections()
+		{
+			return this.List.SelectedItems.Cast<T>();
+		}
 
-        private delegate void SetListContentCallback(ListBox list, T[] data);
+		private delegate void SetListContentCallback(ListBox list, T[] data);
 
-        private void SetListContent(ListBox list, T[] data)
-        {
-            list.DataSource = data;
-        }
+		private void SetListContent(ListBox list, T[] data)
+		{
+			list.DataSource = data;
+		}
 
-        private void DisableSelectionControls()
-        {
-            foreach (var control in SelectionControls)
-            {
-                if (control.InvokeRequired)
-                {
-                    control.Invoke(new ControlCallback(DisableControl), control);
-                }
-                else
-                {
-                    DisableControl(control);
-                }
-            }
-        }
+		private void DisableSelectionControls()
+		{
+			this.SelectionControls.ForEach(control =>
+			{
+				if (control.InvokeRequired)
+					control.Invoke(new ControlCallback(this.DisableControl), control);
+				else
+					this.DisableControl(control);
+			});
+		}
 
-        private void EnableSelectionControls()
-        {
-            foreach (var control in SelectionControls)
-            {
-                if (control.InvokeRequired)
-                {
-                    control.Invoke(new ControlCallback(EnableControl), control);
-                }
-                else
-                {
-                    EnableControl(control);
-                }
-            }
-        }
-    }
+		private void EnableSelectionControls()
+		{
+			this.SelectionControls.ForEach(control =>
+			{
+				if (control.InvokeRequired)
+					control.Invoke(new ControlCallback(this.EnableControl), control);
+				else
+					this.EnableControl(control);
+			});
+		}
+	}
 }

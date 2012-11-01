@@ -1,96 +1,88 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
-    // TODO: 
-    // - generalize this using a model class to represent any entity
-    // object, to cut down on repetition.  It should take a set of strings
-    // identifying which fields to search on, and which fields to show in the results
-    // - Create specific uses of that general search model, such as the SearchTab, which 
-    // has a 'navigate to' button, that activates on selection, etc...
+	// TODO: 
+	// - generalize this using a model class to represent any entity
+	// object, to cut down on repetition.  It should take a set of strings
+	// identifying which fields to search on, and which fields to show in the results
+	// - Create specific uses of that general search model, such as the SearchTab, which 
+	// has a 'navigate to' button, that activates on selection, etc...
 
-    public partial class SearchDonorPanel : UserControl
-    {
-        public TrackerContext Context;
-        private TableBinding TableBinding;
-        private SearchContext CurrentSearch;
+	public partial class SearchDonorPanel : UserControl
+	{
+		public TrackerContext Context;
+		private TableBinding TableBinding;
+		private SearchContext CurrentSearch;
 
-        public SearchDonorPanel(TrackerContext context)
-        {
-            Context = context;
+		public SearchDonorPanel(TrackerContext context)
+		{
+			this.Context = context;
 
-            InitializeComponent();
+			this.InitializeComponent();
 
-            TableBinding = new TableBinding(ResultsView, "firstName", "lastName", "alias", "email");
-            TableBinding.AddAssociatedControl(BasicSearchText);
-            TableBinding.AddAssociatedControl(SearchButton);
-            TableBinding.AddAssociatedControl(BasicSearchButton);
-            TableBinding.AddAssociatedControl(FirstNameText);
-            TableBinding.AddAssociatedControl(LastNameText);
-            TableBinding.AddAssociatedControl(AliasText);
-            TableBinding.AddAssociatedControl(EmailText);
-        }
+			this.TableBinding = new TableBinding(this.ResultsView, "firstName", "lastName", "alias", "email");
+			this.TableBinding.AddAssociatedControl(this.BasicSearchText);
+			this.TableBinding.AddAssociatedControl(this.SearchButton);
+			this.TableBinding.AddAssociatedControl(this.BasicSearchButton);
+			this.TableBinding.AddAssociatedControl(this.FirstNameText);
+			this.TableBinding.AddAssociatedControl(this.LastNameText);
+			this.TableBinding.AddAssociatedControl(this.AliasText);
+			this.TableBinding.AddAssociatedControl(this.EmailText);
+		}
 
-        private Dictionary<string,string> GetSearchParams()
-        {
-            return new Dictionary<string,string>(StringComparer.OrdinalIgnoreCase)
-            { 
-                { "firstname", FirstNameText.Text }, 
-                { "lastname", LastNameText.Text },
-                { "alias", AliasText.Text },
-                { "email", EmailText.Text },
-            };
-        }
+		private Dictionary<string, string> GetSearchParams()
+		{
+			return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+			{
+				{ "firstname", this.FirstNameText.Text }, 
+				{ "lastname", this.LastNameText.Text },
+				{ "alias", this.AliasText.Text },
+				{ "email", this.EmailText.Text },
+			};
+		}
 
-        private void AbortExistingSearch()
-        {
-            if (CurrentSearch != null && CurrentSearch.Busy)
-            {
-                CurrentSearch.Abort();
-            }
-        }
+		private void AbortExistingSearch()
+		{
+			if (this.CurrentSearch != null && this.CurrentSearch.Busy)
+				this.CurrentSearch.Abort();
+		}
 
-        private void SearchButton_Click(object sender, EventArgs e)
-        {
-            AbortExistingSearch();
+		private void SearchButton_Click(object sender, EventArgs e)
+		{
+			this.AbortExistingSearch();
 
-            CurrentSearch = Context.DeferredSearch("donor", GetSearchParams());
+			this.CurrentSearch = this.Context.DeferredSearch("donor", this.GetSearchParams());
 
-            CurrentSearch.OnComplete += (results) =>
-            {
-                TableBinding.LoadArray(results);
-                TableBinding.EnableControls();
-            };
+			this.CurrentSearch.OnComplete += results =>
+			{
+				this.TableBinding.LoadArray(results);
+				this.TableBinding.EnableControls();
+			};
 
-            TableBinding.DisableControls();
-            CurrentSearch.Begin();
-        }
+			this.TableBinding.DisableControls();
+			this.CurrentSearch.Begin();
+		}
 
-        private void BasicSearchButton_Click(object sender, EventArgs e)
-        {
-            AbortExistingSearch();
+		private void BasicSearchButton_Click(object sender, EventArgs e)
+		{
+			this.AbortExistingSearch();
 
-            CurrentSearch = Context.DeferredSearch("donor", new Dictionary<string, string> { { "q", BasicSearchText.Text } });
+			this.CurrentSearch = this.Context.DeferredSearch("donor", new Dictionary<string, string> { { "q", BasicSearchText.Text } });
 
-            CurrentSearch.OnComplete += (results) =>
-            {
-                TableBinding.LoadArray(results);
-                TableBinding.EnableControls();
-            };
+			this.CurrentSearch.OnComplete += results =>
+			{
+				this.TableBinding.LoadArray(results);
+				this.TableBinding.EnableControls();
+			};
 
-            TableBinding.DisableControls();
-            CurrentSearch.Begin();
-        }
+			this.TableBinding.DisableControls();
+			this.CurrentSearch.Begin();
+		}
 
-        // TODO: add an OnSelect event to the table, s.t. external controls can embed this
-        // and use the search results
-    }
+		// TODO: add an OnSelect event to the table, s.t. external controls can embed this
+		// and use the search results
+	}
 }

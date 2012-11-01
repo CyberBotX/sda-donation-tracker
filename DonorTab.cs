@@ -1,50 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Windows.Forms;
 
 namespace SDA_DonationTracker
 {
-    public partial class DonorTab : UserControl
-    {
-        private FormBinding FormBinding;
-        private TrackerContext Context;
-        private SearchContext CurrentDonorSearch;
-        private int Id;
+	public partial class DonorTab : UserControl
+	{
+		private FormBinding FormBinding;
+		private TrackerContext Context;
+		private SearchContext CurrentDonorSearch;
+		private int Id;
 
-        public DonorTab(TrackerContext context, int id)
-        {
-            Id = id;
-            InitializeComponent();
+		public DonorTab(TrackerContext context, int id)
+		{
+			this.Id = id;
+			this.InitializeComponent();
 
-            Context = context;
+			this.Context = context;
 
-            FormBinding = new FormBinding();
+			this.FormBinding = new FormBinding();
 
-            FormBinding.AddBinding("firstname", FirstNameText);
-            FormBinding.AddBinding("lastname", LastNameText);
-            FormBinding.AddBinding("alias", AliasText);
-            FormBinding.AddBinding("email", EmailText);
+			this.FormBinding.AddBinding("firstname", this.FirstNameText);
+			this.FormBinding.AddBinding("lastname", this.LastNameText);
+			this.FormBinding.AddBinding("alias", this.AliasText);
+			this.FormBinding.AddBinding("email", this.EmailText);
 
-            RefreshData();
-        }
+			this.RefreshData();
+		}
 
-        private void RefreshData()
-        {
-            CurrentDonorSearch = Context.DeferredSearch("donor", Util.CreateSearchParams("id", Id.ToString()));
+		private void RefreshData()
+		{
+			this.CurrentDonorSearch = this.Context.DeferredSearch("donor", Util.CreateSearchParams("id", this.Id.ToString()));
 
-            CurrentDonorSearch.OnComplete += results =>
-            {
-                FormBinding.LoadObject(results.First());
-                FormBinding.EnableControls();
-            };
+			this.CurrentDonorSearch.OnComplete += results =>
+			{
+				this.FormBinding.LoadObject(results.First());
+				this.FormBinding.EnableControls();
+			};
 
-            FormBinding.DisableControls();
-            CurrentDonorSearch.Begin();
-        }
-    }
+			this.FormBinding.DisableControls();
+			this.CurrentDonorSearch.Begin();
+		}
+	}
 }
