@@ -17,7 +17,7 @@ namespace SDA_DonationTracker
 
 		private ListBinding<JTokenListElement> TableBinding;
 		private SearchContext CurrentSearch;
-		private EntityModel Model;
+		public EntityModel Model { get; private set; }
 		private FormBinding FormBinding;
 		private string[] SearchFields;
 		private string[] LabelFields;

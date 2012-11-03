@@ -38,10 +38,12 @@ namespace SDA_DonationTracker
 			this.QuitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.SearchMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.donorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.donationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TabControl = new SDA_DonationTracker.TabCtlEx();
-			this.donationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.CreateMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CreateDonorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.StatusBar.SuspendLayout();
 			this.MenuBar.SuspendLayout();
 			this.SuspendLayout();
@@ -66,6 +68,7 @@ namespace SDA_DonationTracker
 			this.MenuBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenuHeader,
             this.SearchMenu,
+            this.CreateMenu,
             this.helpToolStripMenuItem});
 			this.MenuBar.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.MenuBar.Location = new System.Drawing.Point(0, 0);
@@ -130,9 +133,16 @@ namespace SDA_DonationTracker
 			// donorToolStripMenuItem
 			// 
 			this.donorToolStripMenuItem.Name = "donorToolStripMenuItem";
-			this.donorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.donorToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
 			this.donorToolStripMenuItem.Text = "Donor";
 			this.donorToolStripMenuItem.Click += new System.EventHandler(this.donorToolStripMenuItem_Click);
+			// 
+			// donationToolStripMenuItem
+			// 
+			this.donationToolStripMenuItem.Name = "donationToolStripMenuItem";
+			this.donationToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.donationToolStripMenuItem.Text = "Donation";
+			this.donationToolStripMenuItem.Click += new System.EventHandler(this.donationToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -145,7 +155,7 @@ namespace SDA_DonationTracker
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.aboutToolStripMenuItem.Text = "&About...";
 			// 
 			// TabControl
@@ -162,12 +172,21 @@ namespace SDA_DonationTracker
 			this.TabControl.TabIndex = 0;
 			this.TabControl.TabStop = false;
 			// 
-			// donationToolStripMenuItem
+			// CreateMenu
 			// 
-			this.donationToolStripMenuItem.Name = "donationToolStripMenuItem";
-			this.donationToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.donationToolStripMenuItem.Text = "Donation";
-			this.donationToolStripMenuItem.Click += new System.EventHandler(this.donationToolStripMenuItem_Click);
+			this.CreateMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CreateDonorMenuItem});
+			this.CreateMenu.Name = "CreateMenu";
+			this.CreateMenu.Size = new System.Drawing.Size(53, 20);
+			this.CreateMenu.Text = "Create";
+			this.CreateMenu.Visible = false;
+			// 
+			// CreateDonorMenuItem
+			// 
+			this.CreateDonorMenuItem.Name = "CreateDonorMenuItem";
+			this.CreateDonorMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.CreateDonorMenuItem.Text = "Donor";
+			this.CreateDonorMenuItem.Click += new System.EventHandler(this.CreateDonorMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -207,6 +226,8 @@ namespace SDA_DonationTracker
         private System.Windows.Forms.ToolStripMenuItem donorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SelectEventMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem donationToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem CreateMenu;
+		private System.Windows.Forms.ToolStripMenuItem CreateDonorMenuItem;
 	}
 }
 

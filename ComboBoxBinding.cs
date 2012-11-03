@@ -41,7 +41,8 @@ namespace SDA_DonationTracker
 
 		private void SetSelectedValue(string data)
 		{
-			ComboBox.SelectedValue = Enum.Parse(EnumType, data);
+			object o = Enum.Parse(EnumType, data);
+			ComboBox.SelectedItem = o;
 		}
 	}
 }

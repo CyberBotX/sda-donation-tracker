@@ -9,7 +9,10 @@ using System.Windows.Forms;
 
 namespace SDA_DonationTracker
 {
-	// TODO: do this for all of the other entities
+	// TODO: 
+	// - do this for all of the other entities
+	// - The searching for enum values is pretty unreasonable
+	// - Searching for date values doesn't work
 	public partial class SearchDonationPanel : SearchPanel
 	{
 		public SearchDonationPanel()

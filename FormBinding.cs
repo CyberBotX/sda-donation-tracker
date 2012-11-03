@@ -17,9 +17,24 @@ namespace SDA_DonationTracker
 			this.AddBinding(fieldName, new TextBoxBinding(textBox));
 		}
 
+		public void AddMoneyBinding(string fieldName, TextBoxBase textBox)
+		{
+			this.AddBinding(fieldName, new MoneyFieldBinding(textBox));
+		}
+
 		public void AddBinding(string fieldName, DateTimePicker picker)
 		{
 			this.AddBinding(fieldName, new DateTimePickerBinding(picker));
+		}
+
+		public void AddBinding(string fieldName, CheckBox box)
+		{
+			this.AddBinding(fieldName, new CheckBoxBinding(box));
+		}
+
+		public void AddBinding(string fieldName, ComboBox box, Type enumType)
+		{
+			this.AddBinding(fieldName, new ComboBoxBinding(box, enumType));
 		}
 
 		public void AddBinding(string fieldName, FieldBinding binding)
@@ -34,8 +49,11 @@ namespace SDA_DonationTracker
 
 			JObject fields = data.Value<JObject>(FieldsField);
 
-			foreach (KeyValuePair<string,FieldBinding> entry in this.Bindings)
-				entry.Value.LoadField(fields.Value<string>(entry.Key));
+			foreach (KeyValuePair<string, FieldBinding> entry in this.Bindings)
+			{
+				string value = fields.Value<string>(entry.Key);
+				entry.Value.LoadField(value);
+			}
 		}
 
 		public JObject SaveObject()
@@ -58,6 +76,11 @@ namespace SDA_DonationTracker
 			Console.WriteLine(obj.ToString());
 
 			return obj;
+		}
+
+		public IEnumerable<string> GetBindingKeys()
+		{
+			return this.Bindings.Keys;
 		}
 	}
 }

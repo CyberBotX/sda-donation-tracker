@@ -80,6 +80,7 @@
     <Compile Include="BooleanFieldModel.cs" />
     <Compile Include="CheckBoxBinding.cs" />
     <Compile Include="ComboBoxBinding.cs" />
+    <Compile Include="ConnectionContext.cs" />
     <Compile Include="ConnectOpenIDManualForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,8 +88,16 @@
       <DependentUpon>ConnectOpenIDManualForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ContextStatus.cs" />
+    <Compile Include="DeleteContext.cs" />
+    <Compile Include="SaveContext.cs" />
     <Compile Include="DateTimeFieldModel.cs" />
     <Compile Include="DateTimePickerBinding.cs" />
+    <Compile Include="DonationTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DonationTab.Designer.cs">
+      <DependentUpon>DonationTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Enums.cs" />
     <Compile Include="DonationModels.cs" />
     <Compile Include="DonorTab.cs">
@@ -124,23 +133,17 @@
     <Compile Include="SearchDonationPanel.Designer.cs">
       <DependentUpon>SearchDonationPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="SearchDonationTab.cs">
+    <Compile Include="SearchTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SearchDonationTab.Designer.cs">
-      <DependentUpon>SearchDonationTab.cs</DependentUpon>
+    <Compile Include="SearchTab.Designer.cs">
+      <DependentUpon>SearchTab.cs</DependentUpon>
     </Compile>
     <Compile Include="SearchDonorPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SearchDonorPanel.Designer.cs">
       <DependentUpon>SearchDonorPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SearchDonorTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SearchDonorTab.Designer.cs">
-      <DependentUpon>SearchDonorTab.cs</DependentUpon>
     </Compile>
     <Compile Include="SelectEventDialog.cs">
       <SubType>Form</SubType>
@@ -174,6 +177,9 @@
     <EmbeddedResource Include="ConnectOpenIDManualForm.resx">
       <DependentUpon>ConnectOpenIDManualForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DonationTab.resx">
+      <DependentUpon>DonationTab.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DonorTab.resx">
       <DependentUpon>DonorTab.cs</DependentUpon>
     </EmbeddedResource>
@@ -193,14 +199,11 @@
     <EmbeddedResource Include="SearchDonationPanel.resx">
       <DependentUpon>SearchDonationPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SearchDonationTab.resx">
-      <DependentUpon>SearchDonationTab.cs</DependentUpon>
+    <EmbeddedResource Include="SearchTab.resx">
+      <DependentUpon>SearchTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SearchDonorPanel.resx">
       <DependentUpon>SearchDonorPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SearchDonorTab.resx">
-      <DependentUpon>SearchDonorTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SelectEventDialog.resx">
       <DependentUpon>SelectEventDialog.cs</DependentUpon>

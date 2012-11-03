@@ -5,14 +5,8 @@ using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
-	public class SearchContext
+	public class SearchContext : ConnectionContext
 	{
-		public TrackerContext Context
-		{
-			get;
-			private set;
-		}
-		private Thread Connection;
 		public string Model
 		{
 			get;
@@ -28,75 +22,27 @@ namespace SDA_DonationTracker
 			get;
 			private set;
 		}
-		public bool Completed
-		{
-			get
-			{
-				return this.Status == ContextStatus.Completed;
-			}
-		}
-		public bool Error
-		{
-			get
-			{
-				return this.Status == ContextStatus.Error;
-			}
-		}
-		public bool Busy
-		{
-			get
-			{
-				return this.Status == ContextStatus.Pending || this.Status == ContextStatus.Started;
-			}
-		}
-		public ContextStatus Status
-		{
-			get;
-			private set;
-		}
-		public string ErrorString;
 		public event Action<JArray> OnComplete;
 
 		public SearchContext(TrackerContext context, string model, IEnumerable<KeyValuePair<string, string>> searchParams)
+			: base(context)
 		{
-			this.Context = context;
 			this.Model = model;
 			this.SearchParams = searchParams;
 			this.Result = null;
-			this.ErrorString = null;
-			this.Status = ContextStatus.Idle;
-			this.Connection = new Thread(this.Impl_RunSearch);
+
+			this.OnBegin += () =>
+				{
+					this.Result = null;
+				};
 		}
 
-		public void Begin()
+		protected override void Run()
 		{
-			this.Status = ContextStatus.Pending;
-			this.Result = null;
-			this.ErrorString = null;
-			this.Connection.Start();
-		}
+			this.Result = this.Context.RunSearch(this.Model, this.SearchParams);
 
-		public void Abort()
-		{
-			if (this.Busy)
-				this.Connection.Abort();
-		}
-
-		private void Impl_RunSearch()
-		{
-			try
-			{
-				this.Status = ContextStatus.Started;
-				this.Result = this.Context.RunSearch(this.Model, this.SearchParams);
-				this.Status = ContextStatus.Completed;
-
-				if (this.OnComplete != null)
+			if (this.OnComplete != null)
 					this.OnComplete.Invoke(this.Result);
-			}
-			catch (Exception e)
-			{
-				this.ErrorString = e.Message;
-			}
 		}
 	}
 }

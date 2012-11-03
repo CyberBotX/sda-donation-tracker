@@ -5,7 +5,6 @@ namespace SDA_DonationTracker
 {
 	// TODO: 
 	// - finish adding the other models, and linking them up appropriately
-	// - actually make use of this...
 	public static class DonationModels
 	{
 		public static readonly EntityModel EventModel = new EntityModel("event",
@@ -18,8 +17,8 @@ namespace SDA_DonationTracker
 		public static readonly EntityModel DonorModel = new EntityModel("donor",
 			new Dictionary<string, FieldModel>()
 			{
-				{ "firstName", new StringFieldModel() },
-				{ "lastName", new StringFieldModel() },
+				{ "firstname", new StringFieldModel() },
+				{ "lastname", new StringFieldModel() },
 				{ "alias", new StringFieldModel() },
 				{ "email", new StringFieldModel() },
 				{ "donations", new EntitySetModel("donation") },

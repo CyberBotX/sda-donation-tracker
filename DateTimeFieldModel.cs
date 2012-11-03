@@ -4,7 +4,7 @@ namespace SDA_DonationTracker
 {
 	public class DateTimeFieldModel : FieldModel
 	{
-		public static readonly string DateFormat = "yyyy-MM-ddTHH:mm:ss";
+		public static readonly string DateFormat = "MM/dd/yyyy HH:mm:ss";
 
 		public Type FieldType
 		{

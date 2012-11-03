@@ -87,7 +87,7 @@ namespace SDA_DonationTracker
 
 		private string StringParams(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
 		{
-			return string.Format("?type={0}&{1}", model, string.Join("&", searchParams.Where(x => !string.IsNullOrEmpty(x.Value)).Select(x => x.Key.ToLower() + "=" + Uri.EscapeDataString(x.Value))));
+			return string.Format("type={0}&{1}", model, string.Join("&", searchParams.Where(x => !string.IsNullOrEmpty(x.Value)).Select(x => x.Key.ToLower() + "=" + Uri.EscapeDataString(x.Value))));
 		}
 
 		private WebClientEx CreateClient()
@@ -111,9 +111,54 @@ namespace SDA_DonationTracker
 
 			string paramsString = StringParams(model, searchParams);
 
-			string data = client.DownloadString(new Uri(u, paramsString));
+			string response = client.DownloadString(new Uri(u, "?" + paramsString));
 
-			return JArray.Parse(data);
+			return JArray.Parse(response);
+		}
+
+		public JObject RunSave(string model, IEnumerable<KeyValuePair<string, string>> saveParams)
+		{
+			if (this.IsEventModel(model))
+				saveParams.Concat1(new KeyValuePair<string, string>("event", this.EventId.ToString()));
+
+			if (!this.SessionSet)
+				throw new Exception("Error, session is not set.");
+
+			Uri u;
+
+			if (saveParams.Any(p => string.Equals(p.Key, "id", StringComparison.OrdinalIgnoreCase)))
+			{
+				u = new Uri(Domain, "tracker/edit/");
+			}
+			else
+			{
+				u = new Uri(Domain, "tracker/add/");
+			}
+
+			WebClientEx client = this.CreateClient();
+
+			string response = client.UploadString(u, "POST", StringParams(model, saveParams));
+
+			return JArray.Parse(response).Value<JObject>(0);
+		}
+
+		public JObject RunDelete(string model, int id)
+		{
+			if (!this.SessionSet)
+				throw new Exception("Error, session is not set.");
+
+			Dictionary<string,string> deleteParams = new Dictionary<string,string>()
+			{
+				{ "id", id.ToString() },
+			};
+
+			Uri u = new Uri(Domain, "tracker/delete/");
+
+			WebClientEx client = this.CreateClient();
+
+			string response = client.UploadString(u, "POST", StringParams(model, deleteParams));
+
+			return JArray.Parse(response).Value<JObject>(0);
 		}
 
 		public SearchContext DeferredSearch(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
@@ -122,6 +167,22 @@ namespace SDA_DonationTracker
 				return null;
 
 			return new SearchContext(this, model, searchParams);
+		}
+
+		public SaveContext DeferredSave(string model, IEnumerable<KeyValuePair<string, string>> saveParams)
+		{
+			if (!this.SessionSet)
+				return null;
+
+			return new SaveContext(this, model, saveParams);
+		}
+
+		public DeleteContext DeferredDelete(string model, int id)
+		{
+			if (!this.SessionSet)
+				return null;
+
+			return new DeleteContext(this, model, id);
 		}
 	}
 }

@@ -21,6 +21,9 @@ namespace SDA_DonationTracker
 					{
 						MinDate = DateTime.MinValue,
 						MaxDate = DateTime.MaxValue,
+						CustomFormat = "yyyy/MM/dd HH:mm:ss",
+						Format = DateTimePickerFormat.Custom,
+						ShowUpDown = true,
 					}
 				);
 			}
