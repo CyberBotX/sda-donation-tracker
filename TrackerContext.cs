@@ -158,7 +158,7 @@ namespace SDA_DonationTracker
 
 			string response = client.UploadString(u, "POST", StringParams(model, deleteParams));
 
-			return JArray.Parse(response).Value<JObject>(0);
+			return JObject.Parse(response);
 		}
 
 		public SearchContext DeferredSearch(string model, IEnumerable<KeyValuePair<string, string>> searchParams)

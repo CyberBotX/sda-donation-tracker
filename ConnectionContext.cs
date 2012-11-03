@@ -88,6 +88,7 @@ namespace SDA_DonationTracker
 			catch (WebException e)
 			{
 				this.Status = ContextStatus.Error;
+				Console.WriteLine(e.Response.GetResponseStream());
 				this.ErrorString = e.Message;
 				if (OnError != null)
 					OnError.Invoke();
