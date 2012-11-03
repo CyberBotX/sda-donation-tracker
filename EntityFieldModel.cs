@@ -28,5 +28,16 @@ namespace SDA_DonationTracker
 		{
 			this.ModelName = modelName;
 		}
+
+
+		public string Serialize(object t)
+		{
+			throw new NotImplementedException();
+		}
+
+		public object Parse(string s)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

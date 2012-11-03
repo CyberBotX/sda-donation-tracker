@@ -1,56 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace SDA_DonationTracker
 {
-	public class TextBoxBinding : FieldBinding
-	{
-		public TextBoxBase TextBox
-		{
-			get;
-			private set;
-		}
-		public string Field
-		{
-			get;
-			private set;
-		}
-
-		public TextBoxBinding(string field, TextBoxBase textBox)
-		{
-			this.Field = field;
-			this.TextBox = textBox;
-		}
-
-		public void LoadField(string data)
-		{
-			this.TextBox.Invoke(new SetTextDelegate(this.ImplSetText), data);
-		}
-
-		public string RetreiveField()
-		{
-			return this.TextBox.Text;
-		}
-
-		private delegate void SetTextDelegate(string data);
-
-		private void ImplSetText(string data)
-		{
-			this.TextBox.Text = data;
-		}
-	}
-
-	public interface FieldBinding
-	{
-		string Field
-		{
-			get;
-		}
-		void LoadField(string data);
-		string RetreiveField();
-	}
-
 	public class FormBinding : BindingContext
 	{
 		private readonly string FieldsField = "fields";
@@ -60,8 +14,18 @@ namespace SDA_DonationTracker
 
 		public void AddBinding(string fieldName, TextBoxBase textBox)
 		{
-			this.AddAssociatedControl(textBox);
-			this.Bindings.Add(fieldName, new TextBoxBinding(fieldName, textBox));
+			this.AddBinding(fieldName, new TextBoxBinding(textBox));
+		}
+
+		public void AddBinding(string fieldName, DateTimePicker picker)
+		{
+			this.AddBinding(fieldName, new DateTimePickerBinding(picker));
+		}
+
+		public void AddBinding(string fieldName, FieldBinding binding)
+		{
+			this.AddAssociatedControl(binding.BoundControl);
+			this.Bindings.Add(fieldName, binding);
 		}
 
 		public void LoadObject(JToken data)
@@ -70,8 +34,30 @@ namespace SDA_DonationTracker
 
 			JObject fields = data.Value<JObject>(FieldsField);
 
-			foreach (FieldBinding entry in this.Bindings.Values)
-				entry.LoadField(fields.Value<string>(entry.Field));
+			foreach (KeyValuePair<string,FieldBinding> entry in this.Bindings)
+				entry.Value.LoadField(fields.Value<string>(entry.Key));
+		}
+
+		public JObject SaveObject()
+		{
+			JObject obj = new JObject();
+
+			if (LoadedData != null)
+			{
+				obj.Add("pk", LoadedData.Value<string>("pk"));
+				obj.Add("model", LoadedData.Value<string>("model"));
+			}
+
+			JObject fields = new JObject();
+
+			foreach (KeyValuePair<string, FieldBinding> entry in this.Bindings)
+				fields.Add(entry.Key, entry.Value.RetreiveField());
+
+			obj.Add("fields", fields);
+
+			Console.WriteLine(obj.ToString());
+
+			return obj;
 		}
 	}
 }

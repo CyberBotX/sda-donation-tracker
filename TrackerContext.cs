@@ -36,10 +36,12 @@ namespace SDA_DonationTracker
 			get;
 			set;
 		}
+		public string EventName { get; set; }
 
 		public TrackerContext()
 		{
 			this.EventId = 0;
+			this.EventName = null;
 		}
 
 		public void SetSessionId(string sessionId, string domain)
@@ -80,8 +82,12 @@ namespace SDA_DonationTracker
 
 		private Uri CreateSearchUri(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
 		{
-			return new Uri(Domain, string.Format("tracker/search/?type={0}&{1}", model,
-				string.Join("&", searchParams.Where(x => !string.IsNullOrEmpty(x.Value)).Select(x => x.Key.ToLower() + "=" + x.Value))));
+			return new Uri(Domain, "tracker/search/" + StringParams(model, searchParams));
+		}
+
+		private string StringParams(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
+		{
+			return string.Format("?type={0}&{1}", model, string.Join("&", searchParams.Where(x => !string.IsNullOrEmpty(x.Value)).Select(x => x.Key.ToLower() + "=" + Uri.EscapeDataString(x.Value))));
 		}
 
 		private WebClientEx CreateClient()
@@ -94,16 +100,18 @@ namespace SDA_DonationTracker
 		public JArray RunSearch(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
 		{
 			if (this.IsEventModel(model))
-				searchParams.Concat1(new KeyValuePair<string, string>("event", this.EventId.ToString()));
+				searchParams.Concat1(new KeyValuePair<string, string>("event", this.EventName));
 
 			if (!this.SessionSet)
 				throw new Exception("Error, session is not set.");
 
-			Uri u = this.CreateSearchUri(model, searchParams);
+			Uri u = new Uri(Domain, "tracker/search/"); //this.CreateSearchUri(model, searchParams);
 
 			WebClientEx client = this.CreateClient();
 
-			string data = client.DownloadString(u);
+			string paramsString = StringParams(model, searchParams);
+
+			string data = client.DownloadString(new Uri(u, paramsString));
 
 			return JArray.Parse(data);
 		}

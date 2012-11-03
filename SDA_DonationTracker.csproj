@@ -77,6 +77,9 @@
     <Compile Include="BindingControl.Designer.cs">
       <DependentUpon>BindingControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="BooleanFieldModel.cs" />
+    <Compile Include="CheckBoxBinding.cs" />
+    <Compile Include="ComboBoxBinding.cs" />
     <Compile Include="ConnectOpenIDManualForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,7 +88,8 @@
     </Compile>
     <Compile Include="ContextStatus.cs" />
     <Compile Include="DateTimeFieldModel.cs" />
-    <Compile Include="DonationDomain.cs" />
+    <Compile Include="DateTimePickerBinding.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="DonationModels.cs" />
     <Compile Include="DonorTab.cs">
       <SubType>UserControl</SubType>
@@ -97,6 +101,8 @@
     <Compile Include="EntityModel.cs" />
     <Compile Include="EntitySetModel.cs" />
     <Compile Include="EnumFieldModel.cs" />
+    <Compile Include="FieldBinding.cs" />
+    <Compile Include="FieldBindingHelper.cs" />
     <Compile Include="FieldModel.cs" />
     <Compile Include="JTokenListElement.cs" />
     <Compile Include="ListBinding.cs" />
@@ -107,15 +113,34 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FormBinding.cs" />
+    <Compile Include="MoneyFieldBinding.cs" />
     <Compile Include="MoneyFieldModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchContext.cs" />
+    <Compile Include="SearchDonationPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchDonationPanel.Designer.cs">
+      <DependentUpon>SearchDonationPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SearchDonationTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchDonationTab.Designer.cs">
+      <DependentUpon>SearchDonationTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="SearchDonorPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SearchDonorPanel.Designer.cs">
       <DependentUpon>SearchDonorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SearchDonorTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchDonorTab.Designer.cs">
+      <DependentUpon>SearchDonorTab.cs</DependentUpon>
     </Compile>
     <Compile Include="SelectEventDialog.cs">
       <SubType>Form</SubType>
@@ -131,7 +156,14 @@
     <Compile Include="TabPageEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TextBoxBinding.cs" />
     <Compile Include="TrackerContext.cs" />
+    <Compile Include="SearchPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchPanel.Designer.cs">
+      <DependentUpon>SearchPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Util.cs" />
     <Compile Include="WebClientEx.cs">
       <SubType>Component</SubType>
@@ -158,8 +190,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SearchDonationPanel.resx">
+      <DependentUpon>SearchDonationPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchDonationTab.resx">
+      <DependentUpon>SearchDonationTab.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SearchDonorPanel.resx">
       <DependentUpon>SearchDonorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchDonorTab.resx">
+      <DependentUpon>SearchDonorTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SelectEventDialog.resx">
       <DependentUpon>SelectEventDialog.cs</DependentUpon>

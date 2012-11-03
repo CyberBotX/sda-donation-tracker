@@ -38,7 +38,6 @@ namespace SDA_DonationTracker
 			this.List = list;
 
 			this.AddAssociatedControl(this.List);
-			this.List.SelectionMode = SelectionMode.One;
 			this.List.DisplayMember = displayProperty;
 
 			this.List.SelectedValueChanged += (e, o) =>

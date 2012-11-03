@@ -8,5 +8,8 @@ namespace SDA_DonationTracker
 		{
 			get;
 		}
+
+		string Serialize(object t);
+		object Parse(string s);
 	}
 }

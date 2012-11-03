@@ -25,19 +25,26 @@ namespace SDA_DonationTracker
 
 		public void NavigateToDonor(int id)
 		{
+			DonorTab form = new DonorTab()
+			{
+				Id = id,
+				TrackerContext = this.TrackerContext,
+				Dock = DockStyle.Fill
+			};
+
 			TabPageEx donorTab = new TabPageEx()
 			{
 				Text = string.Format("Donor#{0}", id),
 				Name = string.Format("Donor#{0}", id),
 				Controls =
 				{
-					new DonorTab(this.TrackerContext, id)
-					{
-						Dock = DockStyle.Fill
-					}
+					form
 				}
 			};
+
 			this.TabControl.TabPages.Add(donorTab);
+			this.TabControl.SelectTab(donorTab);
+			form.RefreshData();
 		}
 
 		private void QuitMenuItem_Click(object sender, EventArgs e)
@@ -82,8 +89,10 @@ namespace SDA_DonationTracker
 				Name = "Donor Search",
 				Controls =
 				{
-					new SearchDonorPanel(this.TrackerContext)
+					new SearchDonorTab()
 					{
+						TrackerContext = this.TrackerContext,
+						Owner = this,
 						Dock = DockStyle.Fill
 					}
 				}
@@ -102,6 +111,25 @@ namespace SDA_DonationTracker
 			SelectEventDialog dialog = new SelectEventDialog(this, this.TrackerContext);
 			dialog.ShowInTaskbar = false;
 			dialog.Show(this);
+		}
+
+		private void donationToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			TabPageEx donorTab = new TabPageEx()
+			{
+				Text = "Donation Search",
+				Name = "Donation Search",
+				Controls =
+				{
+					new SearchDonationTab()
+					{
+						TrackerContext = this.TrackerContext,
+						Owner = this,
+						Dock = DockStyle.Fill
+					}
+				}
+			};
+			this.TabControl.TabPages.Add(donorTab);
 		}
 	}
 }

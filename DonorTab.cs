@@ -1,21 +1,20 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
+using System;
 
 namespace SDA_DonationTracker
 {
 	public partial class DonorTab : UserControl
 	{
+		public TrackerContext TrackerContext { get; set; }
+		public int Id { get; set; }
+
 		private FormBinding FormBinding;
-		private TrackerContext Context;
 		private SearchContext CurrentDonorSearch;
-		private int Id;
 
-		public DonorTab(TrackerContext context, int id)
+		public DonorTab()
 		{
-			this.Id = id;
 			this.InitializeComponent();
-
-			this.Context = context;
 
 			this.FormBinding = new FormBinding();
 
@@ -23,13 +22,16 @@ namespace SDA_DonationTracker
 			this.FormBinding.AddBinding("lastname", this.LastNameText);
 			this.FormBinding.AddBinding("alias", this.AliasText);
 			this.FormBinding.AddBinding("email", this.EmailText);
-
-			this.RefreshData();
 		}
 
-		private void RefreshData()
+		public void RefreshData()
 		{
-			this.CurrentDonorSearch = this.Context.DeferredSearch("donor", Util.CreateSearchParams("id", this.Id.ToString()));
+			if (this.TrackerContext == null)
+			{
+				throw new Exception("Error, TrackerContext not set.");
+			}
+
+			this.CurrentDonorSearch = this.TrackerContext.DeferredSearch("donor", Util.CreateSearchParams("id", this.Id.ToString()));
 
 			this.CurrentDonorSearch.OnComplete += results =>
 			{

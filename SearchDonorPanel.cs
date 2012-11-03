@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -13,17 +14,17 @@ namespace SDA_DonationTracker
 
 	public partial class SearchDonorPanel : UserControl
 	{
-		public TrackerContext Context;
-		private TableBinding TableBinding;
+		public TrackerContext TrackerContext { get; set; }
+		public event Action<IEnumerable<int>> OnSelect;
+
+		private ListBinding<JTokenListElement> TableBinding;
 		private SearchContext CurrentSearch;
 
-		public SearchDonorPanel(TrackerContext context)
+		public SearchDonorPanel()
 		{
-			this.Context = context;
-
 			this.InitializeComponent();
 
-			this.TableBinding = new TableBinding(this.ResultsView, "firstName", "lastName", "alias", "email");
+			this.TableBinding = new ListBinding<JTokenListElement>(this.ResultsView, x => new JTokenListElement(x, "firstname", "lastname"), "Display");
 			this.TableBinding.AddAssociatedControl(this.BasicSearchText);
 			this.TableBinding.AddAssociatedControl(this.SearchButton);
 			this.TableBinding.AddAssociatedControl(this.BasicSearchButton);
@@ -31,6 +32,24 @@ namespace SDA_DonationTracker
 			this.TableBinding.AddAssociatedControl(this.LastNameText);
 			this.TableBinding.AddAssociatedControl(this.AliasText);
 			this.TableBinding.AddAssociatedControl(this.EmailText);
+
+			this.TableBinding.OnSelection += (selections) =>
+			{
+				if (OnSelect != null)
+				{
+					OnSelect.Invoke(GetSelections());
+				}
+			};
+		}
+
+		public IEnumerable<int> GetSelections()
+		{
+			return this.TableBinding.GetSelections().Select(t => t.Source.Value<int>("pk"));
+		}
+
+		public void AddSelectionControl(Control c)
+		{
+			this.TableBinding.AddSelectionControl(c);
 		}
 
 		private Dictionary<string, string> GetSearchParams()
@@ -52,9 +71,14 @@ namespace SDA_DonationTracker
 
 		private void SearchButton_Click(object sender, EventArgs e)
 		{
+			if (this.TrackerContext == null)
+			{
+				throw new Exception("Error, no TrackerContext was set.");
+			}
+
 			this.AbortExistingSearch();
 
-			this.CurrentSearch = this.Context.DeferredSearch("donor", this.GetSearchParams());
+			this.CurrentSearch = this.TrackerContext.DeferredSearch("donor", this.GetSearchParams());
 
 			this.CurrentSearch.OnComplete += results =>
 			{
@@ -70,7 +94,7 @@ namespace SDA_DonationTracker
 		{
 			this.AbortExistingSearch();
 
-			this.CurrentSearch = this.Context.DeferredSearch("donor", new Dictionary<string, string> { { "q", BasicSearchText.Text } });
+			this.CurrentSearch = this.TrackerContext.DeferredSearch("donor", new Dictionary<string, string> { { "q", BasicSearchText.Text } });
 
 			this.CurrentSearch.OnComplete += results =>
 			{
@@ -81,8 +105,5 @@ namespace SDA_DonationTracker
 			this.TableBinding.DisableControls();
 			this.CurrentSearch.Begin();
 		}
-
-		// TODO: add an OnSelect event to the table, s.t. external controls can embed this
-		// and use the search results
 	}
 }

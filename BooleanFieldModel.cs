@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace SDA_DonationTracker
 {
-	public class StringFieldModel : FieldModel
+	public class BooleanFieldModel : FieldModel
 	{
 		public Type FieldType
 		{
-			get { return typeof(string); }
+			get { return typeof(bool); }
 		}
 
 		public string Serialize(object t)
@@ -16,7 +19,7 @@ namespace SDA_DonationTracker
 
 		public object Parse(string s)
 		{
-			return s;
+			return bool.Parse(s);
 		}
 	}
 }
