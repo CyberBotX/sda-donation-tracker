@@ -40,8 +40,8 @@
 			this.EmailText = new System.Windows.Forms.TextBox();
 			this.EmailLabel = new System.Windows.Forms.Label();
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
-			this.SaveButton = new System.Windows.Forms.Button();
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+			this.SaveButton = new System.Windows.Forms.Button();
 			this.RefreshButton = new System.Windows.Forms.Button();
 			this.DeleteButton = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -182,16 +182,6 @@
 			this.dataGridView1.Size = new System.Drawing.Size(646, 111);
 			this.dataGridView1.TabIndex = 1;
 			// 
-			// SaveButton
-			// 
-			this.SaveButton.Location = new System.Drawing.Point(3, 3);
-			this.SaveButton.Name = "SaveButton";
-			this.SaveButton.Size = new System.Drawing.Size(75, 23);
-			this.SaveButton.TabIndex = 2;
-			this.SaveButton.Text = "Save";
-			this.SaveButton.UseVisualStyleBackColor = true;
-			this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-			// 
 			// tableLayoutPanel3
 			// 
 			this.tableLayoutPanel3.ColumnCount = 1;
@@ -209,9 +199,21 @@
 			this.tableLayoutPanel3.Size = new System.Drawing.Size(320, 100);
 			this.tableLayoutPanel3.TabIndex = 3;
 			// 
+			// SaveButton
+			// 
+			this.SaveButton.Dock = System.Windows.Forms.DockStyle.Right;
+			this.SaveButton.Location = new System.Drawing.Point(242, 3);
+			this.SaveButton.Name = "SaveButton";
+			this.SaveButton.Size = new System.Drawing.Size(75, 23);
+			this.SaveButton.TabIndex = 2;
+			this.SaveButton.Text = "Save";
+			this.SaveButton.UseVisualStyleBackColor = true;
+			this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+			// 
 			// RefreshButton
 			// 
-			this.RefreshButton.Location = new System.Drawing.Point(3, 32);
+			this.RefreshButton.Dock = System.Windows.Forms.DockStyle.Right;
+			this.RefreshButton.Location = new System.Drawing.Point(242, 32);
 			this.RefreshButton.Name = "RefreshButton";
 			this.RefreshButton.Size = new System.Drawing.Size(75, 23);
 			this.RefreshButton.TabIndex = 3;
@@ -221,9 +223,10 @@
 			// 
 			// DeleteButton
 			// 
-			this.DeleteButton.Location = new System.Drawing.Point(3, 61);
+			this.DeleteButton.Dock = System.Windows.Forms.DockStyle.Right;
+			this.DeleteButton.Location = new System.Drawing.Point(242, 61);
 			this.DeleteButton.Name = "DeleteButton";
-			this.DeleteButton.Size = new System.Drawing.Size(75, 23);
+			this.DeleteButton.Size = new System.Drawing.Size(75, 36);
 			this.DeleteButton.TabIndex = 4;
 			this.DeleteButton.Text = "Delete";
 			this.DeleteButton.UseVisualStyleBackColor = true;

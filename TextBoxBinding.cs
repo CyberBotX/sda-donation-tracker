@@ -23,22 +23,12 @@ namespace SDA_DonationTracker
 
 		public void LoadField(string data)
 		{
-			if (this.TextBox.InvokeRequired)
-				this.TextBox.Invoke(new SetTextDelegate(this.ImplSetText), data);
-			else
-				this.ImplSetText(data);
+			this.TextBox.InvokeEx(() => this.TextBox.Text = data);
 		}
 
 		public string RetreiveField()
 		{
 			return this.TextBox.Text;
-		}
-
-		private delegate void SetTextDelegate(string data);
-
-		private void ImplSetText(string data)
-		{
-			this.TextBox.Text = data;
 		}
 	}
 }

@@ -73,10 +73,7 @@ namespace SDA_DonationTracker
 		{
 			T[] newContent = results.Select(this.Builder).ToArray();
 
-			if (this.List.InvokeRequired)
-				this.List.Invoke(new SetListContentCallback(this.SetListContent), this.List, newContent);
-			else
-				this.SetListContent(this.List, newContent);
+			this.List.InvokeEx(() => this.List.DataSource = newContent);
 		}
 
 		public event Action<IEnumerable<T>> OnSelection;
@@ -86,21 +83,11 @@ namespace SDA_DonationTracker
 			return this.List.SelectedItems.Cast<T>();
 		}
 
-		private delegate void SetListContentCallback(ListBox list, T[] data);
-
-		private void SetListContent(ListBox list, T[] data)
-		{
-			list.DataSource = data;
-		}
-
 		private void DisableSelectionControls()
 		{
 			this.SelectionControls.ForEach(control =>
 			{
-				if (control.InvokeRequired)
-					control.Invoke(new ControlCallback(this.DisableControl), control);
-				else
-					this.DisableControl(control);
+				control.InvokeEx(() => control.Enabled = false);
 			});
 		}
 
@@ -108,10 +95,7 @@ namespace SDA_DonationTracker
 		{
 			this.SelectionControls.ForEach(control =>
 			{
-				if (control.InvokeRequired)
-					control.Invoke(new ControlCallback(this.EnableControl), control);
-				else
-					this.EnableControl(control);
+				control.InvokeEx(() => control.Enabled = true);
 			});
 		}
 	}

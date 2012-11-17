@@ -93,6 +93,13 @@ namespace SDA_DonationTracker
 				if (OnError != null)
 					OnError.Invoke();
 			}
+			catch (Exception e)
+			{
+				this.Status = ContextStatus.Error;
+				this.ErrorString = e.Message;
+				if (OnError != null)
+					OnError.Invoke();
+			}
 		}
 	}
 }

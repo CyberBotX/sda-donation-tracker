@@ -16,10 +16,7 @@ namespace SDA_DonationTracker
 		{
 			this.AssociatedControls.ForEach(control =>
 			{
-				if (control.InvokeRequired)
-					control.Invoke(new ControlCallback(this.DisableControl), control);
-				else
-					this.DisableControl(control);
+				control.InvokeEx(() => control.Enabled = false);
 			});
 		}
 
@@ -27,23 +24,8 @@ namespace SDA_DonationTracker
 		{
 			this.AssociatedControls.ForEach(control =>
 			{
-				if (control.InvokeRequired)
-					control.Invoke(new ControlCallback(this.EnableControl), control);
-				else
-					this.EnableControl(control);
+				control.InvokeEx(() => control.Enabled = true);
 			});
-		}
-
-		protected delegate void ControlCallback(Control c);
-
-		protected void DisableControl(Control c)
-		{
-			c.Enabled = false;
-		}
-
-		protected void EnableControl(Control c)
-		{
-			c.Enabled = true;
 		}
 	}
 }

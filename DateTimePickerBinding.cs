@@ -18,22 +18,12 @@ namespace SDA_DonationTracker
 
 		public void LoadField(string data)
 		{
-			if (Picker.InvokeRequired)
-				Picker.Invoke(new SetDateDelegate(InvokeSetDate),DateTimeFieldModel.ParseDate(data));
-			else
-				DateTimeFieldModel.ParseDate(data);
+			this.Picker.InvokeEx(() => this.Picker.Value = DateTimeFieldModel.ParseDate(data));
 		}
 
 		public string RetreiveField()
 		{
 			return DateTimeFieldModel.SerializeDate(Picker.Value);
-		}
-
-		private delegate void SetDateDelegate(DateTime t);
-
-		private void InvokeSetDate(DateTime t)
-		{
-			Picker.Value = t;
 		}
 	}
 }

@@ -1,12 +1,11 @@
 using System;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace SDA_DonationTracker
 {
 	// TODO: figure out a reasonable way to deal with tabbing:
-	// - when you open a tab for an already open entity it should navigate to it and refresh it
 	// - there should be a way to cut down on the repetitious code between different tab initializations
-	// - Tab name should change after saving a new donor/whatever entity tab
 	public partial class MainForm : Form
 	{
 		public TrackerContext TrackerContext = new TrackerContext();
@@ -21,14 +20,82 @@ namespace SDA_DonationTracker
 			this.TabControl.ConfirmOnClose = false;
 		}
 
+		public void SetStatusMessage(string message)
+		{
+			this.StatusBarLabel.Text = message;
+		}
+
+		public void RemoveTab(Control tabPanel)
+		{
+			TabPageEx result = this.FindTabOf(tabPanel);
+
+			if (result != null)
+			{
+				this.TabControl.InvokeEx(() => this.TabControl.TabPages.Remove(result));
+			}
+		}
+
+		public void SetTabName(Control tabPanel, string name)
+		{
+			TabPageEx result = this.FindTabOf(tabPanel);
+
+			if (result != null)
+			{
+				result.InvokeEx(() => result.Text = name);
+			}
+		}
+
+		private TabPageEx FindTabOf(Control tabPanel)
+		{
+			foreach (TabPageEx page in this.TabControl.TabPages)
+			{
+				if (page.Controls.Cast<Control>().Where(c => c == tabPanel).Any())
+				{
+					return page;
+				}
+			}
+
+			return null;
+		}
+
+		private TabPageEx FindTabOf(string model, int id)
+		{
+			foreach (TabPageEx page in this.TabControl.TabPages)
+			{
+				var controls = page.Controls.Cast<Control>().Where(c => c is EntityTab);
+
+				if (controls.Count() == 1)
+				{
+					var result = controls.Single() as EntityTab;
+
+					if (result.Id == id && result.Model == model)
+					{
+						return page;
+					}
+				}
+			}
+
+			return null;
+		}
+
 		public void NavigateTo(string model, int id)
 		{
-			if (model.Equals("donor", StringComparison.OrdinalIgnoreCase))
-				this.NavigateToDonor(id);
-			else if (model.Equals("donation", StringComparison.OrdinalIgnoreCase))
-				this.NavigateToDonation(id);
+			TabPageEx alreadyExists = this.FindTabOf(model, id);
+
+			// if a tab to the specified entity exists already, simply select that tab rather than create a new one
+			if (alreadyExists != null)
+			{
+				this.TabControl.SelectedTab = alreadyExists;
+			}
 			else
-				throw new Exception("Error, navigation to " + model + " not supported");
+			{
+				if (model.Equals("donor", StringComparison.OrdinalIgnoreCase))
+					this.NavigateToDonor(id);
+				else if (model.Equals("donation", StringComparison.OrdinalIgnoreCase))
+					this.NavigateToDonation(id);
+				else
+					throw new Exception("Error, navigation to " + model + " not supported");
+			}
 		}
 
 		public void NavigateToDonor(int id)
@@ -37,13 +104,12 @@ namespace SDA_DonationTracker
 			{
 				Id = id,
 				TrackerContext = this.TrackerContext,
-				Dock = DockStyle.Fill
+				Dock = DockStyle.Fill,
+				Owner = this,
 			};
 
 			TabPageEx donorTab = new TabPageEx()
 			{
-				Text = string.Format("Donor#{0}", id),
-				Name = string.Format("Donor#{0}", id),
 				Controls =
 				{
 					form
@@ -61,13 +127,12 @@ namespace SDA_DonationTracker
 			{
 				Id = id,
 				TrackerContext = this.TrackerContext,
-				Dock = DockStyle.Fill
+				Dock = DockStyle.Fill,
+				Owner = this,
 			};
 
 			TabPageEx donationTab = new TabPageEx()
 			{
-				Text = string.Format("Donation#{0}", id),
-				Name = string.Format("Donation#{0}", id),
 				Controls =
 				{
 					form
@@ -126,7 +191,7 @@ namespace SDA_DonationTracker
 					{
 						TrackerContext = this.TrackerContext,
 						Owner = this,
-						Dock = DockStyle.Fill
+						Dock = DockStyle.Fill,
 					}
 				}
 			};
@@ -171,7 +236,8 @@ namespace SDA_DonationTracker
 			{
 				Id = null,
 				TrackerContext = this.TrackerContext,
-				Dock = DockStyle.Fill
+				Dock = DockStyle.Fill,
+				Owner = this,
 			};
 
 			TabPageEx donorTab = new TabPageEx()

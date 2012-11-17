@@ -44,17 +44,7 @@ namespace SDA_DonationTracker
 					row[col] = fields.Value<string>(col);
 			}
 
-			if (this.DataGrid.InvokeRequired)
-				this.DataGrid.Invoke(new SetTableDataCallback(this.SetTableData));
-			else
-				this.SetTableData();
-		}
-
-		private delegate void SetTableDataCallback();
-
-		private void SetTableData()
-		{
-			this.DataGrid.DataSource = Table;
+			this.DataGrid.InvokeEx(() => this.DataGrid.DataSource = Table);
 		}
 	}
 }

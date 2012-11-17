@@ -26,18 +26,13 @@ namespace SDA_DonationTracker
 
 		public void LoadField(string data)
 		{
-			if (ComboBox.InvokeRequired)
-				ComboBox.Invoke(new SetSelectedValueDelegate(SetSelectedValue), data);
-			else
-				SetSelectedValue(data);
+			this.ComboBox.InvokeEx(() => this.SetSelectedValue(data));
 		}
 
 		public string RetreiveField()
 		{
 			return ComboBox.SelectedValue.ToString();
 		}
-
-		private delegate void SetSelectedValueDelegate(string data);
 
 		private void SetSelectedValue(string data)
 		{

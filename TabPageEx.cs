@@ -47,6 +47,18 @@ namespace SDA_DonationTracker
 			base.Dispose(disposing);
 		}
 
+		public override string Text
+		{
+			get
+			{
+				return base.Text + "               ";
+			}
+			set
+			{
+				base.Text = value;
+			}
+ }
+
 		#region Component Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
@@ -55,18 +67,6 @@ namespace SDA_DonationTracker
 		private void InitializeComponent()
 		{
 			this.components = new Container();
-		}
-
-		public override string Text
-		{
-			get
-			{
-				return base.Text + "                                                 ";
-			}
-			set
-			{
-				base.Text = value;
-			}
 		}
 
 		private ContextMenu ctxtMenu = null;

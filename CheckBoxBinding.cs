@@ -18,23 +18,12 @@ namespace SDA_DonationTracker
 
 		public void LoadField(string data)
 		{
-			if (CheckBox.InvokeRequired)
-				CheckBox.Invoke(new SetCheckboxDelegate(SetCheckboxValue), data);
-			else
-				SetCheckboxValue(data);
-
+			this.CheckBox.InvokeEx(() => this.CheckBox.Checked = bool.Parse(data));
 		}
 
 		public string RetreiveField()
 		{
 			return CheckBox.Checked.ToString();
-		}
-
-		private delegate void SetCheckboxDelegate(string data);
-
-		private void SetCheckboxValue(string data)
-		{
-			CheckBox.Checked = bool.Parse(data);
 		}
 	}
 }

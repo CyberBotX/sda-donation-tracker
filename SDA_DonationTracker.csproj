@@ -71,12 +71,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindingContext.cs" />
-    <Compile Include="BindingControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BindingControl.Designer.cs">
-      <DependentUpon>BindingControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="BooleanFieldModel.cs" />
     <Compile Include="CheckBoxBinding.cs" />
     <Compile Include="ComboBoxBinding.cs" />
@@ -89,6 +83,8 @@
     </Compile>
     <Compile Include="ContextStatus.cs" />
     <Compile Include="DeleteContext.cs" />
+    <Compile Include="EntityTab.cs" />
+    <Compile Include="InvokeHelper.cs" />
     <Compile Include="SaveContext.cs" />
     <Compile Include="DateTimeFieldModel.cs" />
     <Compile Include="DateTimePickerBinding.cs" />
@@ -171,9 +167,6 @@
     <Compile Include="WebClientEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <EmbeddedResource Include="BindingControl.resx">
-      <DependentUpon>BindingControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ConnectOpenIDManualForm.resx">
       <DependentUpon>ConnectOpenIDManualForm.cs</DependentUpon>
     </EmbeddedResource>

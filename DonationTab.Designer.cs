@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.DomainText = new System.Windows.Forms.TextBox();
@@ -44,32 +45,58 @@
 			this.CommentStateBox = new System.Windows.Forms.ComboBox();
 			this.CommentStateLabel = new System.Windows.Forms.Label();
 			this.CommentText = new System.Windows.Forms.TextBox();
+			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+			this.RefreshButton = new System.Windows.Forms.Button();
+			this.SaveButton = new System.Windows.Forms.Button();
+			this.DeleteButton = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+			this.splitContainer2.Panel1.SuspendLayout();
+			this.splitContainer2.Panel2.SuspendLayout();
+			this.splitContainer2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
+			this.tableLayoutPanel3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tableLayoutPanel1
 			// 
 			this.tableLayoutPanel1.ColumnCount = 1;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel1.Controls.Add(this.splitContainer1, 0, 0);
+			this.tableLayoutPanel1.Controls.Add(this.splitContainer2, 0, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 67.21763F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 32.78237F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(550, 363);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(631, 382);
 			this.tableLayoutPanel1.TabIndex = 0;
+			// 
+			// splitContainer2
+			// 
+			this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer2.Location = new System.Drawing.Point(3, 3);
+			this.splitContainer2.Name = "splitContainer2";
+			// 
+			// splitContainer2.Panel1
+			// 
+			this.splitContainer2.Panel1.Controls.Add(this.splitContainer1);
+			// 
+			// splitContainer2.Panel2
+			// 
+			this.splitContainer2.Panel2.Controls.Add(this.tableLayoutPanel3);
+			this.splitContainer2.Size = new System.Drawing.Size(625, 250);
+			this.splitContainer2.SplitterDistance = 457;
+			this.splitContainer2.TabIndex = 1;
 			// 
 			// splitContainer1
 			// 
 			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+			this.splitContainer1.Location = new System.Drawing.Point(0, 0);
 			this.splitContainer1.Name = "splitContainer1";
 			// 
 			// splitContainer1.Panel1
@@ -79,8 +106,8 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.CommentText);
-			this.splitContainer1.Size = new System.Drawing.Size(544, 237);
-			this.splitContainer1.SplitterDistance = 299;
+			this.splitContainer1.Size = new System.Drawing.Size(457, 250);
+			this.splitContainer1.SplitterDistance = 251;
 			this.splitContainer1.TabIndex = 0;
 			// 
 			// tableLayoutPanel2
@@ -110,7 +137,7 @@
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(299, 161);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(251, 161);
 			this.tableLayoutPanel2.TabIndex = 0;
 			// 
 			// DomainText
@@ -227,8 +254,56 @@
 			this.CommentText.Location = new System.Drawing.Point(0, 0);
 			this.CommentText.Multiline = true;
 			this.CommentText.Name = "CommentText";
-			this.CommentText.Size = new System.Drawing.Size(241, 237);
+			this.CommentText.Size = new System.Drawing.Size(202, 250);
 			this.CommentText.TabIndex = 0;
+			// 
+			// tableLayoutPanel3
+			// 
+			this.tableLayoutPanel3.ColumnCount = 1;
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.tableLayoutPanel3.Controls.Add(this.RefreshButton, 0, 0);
+			this.tableLayoutPanel3.Controls.Add(this.SaveButton, 0, 1);
+			this.tableLayoutPanel3.Controls.Add(this.DeleteButton, 0, 2);
+			this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+			this.tableLayoutPanel3.RowCount = 3;
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(164, 250);
+			this.tableLayoutPanel3.TabIndex = 0;
+			// 
+			// RefreshButton
+			// 
+			this.RefreshButton.Location = new System.Drawing.Point(3, 3);
+			this.RefreshButton.Name = "RefreshButton";
+			this.RefreshButton.Size = new System.Drawing.Size(75, 23);
+			this.RefreshButton.TabIndex = 0;
+			this.RefreshButton.Text = "Refresh";
+			this.RefreshButton.UseVisualStyleBackColor = true;
+			this.RefreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
+			// 
+			// SaveButton
+			// 
+			this.SaveButton.Location = new System.Drawing.Point(3, 32);
+			this.SaveButton.Name = "SaveButton";
+			this.SaveButton.Size = new System.Drawing.Size(75, 23);
+			this.SaveButton.TabIndex = 1;
+			this.SaveButton.Text = "Save";
+			this.SaveButton.UseVisualStyleBackColor = true;
+			this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+			// 
+			// DeleteButton
+			// 
+			this.DeleteButton.Location = new System.Drawing.Point(3, 61);
+			this.DeleteButton.Name = "DeleteButton";
+			this.DeleteButton.Size = new System.Drawing.Size(75, 23);
+			this.DeleteButton.TabIndex = 2;
+			this.DeleteButton.Text = "Delete";
+			this.DeleteButton.UseVisualStyleBackColor = true;
+			this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
 			// 
 			// DonationTab
 			// 
@@ -236,8 +311,12 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Name = "DonationTab";
-			this.Size = new System.Drawing.Size(550, 363);
+			this.Size = new System.Drawing.Size(631, 382);
 			this.tableLayoutPanel1.ResumeLayout(false);
+			this.splitContainer2.Panel1.ResumeLayout(false);
+			this.splitContainer2.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+			this.splitContainer2.ResumeLayout(false);
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.Panel2.PerformLayout();
@@ -245,6 +324,7 @@
 			this.splitContainer1.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel2.PerformLayout();
+			this.tableLayoutPanel3.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -267,5 +347,10 @@
 		private System.Windows.Forms.ComboBox CommentStateBox;
 		private System.Windows.Forms.Label CommentStateLabel;
 		private System.Windows.Forms.TextBox CommentText;
+		private System.Windows.Forms.SplitContainer splitContainer2;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+		private System.Windows.Forms.Button RefreshButton;
+		private System.Windows.Forms.Button SaveButton;
+		private System.Windows.Forms.Button DeleteButton;
 	}
 }

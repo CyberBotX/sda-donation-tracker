@@ -7,23 +7,21 @@ using System.Collections.Generic;
 namespace SDA_DonationTracker
 {
 	// TODO:
-	// - figure out a way to have the refresh/delete buttons disable if 
-	// id is null
-	// - Have this maintain a reference to the main form, and figure 
-	// out how to remove itself on delete
 	// - Figure out how to react to error responses, and forward them to the
 	// ui as appropriate (possibly using the response data to fill the invalid fields)
 	// - figure out a way to abstract the common refresh/save/delete buttons for
 	// different entity tabs
 	// - Figure out how to deal with the donations/prizes on a given donor
 	//   -> i.e. load them on refresh, and navigate-to/add buttons for those tables
-	public partial class DonorTab : UserControl
+	public partial class DonorTab : UserControl, EntityTab
 	{
-		public TrackerContext TrackerContext { get; set; }
+		public string Model { get { return "donor"; } }
 		public int? Id { get; set; }
 
+		public TrackerContext TrackerContext { get; set; }
+		public MainForm Owner { get; set; }
+
 		private FormBinding FormBinding;
-		private SearchContext CurrentDonorSearch;
 
 		public DonorTab()
 		{
@@ -35,56 +33,68 @@ namespace SDA_DonationTracker
 			this.FormBinding.AddBinding("lastname", this.LastNameText);
 			this.FormBinding.AddBinding("alias", this.AliasText);
 			this.FormBinding.AddBinding("email", this.EmailText);
+
+			this.FormBinding.AddAssociatedControl(this.RefreshButton);
+			this.FormBinding.AddAssociatedControl(this.SaveButton);
+			this.FormBinding.AddAssociatedControl(this.DeleteButton);
+
+			this.ResetControlButtonStates();
+		}
+
+		private void ResetControlButtonStates()
+		{
+			this.RefreshButton.InvokeEx(() => this.RefreshButton.Enabled = this.EnableRefresh());
+			this.SaveButton.InvokeEx(() => this.SaveButton.Enabled = this.EnableSave());
+			this.DeleteButton.InvokeEx(() => this.DeleteButton.Enabled = this.EnableDelete());
+		}
+
+		private void ResetName()
+		{
+			if (this.Id == null)
+				this.Owner.SetTabName(this, "New Donor");
+			else
+				this.Owner.SetTabName(this, "Donor#" + this.Id);
 		}
 
 		public void RefreshData()
 		{
+			if (!this.EnableRefresh())
+				return;
+
 			if (this.TrackerContext == null)
-			{
 				throw new Exception("Error, TrackerContext not set.");
-			}
 
-			if (this.Id == null)
-			{
-				throw new Exception("Error, Id not set.");
-			}
+			SearchContext donorSearch = this.TrackerContext.DeferredSearch("donor", Util.CreateSearchParams("id", this.Id.ToString()));
 
-			this.CurrentDonorSearch = this.TrackerContext.DeferredSearch("donor", Util.CreateSearchParams("id", this.Id.ToString()));
-
-			this.CurrentDonorSearch.OnComplete += results =>
+			donorSearch.OnComplete += results =>
 			{
 				this.FormBinding.LoadObject(results.First());
 				this.FormBinding.EnableControls();
+				this.ResetControlButtonStates();
+				this.ResetName();
+			};
+
+			donorSearch.OnError += () =>
+			{
+				this.FormBinding.EnableControls();
+				this.ResetControlButtonStates();
+
+				// TODO: put up some kind of message indicating an error
 			};
 
 			this.FormBinding.DisableControls();
-			this.CurrentDonorSearch.Begin();
-		}
-
-		private Dictionary<string, string> GetSaveParams()
-		{
-			Dictionary<string, string> result = new Dictionary<string, string>();
-
-			JObject data = this.FormBinding.SaveObject();
-
-			JObject fields = data.Value<JObject>("fields");
-
-			foreach (var field in this.FormBinding.GetBindingKeys())
-			{
-				result.Add(field, fields.Value<string>(field));
-			}
-
-			if (this.Id != null)
-			{
-				result.Add("id", this.Id.ToString());
-			}
-
-			return result;
+			donorSearch.Begin();
 		}
 
 		public void SaveData()
 		{
-			SaveContext saveContext = this.TrackerContext.DeferredSave("donor", GetSaveParams());
+			if (!this.EnableSave())
+				return;
+
+			if (this.TrackerContext == null)
+				throw new Exception("Error, TrackerContext not set.");
+
+			SaveContext saveContext = this.TrackerContext.DeferredSave("donor", this.GetSaveParams(this.FormBinding));
 
 			saveContext.OnComplete += (result) =>
 			{
@@ -92,6 +102,16 @@ namespace SDA_DonationTracker
 
 				this.FormBinding.LoadObject(result);
 				this.FormBinding.EnableControls();
+				this.ResetControlButtonStates();
+				this.ResetName();
+			};
+
+			saveContext.OnError += () =>
+			{
+				this.FormBinding.EnableControls();
+				this.ResetControlButtonStates();
+
+				// TODO: put up some kind of message indicating an error
 			};
 
 			this.FormBinding.DisableControls();
@@ -100,11 +120,25 @@ namespace SDA_DonationTracker
 
 		public void DeleteData()
 		{
+			if (!this.EnableDelete())
+				return;
+
+			if (this.TrackerContext == null)
+				throw new Exception("Error, TrackerContext not set.");
+
 			DeleteContext deleteContext = this.TrackerContext.DeferredDelete("donor", Id ?? 0);
 
 			deleteContext.OnComplete += (result) =>
 			{
+				Owner.RemoveTab(this);
+			};
 
+			deleteContext.OnError += () =>
+			{
+				this.FormBinding.EnableControls();
+				this.ResetControlButtonStates();
+
+				// TODO: put up some kind of message indicating an error
 			};
 
 			this.FormBinding.DisableControls();

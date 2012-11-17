@@ -34,10 +34,7 @@ namespace SDA_DonationTracker
 
 		public void LoadField(string data)
 		{
-			if (this.TextBox.InvokeRequired)
-				this.TextBox.Invoke(new SetTextCallback(SetText), data);
-			else
-				this.SetText(data);
+			this.TextBox.InvokeEx(() => this.SetText(data));
 		}
 
 		public string RetreiveField()
