@@ -44,13 +44,18 @@
 			this.ReadStateBox = new System.Windows.Forms.ComboBox();
 			this.CommentStateBox = new System.Windows.Forms.ComboBox();
 			this.CommentStateLabel = new System.Windows.Forms.Label();
+			this.DonorLabel = new System.Windows.Forms.Label();
+			this.DonorSelector = new SDA_DonationTracker.EntitySelector();
+			this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
 			this.CommentText = new System.Windows.Forms.TextBox();
+			this.InternalCommentText = new System.Windows.Forms.TextBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
 			this.RefreshButton = new System.Windows.Forms.Button();
 			this.SaveButton = new System.Windows.Forms.Button();
 			this.DeleteButton = new System.Windows.Forms.Button();
-			this.DonorLabel = new System.Windows.Forms.Label();
-			this.DonorSelector = new SDA_DonationTracker.EntitySelector();
+			this.BidsTable = new System.Windows.Forms.DataGridView();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
 			this.splitContainer2.Panel1.SuspendLayout();
@@ -61,7 +66,9 @@
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
+			this.tableLayoutPanel4.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.BidsTable)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tableLayoutPanel1
@@ -69,13 +76,14 @@
 			this.tableLayoutPanel1.ColumnCount = 1;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel1.Controls.Add(this.splitContainer2, 0, 0);
+			this.tableLayoutPanel1.Controls.Add(this.BidsTable, 0, 1);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 67.21763F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 32.78237F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(631, 382);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(434, 393);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// splitContainer2
@@ -91,8 +99,8 @@
 			// splitContainer2.Panel2
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.tableLayoutPanel3);
-			this.splitContainer2.Size = new System.Drawing.Size(625, 250);
-			this.splitContainer2.SplitterDistance = 457;
+			this.splitContainer2.Size = new System.Drawing.Size(428, 258);
+			this.splitContainer2.SplitterDistance = 375;
 			this.splitContainer2.TabIndex = 1;
 			// 
 			// splitContainer1
@@ -107,9 +115,9 @@
 			// 
 			// splitContainer1.Panel2
 			// 
-			this.splitContainer1.Panel2.Controls.Add(this.CommentText);
-			this.splitContainer1.Size = new System.Drawing.Size(457, 250);
-			this.splitContainer1.SplitterDistance = 251;
+			this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel4);
+			this.splitContainer1.Size = new System.Drawing.Size(375, 258);
+			this.splitContainer1.SplitterDistance = 241;
 			this.splitContainer1.TabIndex = 0;
 			// 
 			// tableLayoutPanel2
@@ -131,18 +139,20 @@
 			this.tableLayoutPanel2.Controls.Add(this.CommentStateLabel, 0, 5);
 			this.tableLayoutPanel2.Controls.Add(this.DonorLabel, 0, 6);
 			this.tableLayoutPanel2.Controls.Add(this.DonorSelector, 1, 6);
-			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
+			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-			this.tableLayoutPanel2.RowCount = 7;
+			this.tableLayoutPanel2.RowCount = 9;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(251, 204);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(241, 258);
 			this.tableLayoutPanel2.TabIndex = 0;
 			// 
 			// DomainText
@@ -253,14 +263,85 @@
 			this.CommentStateLabel.TabIndex = 11;
 			this.CommentStateLabel.Text = "Comment State:";
 			// 
+			// DonorLabel
+			// 
+			this.DonorLabel.AutoSize = true;
+			this.DonorLabel.Location = new System.Drawing.Point(3, 159);
+			this.DonorLabel.Name = "DonorLabel";
+			this.DonorLabel.Size = new System.Drawing.Size(39, 13);
+			this.DonorLabel.TabIndex = 12;
+			this.DonorLabel.Text = "Donor:";
+			// 
+			// DonorSelector
+			// 
+			this.DonorSelector.AutoSize = true;
+			this.DonorSelector.DisplayFields = null;
+			this.DonorSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DonorSelector.Location = new System.Drawing.Point(91, 162);
+			this.DonorSelector.Model = null;
+			this.DonorSelector.Name = "DonorSelector";
+			this.DonorSelector.Owner = null;
+			this.DonorSelector.Size = new System.Drawing.Size(205, 21);
+			this.DonorSelector.TabIndex = 13;
+			this.DonorSelector.TrackerContext = null;
+			// 
+			// tableLayoutPanel4
+			// 
+			this.tableLayoutPanel4.ColumnCount = 2;
+			this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.tableLayoutPanel4.Controls.Add(this.CommentText, 0, 1);
+			this.tableLayoutPanel4.Controls.Add(this.InternalCommentText, 0, 3);
+			this.tableLayoutPanel4.Controls.Add(this.label2, 0, 0);
+			this.tableLayoutPanel4.Controls.Add(this.label3, 0, 2);
+			this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+			this.tableLayoutPanel4.RowCount = 4;
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel4.Size = new System.Drawing.Size(130, 258);
+			this.tableLayoutPanel4.TabIndex = 0;
+			// 
 			// CommentText
 			// 
+			this.tableLayoutPanel4.SetColumnSpan(this.CommentText, 2);
 			this.CommentText.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.CommentText.Location = new System.Drawing.Point(0, 0);
+			this.CommentText.Location = new System.Drawing.Point(3, 16);
 			this.CommentText.Multiline = true;
 			this.CommentText.Name = "CommentText";
-			this.CommentText.Size = new System.Drawing.Size(202, 250);
+			this.CommentText.Size = new System.Drawing.Size(186, 118);
 			this.CommentText.TabIndex = 0;
+			// 
+			// InternalCommentText
+			// 
+			this.tableLayoutPanel4.SetColumnSpan(this.InternalCommentText, 2);
+			this.InternalCommentText.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.InternalCommentText.Location = new System.Drawing.Point(3, 153);
+			this.InternalCommentText.Multiline = true;
+			this.InternalCommentText.Name = "InternalCommentText";
+			this.InternalCommentText.Size = new System.Drawing.Size(186, 102);
+			this.InternalCommentText.TabIndex = 1;
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(3, 0);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(51, 13);
+			this.label2.TabIndex = 2;
+			this.label2.Text = "Comment";
+			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(3, 137);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(89, 13);
+			this.label3.TabIndex = 3;
+			this.label3.Text = "Internal Comment";
 			// 
 			// tableLayoutPanel3
 			// 
@@ -277,7 +358,7 @@
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel3.Size = new System.Drawing.Size(164, 250);
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(49, 258);
 			this.tableLayoutPanel3.TabIndex = 0;
 			// 
 			// RefreshButton
@@ -310,22 +391,14 @@
 			this.DeleteButton.UseVisualStyleBackColor = true;
 			this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
 			// 
-			// DonorLabel
+			// BidsTable
 			// 
-			this.DonorLabel.AutoSize = true;
-			this.DonorLabel.Location = new System.Drawing.Point(3, 159);
-			this.DonorLabel.Name = "DonorLabel";
-			this.DonorLabel.Size = new System.Drawing.Size(39, 13);
-			this.DonorLabel.TabIndex = 12;
-			this.DonorLabel.Text = "Donor:";
-			// 
-			// DonorSelector
-			// 
-			this.DonorSelector.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.DonorSelector.Location = new System.Drawing.Point(91, 162);
-			this.DonorSelector.Name = "DonorSelector";
-			this.DonorSelector.Size = new System.Drawing.Size(205, 39);
-			this.DonorSelector.TabIndex = 13;
+			this.BidsTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.BidsTable.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.BidsTable.Location = new System.Drawing.Point(3, 267);
+			this.BidsTable.Name = "BidsTable";
+			this.BidsTable.Size = new System.Drawing.Size(428, 123);
+			this.BidsTable.TabIndex = 2;
 			// 
 			// DonationTab
 			// 
@@ -333,7 +406,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Name = "DonationTab";
-			this.Size = new System.Drawing.Size(631, 382);
+			this.Size = new System.Drawing.Size(434, 393);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.splitContainer2.Panel1.ResumeLayout(false);
 			this.splitContainer2.Panel2.ResumeLayout(false);
@@ -341,12 +414,14 @@
 			this.splitContainer2.ResumeLayout(false);
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
-			this.splitContainer1.Panel2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel2.PerformLayout();
+			this.tableLayoutPanel4.ResumeLayout(false);
+			this.tableLayoutPanel4.PerformLayout();
 			this.tableLayoutPanel3.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.BidsTable)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -376,5 +451,10 @@
 		private System.Windows.Forms.Button DeleteButton;
 		private System.Windows.Forms.Label DonorLabel;
 		private EntitySelector DonorSelector;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+		private System.Windows.Forms.TextBox InternalCommentText;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.DataGridView BidsTable;
 	}
 }

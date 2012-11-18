@@ -93,6 +93,12 @@
     <Compile Include="EntityTab.cs" />
     <Compile Include="InvokeHelper.cs" />
     <Compile Include="JObjectEntityHelpers.cs" />
+    <Compile Include="PrizeTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PrizeTab.Designer.cs">
+      <DependentUpon>PrizeTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="SaveContext.cs" />
     <Compile Include="DateTimeFieldModel.cs" />
     <Compile Include="DateTimePickerBinding.cs" />
@@ -136,6 +142,12 @@
     </Compile>
     <Compile Include="SearchDonationPanel.Designer.cs">
       <DependentUpon>SearchDonationPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SearchPrizePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchPrizePanel.Designer.cs">
+      <DependentUpon>SearchPrizePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="SearchTab.cs">
       <SubType>UserControl</SubType>
@@ -189,6 +201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrizeTab.resx">
+      <DependentUpon>PrizeTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

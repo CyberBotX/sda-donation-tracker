@@ -49,6 +49,15 @@ namespace SDA_DonationTracker
 				{ "description", new StringFieldModel() },
 			});
 
+		public static readonly EntityModel PrizeModel = new EntityModel("prize",
+			new Dictionary<string, FieldModel>()
+			{
+				{ "event", new StringFieldModel() },
+				{ "name", new StringFieldModel() },
+				{ "description", new StringFieldModel() },
+				{ "provided", new StringFieldModel() },
+			});
+
 		private static Dictionary<string, EntityModel> ModelMap = new Dictionary<string, EntityModel>(StringComparer.OrdinalIgnoreCase)
 		{
 			{ "donor", DonorModel },

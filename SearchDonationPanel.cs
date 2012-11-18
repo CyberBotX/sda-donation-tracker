@@ -25,8 +25,8 @@ namespace SDA_DonationTracker
 				//"readstate",
 				"amount_lte",
 				"amount_gte",
-				//"time_lte",
-				//"time_gte",
+				"time_lte",
+				"time_gte",
 				"comment",
 			},
 			new string[]

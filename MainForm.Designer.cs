@@ -41,10 +41,11 @@ namespace SDA_DonationTracker
 			this.donationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.CreateMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CreateDonorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.donationToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TabControl = new SDA_DonationTracker.TabCtlEx();
-			this.donationToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.prizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.StatusBar.SuspendLayout();
 			this.MenuBar.SuspendLayout();
 			this.SuspendLayout();
@@ -125,7 +126,8 @@ namespace SDA_DonationTracker
 			// 
 			this.SearchMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.donorToolStripMenuItem,
-            this.donationToolStripMenuItem});
+            this.donationToolStripMenuItem,
+            this.prizeToolStripMenuItem});
 			this.SearchMenu.Name = "SearchMenu";
 			this.SearchMenu.Size = new System.Drawing.Size(54, 20);
 			this.SearchMenu.Text = "Search";
@@ -134,14 +136,14 @@ namespace SDA_DonationTracker
 			// donorToolStripMenuItem
 			// 
 			this.donorToolStripMenuItem.Name = "donorToolStripMenuItem";
-			this.donorToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.donorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.donorToolStripMenuItem.Text = "Donor";
 			this.donorToolStripMenuItem.Click += new System.EventHandler(this.donorToolStripMenuItem_Click);
 			// 
 			// donationToolStripMenuItem
 			// 
 			this.donationToolStripMenuItem.Name = "donationToolStripMenuItem";
-			this.donationToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.donationToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.donationToolStripMenuItem.Text = "Donation";
 			this.donationToolStripMenuItem.Click += new System.EventHandler(this.donationToolStripMenuItem_Click);
 			// 
@@ -158,9 +160,16 @@ namespace SDA_DonationTracker
 			// CreateDonorMenuItem
 			// 
 			this.CreateDonorMenuItem.Name = "CreateDonorMenuItem";
-			this.CreateDonorMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.CreateDonorMenuItem.Size = new System.Drawing.Size(123, 22);
 			this.CreateDonorMenuItem.Text = "Donor";
 			this.CreateDonorMenuItem.Click += new System.EventHandler(this.CreateDonorMenuItem_Click);
+			// 
+			// donationToolStripMenuItem1
+			// 
+			this.donationToolStripMenuItem1.Name = "donationToolStripMenuItem1";
+			this.donationToolStripMenuItem1.Size = new System.Drawing.Size(123, 22);
+			this.donationToolStripMenuItem1.Text = "Donation";
+			this.donationToolStripMenuItem1.Click += new System.EventHandler(this.donationToolStripMenuItem1_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -190,12 +199,12 @@ namespace SDA_DonationTracker
 			this.TabControl.TabIndex = 0;
 			this.TabControl.TabStop = false;
 			// 
-			// donationToolStripMenuItem1
+			// prizeToolStripMenuItem
 			// 
-			this.donationToolStripMenuItem1.Name = "donationToolStripMenuItem1";
-			this.donationToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-			this.donationToolStripMenuItem1.Text = "Donation";
-			this.donationToolStripMenuItem1.Click += new System.EventHandler(this.donationToolStripMenuItem1_Click);
+			this.prizeToolStripMenuItem.Name = "prizeToolStripMenuItem";
+			this.prizeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.prizeToolStripMenuItem.Text = "Prize";
+			this.prizeToolStripMenuItem.Click += new System.EventHandler(this.prizeToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -238,6 +247,7 @@ namespace SDA_DonationTracker
 		private System.Windows.Forms.ToolStripMenuItem CreateMenu;
 		private System.Windows.Forms.ToolStripMenuItem CreateDonorMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem donationToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem prizeToolStripMenuItem;
 	}
 }
 

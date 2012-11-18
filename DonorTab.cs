@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Data;
 
 namespace SDA_DonationTracker
 {
@@ -40,6 +41,8 @@ namespace SDA_DonationTracker
 			this.FormBinding.AddAssociatedControl(this.DeleteButton);
 
 			this.TableBinding = new TableBinding(this.DonationTable, "domain", "timereceived", "amount", "comment");
+			this.TableBinding.AddDefaultModelMapping("donation");
+			this.TableBinding.AddAssociatedControl(this.OpenDonationButton);
 
 			this.ResetControlButtonStates();
 		}
@@ -67,7 +70,7 @@ namespace SDA_DonationTracker
 			if (this.TrackerContext == null)
 				throw new Exception("Error, TrackerContext not set.");
 
-			SearchContext donorSearch = this.TrackerContext.DeferredSearch("donor", Util.CreateSearchParams("id", this.Id.ToString()));
+			SearchContext donorSearch = this.TrackerContext.DeferredSearch(this.Model, Util.CreateSearchParams("id", this.Id.ToString()));
 
 			donorSearch.OnComplete += (results) =>
 			{
@@ -114,7 +117,7 @@ namespace SDA_DonationTracker
 			if (this.TrackerContext == null)
 				throw new Exception("Error, TrackerContext not set.");
 
-			SaveContext saveContext = this.TrackerContext.DeferredSave("donor", this.GetSaveParams(this.FormBinding));
+			SaveContext saveContext = this.TrackerContext.DeferredSave(this.Model, this.GetSaveParams(this.FormBinding));
 
 			saveContext.OnComplete += (result) =>
 			{
@@ -148,7 +151,7 @@ namespace SDA_DonationTracker
 			if (this.TrackerContext == null)
 				throw new Exception("Error, TrackerContext not set.");
 
-			DeleteContext deleteContext = this.TrackerContext.DeferredDelete("donor", Id ?? 0);
+			DeleteContext deleteContext = this.TrackerContext.DeferredDelete(this.Model, Id ?? 0);
 
 			deleteContext.OnComplete += (result) =>
 			{
@@ -180,6 +183,18 @@ namespace SDA_DonationTracker
 		private void DeleteButton_Click(object sender, EventArgs e)
 		{
 			DeleteData();
+		}
+
+		private void OpenDonationButton_Click(object sender, EventArgs e)
+		{
+			foreach (DataGridViewRow row in this.DonationTable.SelectedRows)
+			{
+				DataRowView result = row.DataBoundItem as DataRowView;
+				int key = result[TableBinding.KeyColumn] as int? ?? 0;
+				string model = result[TableBinding.ModelColumn] as string;
+
+				this.Owner.NavigateTo(model, key);
+			}
 		}
 	}
 }

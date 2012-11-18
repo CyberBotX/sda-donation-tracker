@@ -6,25 +6,24 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
-	public partial class DonationTab : UserControl, EntityTab
+	public partial class PrizeTab : UserControl, EntityTab
 	{
+		public string Model { get { return "prize"; } }
 		public int? Id { get; set; }
-		public string Model { get { return "donation"; } }
 
-		public TrackerContext TrackerContext 
+		public TrackerContext TrackerContext
 		{
-			get 
-			{ 
+			get
+			{
 				return _TrackerContext;
 			}
 			set
 			{
 				_TrackerContext = value;
-				this.DonorSelector.Initialize(value, "donor", new string[] { "lastname", "firstname" });
+				this.WinnerSelector.Initialize(value, "donor", new string[] { "lastname", "firstname" });
 			}
 		}
 
@@ -37,30 +36,26 @@ namespace SDA_DonationTracker
 			set
 			{
 				_Owner = value;
-				this.DonorSelector.Owner = value;
+				this.WinnerSelector.Owner = value;
 			}
 		}
 
 		private TrackerContext _TrackerContext;
 		private MainForm _Owner;
-		private FormBinding FormBinding;
 
-		public DonationTab()
+		private FormBinding FormBinding;
+		private string PrizeName;
+
+		public PrizeTab()
 		{
 			InitializeComponent();
 
 			this.FormBinding = new FormBinding();
-
-			this.FormBinding.AddBinding("domain", this.DomainText);
-			this.FormBinding.AddBinding("timereceived", this.TimePicker);
-			this.FormBinding.AddMoneyBinding("amount", this.AmountText);
-			this.FormBinding.AddBinding("bidstate", this.BidStateBox, typeof(DonationBidState));
-			this.FormBinding.AddBinding("readstate", this.ReadStateBox, typeof(DonationReadState));
-			this.FormBinding.AddBinding("commentstate", this.CommentStateBox, typeof(DonationCommentState));
-			this.FormBinding.AddBinding("comment", this.CommentText);
-			this.FormBinding.AddBinding("modcomment", this.InternalCommentText);
-
-			this.FormBinding.AddBinding("donor", this.DonorSelector);
+			this.FormBinding.AddBinding("name", this.NameText);
+			this.FormBinding.AddBinding("provided", this.ProvidedByText);
+			this.FormBinding.AddBinding("image", this.ImageURLText);
+			this.FormBinding.AddBinding("description", this.DescriptionText);
+			this.FormBinding.AddBinding("winner", this.WinnerSelector);
 
 			this.FormBinding.AddAssociatedControl(this.RefreshButton);
 			this.FormBinding.AddAssociatedControl(this.SaveButton);
@@ -69,19 +64,19 @@ namespace SDA_DonationTracker
 			this.ResetControlButtonStates();
 		}
 
-		private void ResetName()
-		{
-			if (this.Id == null)
-				this.Owner.SetTabName(this, "New Donation");
-			else
-				this.Owner.SetTabName(this, "Donation#" + this.Id);
-		}
-
 		private void ResetControlButtonStates()
 		{
 			this.RefreshButton.InvokeEx(() => this.RefreshButton.Enabled = this.EnableRefresh());
 			this.SaveButton.InvokeEx(() => this.SaveButton.Enabled = this.EnableSave());
 			this.DeleteButton.InvokeEx(() => this.DeleteButton.Enabled = this.EnableDelete());
+		}
+
+		private void ResetName()
+		{
+			if (this.Id == null)
+				this.Owner.SetTabName(this, "New Prize");
+			else
+				this.Owner.SetTabName(this, this.PrizeName);
 		}
 
 		public void RefreshData()
@@ -92,17 +87,18 @@ namespace SDA_DonationTracker
 			if (this.TrackerContext == null)
 				throw new Exception("Error, TrackerContext not set.");
 
-			SearchContext donationSearch = this.TrackerContext.DeferredSearch(this.Model, Util.CreateSearchParams("id", this.Id.ToString()));
+			SearchContext prizeSearch = this.TrackerContext.DeferredSearch(this.Model, Util.CreateSearchParams("id", this.Id.ToString()));
 
-			donationSearch.OnComplete += results =>
+			prizeSearch.OnComplete += (results) =>
 			{
 				this.FormBinding.LoadObject(results.First());
+				this.PrizeName = this.NameText.Text;
 				this.FormBinding.EnableControls();
 				this.ResetControlButtonStates();
 				this.ResetName();
 			};
 
-			donationSearch.OnError += () =>
+			prizeSearch.OnError += () =>
 			{
 				this.FormBinding.EnableControls();
 				this.ResetControlButtonStates();
@@ -111,10 +107,10 @@ namespace SDA_DonationTracker
 			};
 
 			this.FormBinding.DisableControls();
-			donationSearch.Begin();
+			prizeSearch.Begin();
 		}
 
-		public void SaveData()
+		private void SaveData()
 		{
 			if (!this.EnableSave())
 				return;
@@ -122,15 +118,7 @@ namespace SDA_DonationTracker
 			if (this.TrackerContext == null)
 				throw new Exception("Error, TrackerContext not set.");
 
-			Dictionary<string,string> saveParams = this.GetSaveParams(this.FormBinding);
-
-			if (saveParams["domain"] == "")
-			{
-				saveParams["domain"] = DonationDomain.LOCAL.ToString();
-				//saveParams["domainId"] = saveParams["timereceived"] + DonationDomain.LOCAL.ToString();
-			}
-
-			SaveContext saveContext = this.TrackerContext.DeferredSave(this.Model, saveParams);
+			SaveContext saveContext = this.TrackerContext.DeferredSave(this.Model, this.GetSaveParams(this.FormBinding));
 
 			saveContext.OnComplete += (result) =>
 			{
@@ -154,7 +142,7 @@ namespace SDA_DonationTracker
 			saveContext.Begin();
 		}
 
-		public void DeleteData()
+		private void DeleteData()
 		{
 			if (!this.EnableDelete())
 				return;
@@ -162,7 +150,7 @@ namespace SDA_DonationTracker
 			if (this.TrackerContext == null)
 				throw new Exception("Error, TrackerContext not set.");
 
-			DeleteContext deleteContext = this.TrackerContext.DeferredDelete(this.Model, this.Id ?? 0);
+			DeleteContext deleteContext = this.TrackerContext.DeferredDelete(this.Model, Id ?? 0);
 
 			deleteContext.OnComplete += (result) =>
 			{

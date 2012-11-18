@@ -93,6 +93,8 @@ namespace SDA_DonationTracker
 					this.NavigateToDonor(id);
 				else if (model.Equals("donation", StringComparison.OrdinalIgnoreCase))
 					this.NavigateToDonation(id);
+				else if (model.Equals("prize", StringComparison.OrdinalIgnoreCase))
+					this.NavigateToPrize(id);
 				else
 					throw new Exception("Error, navigation to " + model + " not supported");
 			}
@@ -124,6 +126,29 @@ namespace SDA_DonationTracker
 		public void NavigateToDonation(int id)
 		{
 			DonationTab form = new DonationTab()
+			{
+				Id = id,
+				TrackerContext = this.TrackerContext,
+				Dock = DockStyle.Fill,
+				Owner = this,
+			};
+
+			TabPageEx donationTab = new TabPageEx()
+			{
+				Controls =
+				{
+					form
+				}
+			};
+
+			this.TabControl.TabPages.Add(donationTab);
+			this.TabControl.SelectTab(donationTab);
+			form.RefreshData();
+		}
+
+		public void NavigateToPrize(int id)
+		{
+			PrizeTab form = new PrizeTab()
 			{
 				Id = id,
 				TrackerContext = this.TrackerContext,
@@ -286,6 +311,25 @@ namespace SDA_DonationTracker
 		private void donationToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
 			this.CreateNewDonation();
+		}
+
+		private void prizeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			TabPageEx donorTab = new TabPageEx()
+			{
+				Text = "Prize Search",
+				Name = "Prize Search",
+				Controls =
+				{
+					new SearchTab(new SearchPrizePanel())
+					{
+						TrackerContext = this.TrackerContext,
+						Owner = this,
+						Dock = DockStyle.Fill
+					}
+				}
+			};
+			this.TabControl.TabPages.Add(donorTab);
 		}
 	}
 }
