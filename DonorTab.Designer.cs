@@ -39,14 +39,14 @@
 			this.AliasText = new System.Windows.Forms.TextBox();
 			this.EmailText = new System.Windows.Forms.TextBox();
 			this.EmailLabel = new System.Windows.Forms.Label();
-			this.dataGridView1 = new System.Windows.Forms.DataGridView();
+			this.DonationTable = new System.Windows.Forms.DataGridView();
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
 			this.SaveButton = new System.Windows.Forms.Button();
 			this.RefreshButton = new System.Windows.Forms.Button();
 			this.DeleteButton = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.DonationTable)).BeginInit();
 			this.tableLayoutPanel3.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -63,7 +63,7 @@
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.DonationTable, 0, 1);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -172,15 +172,19 @@
 			this.EmailLabel.TabIndex = 7;
 			this.EmailLabel.Text = "Email:";
 			// 
-			// dataGridView1
+			// DonationTable
 			// 
-			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.tableLayoutPanel1.SetColumnSpan(this.dataGridView1, 2);
-			this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dataGridView1.Location = new System.Drawing.Point(3, 142);
-			this.dataGridView1.Name = "dataGridView1";
-			this.dataGridView1.Size = new System.Drawing.Size(646, 111);
-			this.dataGridView1.TabIndex = 1;
+			this.DonationTable.AllowUserToAddRows = false;
+			this.DonationTable.AllowUserToDeleteRows = false;
+			this.DonationTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+			this.DonationTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.tableLayoutPanel1.SetColumnSpan(this.DonationTable, 2);
+			this.DonationTable.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DonationTable.Location = new System.Drawing.Point(3, 142);
+			this.DonationTable.Name = "DonationTable";
+			this.DonationTable.ReadOnly = true;
+			this.DonationTable.Size = new System.Drawing.Size(646, 111);
+			this.DonationTable.TabIndex = 1;
 			// 
 			// tableLayoutPanel3
 			// 
@@ -240,7 +244,7 @@
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel2.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.DonationTable)).EndInit();
 			this.tableLayoutPanel3.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -257,7 +261,7 @@
         private System.Windows.Forms.TextBox FirstNameText;
         private System.Windows.Forms.TextBox LastNameText;
         private System.Windows.Forms.TextBox AliasText;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView DonationTable;
         private System.Windows.Forms.TextBox EmailText;
         private System.Windows.Forms.Label EmailLabel;
 		private System.Windows.Forms.Button SaveButton;

@@ -158,6 +158,54 @@ namespace SDA_DonationTracker
 			this.CreateMenu.Visible = this.TrackerContext.SessionSet;
 		}
 
+		public void CreateNewDonor()
+		{
+			DonorTab form = new DonorTab()
+			{
+				Id = null,
+				TrackerContext = this.TrackerContext,
+				Dock = DockStyle.Fill,
+				Owner = this,
+			};
+
+			TabPageEx donorTab = new TabPageEx()
+			{
+				Text = string.Format("New Donor"),
+				Name = string.Format("New Donor"),
+				Controls =
+				{
+					form
+				}
+			};
+
+			this.TabControl.TabPages.Add(donorTab);
+			this.TabControl.SelectTab(donorTab);
+		}
+
+		public void CreateNewDonation()
+		{
+			DonationTab form = new DonationTab()
+			{
+				Id = null,
+				TrackerContext = this.TrackerContext,
+				Dock = DockStyle.Fill,
+				Owner = this,
+			};
+
+			TabPageEx donationTab = new TabPageEx()
+			{
+				Text = string.Format("New Donation"),
+				Name = string.Format("New Donation"),
+				Controls =
+				{
+					form
+				}
+			};
+
+			this.TabControl.TabPages.Add(donationTab);
+			this.TabControl.SelectTab(donationTab);
+		}
+
 		private void TrackertestManualMenuItem_Click(object sender, EventArgs e)
 		{
 			ConnectOpenIDManualForm form = new ConnectOpenIDManualForm()
@@ -232,26 +280,12 @@ namespace SDA_DonationTracker
 		
 		private void CreateDonorMenuItem_Click(object sender, EventArgs e)
 		{
-			DonorTab form = new DonorTab()
-			{
-				Id = null,
-				TrackerContext = this.TrackerContext,
-				Dock = DockStyle.Fill,
-				Owner = this,
-			};
+			this.CreateNewDonor();
+		}
 
-			TabPageEx donorTab = new TabPageEx()
-			{
-				Text = string.Format("New Donor"),
-				Name = string.Format("New Donor"),
-				Controls =
-				{
-					form
-				}
-			};
-
-			this.TabControl.TabPages.Add(donorTab);
-			this.TabControl.SelectTab(donorTab);
+		private void donationToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			this.CreateNewDonation();
 		}
 	}
 }

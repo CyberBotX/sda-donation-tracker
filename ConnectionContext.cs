@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Net;
+using System.IO;
 
 namespace SDA_DonationTracker
 {
@@ -88,7 +89,10 @@ namespace SDA_DonationTracker
 			catch (WebException e)
 			{
 				this.Status = ContextStatus.Error;
-				Console.WriteLine(e.Response.GetResponseStream());
+
+				StreamReader rdr = new StreamReader(e.Response.GetResponseStream());
+				string str = rdr.ReadToEnd();
+				Console.WriteLine(str[0]);
 				this.ErrorString = e.Message;
 				if (OnError != null)
 					OnError.Invoke();

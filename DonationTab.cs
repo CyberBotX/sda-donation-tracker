@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
@@ -14,9 +15,34 @@ namespace SDA_DonationTracker
 		public int? Id { get; set; }
 		public string Model { get { return "donation"; } }
 
-		public TrackerContext TrackerContext { get; set; }
-		public MainForm Owner { get; set; }
+		public TrackerContext TrackerContext 
+		{
+			get 
+			{ 
+				return _TrackerContext;
+			}
+			set
+			{
+				_TrackerContext = value;
+				this.DonorSelector.Initialize(value, "donor", new string[] { "lastname", "firstname" });
+			}
+		}
 
+		public MainForm Owner
+		{
+			get
+			{
+				return this._Owner;
+			}
+			set
+			{
+				_Owner = value;
+				this.DonorSelector.Owner = value;
+			}
+		}
+
+		private TrackerContext _TrackerContext;
+		private MainForm _Owner;
 		private FormBinding FormBinding;
 
 		public DonationTab()
@@ -32,6 +58,8 @@ namespace SDA_DonationTracker
 			this.FormBinding.AddBinding("readstate", this.ReadStateBox, typeof(DonationReadState));
 			this.FormBinding.AddBinding("commentstate", this.CommentStateBox, typeof(DonationCommentState));
 			this.FormBinding.AddBinding("comment", this.CommentText);
+
+			this.FormBinding.AddBinding("donor", this.DonorSelector);
 
 			this.FormBinding.AddAssociatedControl(this.RefreshButton);
 			this.FormBinding.AddAssociatedControl(this.SaveButton);
@@ -93,7 +121,15 @@ namespace SDA_DonationTracker
 			if (this.TrackerContext == null)
 				throw new Exception("Error, TrackerContext not set.");
 
-			SaveContext saveContext = this.TrackerContext.DeferredSave(this.Model, this.GetSaveParams(this.FormBinding));
+			Dictionary<string,string> saveParams = this.GetSaveParams(this.FormBinding);
+
+			if (saveParams["domain"] == "")
+			{
+				saveParams["domain"] = DonationDomain.LOCAL.ToString();
+				saveParams["domainId"] = saveParams["timereceived"] + DonationDomain.LOCAL.ToString();
+			}
+
+			SaveContext saveContext = this.TrackerContext.DeferredSave(this.Model, saveParams);
 
 			saveContext.OnComplete += (result) =>
 			{

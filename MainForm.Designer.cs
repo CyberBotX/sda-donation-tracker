@@ -39,11 +39,12 @@ namespace SDA_DonationTracker
 			this.SearchMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.donorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.donationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.CreateMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CreateDonorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TabControl = new SDA_DonationTracker.TabCtlEx();
-			this.CreateMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.CreateDonorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.donationToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.StatusBar.SuspendLayout();
 			this.MenuBar.SuspendLayout();
 			this.SuspendLayout();
@@ -144,6 +145,23 @@ namespace SDA_DonationTracker
 			this.donationToolStripMenuItem.Text = "Donation";
 			this.donationToolStripMenuItem.Click += new System.EventHandler(this.donationToolStripMenuItem_Click);
 			// 
+			// CreateMenu
+			// 
+			this.CreateMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CreateDonorMenuItem,
+            this.donationToolStripMenuItem1});
+			this.CreateMenu.Name = "CreateMenu";
+			this.CreateMenu.Size = new System.Drawing.Size(53, 20);
+			this.CreateMenu.Text = "Create";
+			this.CreateMenu.Visible = false;
+			// 
+			// CreateDonorMenuItem
+			// 
+			this.CreateDonorMenuItem.Name = "CreateDonorMenuItem";
+			this.CreateDonorMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.CreateDonorMenuItem.Text = "Donor";
+			this.CreateDonorMenuItem.Click += new System.EventHandler(this.CreateDonorMenuItem_Click);
+			// 
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -155,7 +173,7 @@ namespace SDA_DonationTracker
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.aboutToolStripMenuItem.Text = "&About...";
 			// 
 			// TabControl
@@ -172,21 +190,12 @@ namespace SDA_DonationTracker
 			this.TabControl.TabIndex = 0;
 			this.TabControl.TabStop = false;
 			// 
-			// CreateMenu
+			// donationToolStripMenuItem1
 			// 
-			this.CreateMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CreateDonorMenuItem});
-			this.CreateMenu.Name = "CreateMenu";
-			this.CreateMenu.Size = new System.Drawing.Size(53, 20);
-			this.CreateMenu.Text = "Create";
-			this.CreateMenu.Visible = false;
-			// 
-			// CreateDonorMenuItem
-			// 
-			this.CreateDonorMenuItem.Name = "CreateDonorMenuItem";
-			this.CreateDonorMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.CreateDonorMenuItem.Text = "Donor";
-			this.CreateDonorMenuItem.Click += new System.EventHandler(this.CreateDonorMenuItem_Click);
+			this.donationToolStripMenuItem1.Name = "donationToolStripMenuItem1";
+			this.donationToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.donationToolStripMenuItem1.Text = "Donation";
+			this.donationToolStripMenuItem1.Click += new System.EventHandler(this.donationToolStripMenuItem1_Click);
 			// 
 			// MainForm
 			// 
@@ -228,6 +237,7 @@ namespace SDA_DonationTracker
 		private System.Windows.Forms.ToolStripMenuItem donationToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem CreateMenu;
 		private System.Windows.Forms.ToolStripMenuItem CreateDonorMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem donationToolStripMenuItem1;
 	}
 }
 

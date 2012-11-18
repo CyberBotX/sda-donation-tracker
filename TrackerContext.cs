@@ -63,7 +63,7 @@ namespace SDA_DonationTracker
 			JArray results = this.RunSearch("event", Util.CreateSearchParams());
 
 			if (results.Count > 0)
-				this.EventId = results.Select(x => x.Value<int>("id")).Max();
+				this.EventId = results.Select(x => x.Value<int>("pk")).Max();
 		}
 
 		public void ClearSessionId()
@@ -87,7 +87,7 @@ namespace SDA_DonationTracker
 
 		private string StringParams(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
 		{
-			return string.Format("type={0}&{1}", model, string.Join("&", searchParams.Where(x => !string.IsNullOrEmpty(x.Value)).Select(x => x.Key.ToLower() + "=" + Uri.EscapeDataString(x.Value))));
+			return string.Format("type={0}&{1}", model, string.Join("&", searchParams.Where(x => !string.IsNullOrEmpty(x.Value)).Select(x => (x.Key.Equals("domainId") ? x.Key : x.Key.ToLower()) + "=" + Uri.EscapeDataString(x.Value))));
 		}
 
 		private WebClientEx CreateClient()
@@ -100,7 +100,7 @@ namespace SDA_DonationTracker
 		public JArray RunSearch(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
 		{
 			if (this.IsEventModel(model))
-				searchParams.Concat1(new KeyValuePair<string, string>("event", this.EventName));
+				searchParams = searchParams.Concat1(new KeyValuePair<string, string>("event", this.EventName));
 
 			if (!this.SessionSet)
 				throw new Exception("Error, session is not set.");
@@ -119,7 +119,7 @@ namespace SDA_DonationTracker
 		public JObject RunSave(string model, IEnumerable<KeyValuePair<string, string>> saveParams)
 		{
 			if (this.IsEventModel(model))
-				saveParams.Concat1(new KeyValuePair<string, string>("event", this.EventId.ToString()));
+				saveParams = saveParams.Concat1(new KeyValuePair<string, string>("event", this.EventId.ToString()));
 
 			if (!this.SessionSet)
 				throw new Exception("Error, session is not set.");

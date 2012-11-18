@@ -49,6 +49,8 @@
 			this.RefreshButton = new System.Windows.Forms.Button();
 			this.SaveButton = new System.Windows.Forms.Button();
 			this.DeleteButton = new System.Windows.Forms.Button();
+			this.DonorLabel = new System.Windows.Forms.Label();
+			this.DonorSelector = new SDA_DonationTracker.EntitySelector();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
 			this.splitContainer2.Panel1.SuspendLayout();
@@ -127,17 +129,20 @@
 			this.tableLayoutPanel2.Controls.Add(this.ReadStateBox, 1, 4);
 			this.tableLayoutPanel2.Controls.Add(this.CommentStateBox, 1, 5);
 			this.tableLayoutPanel2.Controls.Add(this.CommentStateLabel, 0, 5);
+			this.tableLayoutPanel2.Controls.Add(this.DonorLabel, 0, 6);
+			this.tableLayoutPanel2.Controls.Add(this.DonorSelector, 1, 6);
 			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-			this.tableLayoutPanel2.RowCount = 6;
+			this.tableLayoutPanel2.RowCount = 7;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(251, 161);
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(251, 204);
 			this.tableLayoutPanel2.TabIndex = 0;
 			// 
 			// DomainText
@@ -305,6 +310,23 @@
 			this.DeleteButton.UseVisualStyleBackColor = true;
 			this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
 			// 
+			// DonorLabel
+			// 
+			this.DonorLabel.AutoSize = true;
+			this.DonorLabel.Location = new System.Drawing.Point(3, 159);
+			this.DonorLabel.Name = "DonorLabel";
+			this.DonorLabel.Size = new System.Drawing.Size(39, 13);
+			this.DonorLabel.TabIndex = 12;
+			this.DonorLabel.Text = "Donor:";
+			// 
+			// DonorSelector
+			// 
+			this.DonorSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DonorSelector.Location = new System.Drawing.Point(91, 162);
+			this.DonorSelector.Name = "DonorSelector";
+			this.DonorSelector.Size = new System.Drawing.Size(205, 39);
+			this.DonorSelector.TabIndex = 13;
+			// 
 			// DonationTab
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -352,5 +374,7 @@
 		private System.Windows.Forms.Button RefreshButton;
 		private System.Windows.Forms.Button SaveButton;
 		private System.Windows.Forms.Button DeleteButton;
+		private System.Windows.Forms.Label DonorLabel;
+		private EntitySelector DonorSelector;
 	}
 }

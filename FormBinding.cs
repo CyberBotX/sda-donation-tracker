@@ -37,6 +37,11 @@ namespace SDA_DonationTracker
 			this.AddBinding(fieldName, new ComboBoxBinding(box, enumType));
 		}
 
+		public void AddBinding(string fieldName, EntitySelector selector)
+		{
+			this.AddBinding(fieldName, new EntitySelectorBinding(selector));
+		}
+
 		public void AddBinding(string fieldName, FieldBinding binding)
 		{
 			this.AddAssociatedControl(binding.BoundControl);

@@ -22,6 +22,7 @@ namespace SDA_DonationTracker
 		public MainForm Owner { get; set; }
 
 		private FormBinding FormBinding;
+		private TableBinding TableBinding;
 
 		public DonorTab()
 		{
@@ -37,6 +38,8 @@ namespace SDA_DonationTracker
 			this.FormBinding.AddAssociatedControl(this.RefreshButton);
 			this.FormBinding.AddAssociatedControl(this.SaveButton);
 			this.FormBinding.AddAssociatedControl(this.DeleteButton);
+
+			this.TableBinding = new TableBinding(this.DonationTable, "domain", "timereceived", "amount", "comment");
 
 			this.ResetControlButtonStates();
 		}
@@ -66,7 +69,7 @@ namespace SDA_DonationTracker
 
 			SearchContext donorSearch = this.TrackerContext.DeferredSearch("donor", Util.CreateSearchParams("id", this.Id.ToString()));
 
-			donorSearch.OnComplete += results =>
+			donorSearch.OnComplete += (results) =>
 			{
 				this.FormBinding.LoadObject(results.First());
 				this.FormBinding.EnableControls();
@@ -82,8 +85,25 @@ namespace SDA_DonationTracker
 				// TODO: put up some kind of message indicating an error
 			};
 
+			SearchContext donationSearch = this.TrackerContext.DeferredSearch("donation", Util.CreateSearchParams("donor", this.Id.ToString()));
+
+			donationSearch.OnComplete += (results) =>
+			{
+				this.TableBinding.LoadArray(results);
+				this.TableBinding.EnableControls();
+			};
+
+			donationSearch.OnError += () =>
+			{
+				this.TableBinding.EnableControls();
+			};
+
+			// TODO read in the donations and table them
+
 			this.FormBinding.DisableControls();
 			donorSearch.Begin();
+			this.TableBinding.DisableControls();
+			donationSearch.Begin();
 		}
 
 		public void SaveData()
@@ -102,6 +122,7 @@ namespace SDA_DonationTracker
 
 				this.FormBinding.LoadObject(result);
 				this.FormBinding.EnableControls();
+				this.TableBinding.EnableControls();
 				this.ResetControlButtonStates();
 				this.ResetName();
 			};
@@ -115,6 +136,7 @@ namespace SDA_DonationTracker
 			};
 
 			this.FormBinding.DisableControls();
+			this.TableBinding.DisableControls();
 			saveContext.Begin();
 		}
 

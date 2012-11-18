@@ -23,7 +23,8 @@ namespace SDA_DonationTracker
 
 		public string RetreiveField()
 		{
-			return DateTimeFieldModel.SerializeDate(Picker.Value);
+			DateTime t = Picker.Value;
+			return string.Format("{0}-{1}-{2} {3}:{4}:{5}", t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second);
 		}
 	}
 }
