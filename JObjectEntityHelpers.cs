@@ -52,7 +52,8 @@ namespace SDA_DonationTracker
 		public static string GetField(this JObject self, string name)
 		{
 			JObject fields = self.GetFieldsObject();
-			return fields.Value<string>(name);
+			string result = fields.Value<string>(name);
+			return result == "None" ? null : result;
 		}
 
 		public static void SetField(this JObject self, string name, string value)

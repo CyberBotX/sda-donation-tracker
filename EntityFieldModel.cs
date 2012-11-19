@@ -16,7 +16,7 @@ namespace SDA_DonationTracker
 			get;
 			private set;
 		}
-		public EntityModel GetModel
+		public EntityModel Model
 		{
 			get
 			{

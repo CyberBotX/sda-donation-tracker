@@ -20,7 +20,6 @@ namespace SDA_DonationTracker
 			DonationModels.DonationModel, 
 			new string[] 
 			{ 
-				"domain",
 				"amount_lte",
 				"amount_gte",
 				"time_lte",

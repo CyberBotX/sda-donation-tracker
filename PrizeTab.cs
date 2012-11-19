@@ -23,7 +23,7 @@ namespace SDA_DonationTracker
 			set
 			{
 				_TrackerContext = value;
-				this.WinnerSelector.Initialize(value, "donor", new string[] { "lastname", "firstname" });
+				this.WinnerSelector.Initialize(value, "donor");
 			}
 		}
 

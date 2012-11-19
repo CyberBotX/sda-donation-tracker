@@ -19,8 +19,7 @@ namespace SDA_DonationTracker
 	{
 		private static readonly TimeSpan RefreshOffset = new TimeSpan(0, 0, 30);
 
-		public string Model { get; set; }
-		public IEnumerable<string> DisplayFields { get; set; }
+		public EntityModel Model { get; set; }
 		public TrackerContext TrackerContext { get; set; }
 
 		public MainForm Owner
@@ -36,6 +35,7 @@ namespace SDA_DonationTracker
 			}
 		}
 
+		private TrackerContext _Context;
 		private MainForm _Owner;
 		private int? SelectedId;
 		private DateTime LastRefreshedAutoComplete;
@@ -43,6 +43,7 @@ namespace SDA_DonationTracker
 		private Dictionary<string, int> LabelMapping;
 		private BindingContext Binding;
 		private Mutex ModificationMutex;
+		private SearchContext Searcher;
 
 		public EntitySelector()
 		{
@@ -65,7 +66,7 @@ namespace SDA_DonationTracker
 			this.SelectedId = null;
 		}
 
-		public void Initialize(TrackerContext context, string model, params string[] displayFields)
+		public void Initialize(TrackerContext context, string model)
 		{
 			try
 			{
@@ -74,10 +75,10 @@ namespace SDA_DonationTracker
 				this.LabelMapping.Clear();
 
 				this.TrackerContext = context;
-				this.Model = model;
-				this.DisplayFields = displayFields.ToArray();
+				this.Model = DonationModels.GetModel(model);
 				this.SelectedId = null;
 				this.NameText.InvokeEx(() => this.NameText.Text = "");
+				this.RefreshAutoComplete();
 			}
 			finally
 			{
@@ -90,10 +91,17 @@ namespace SDA_DonationTracker
 			this.OpenButton.InvokeEx(() => this.OpenButton.Visible = (this.Owner != null && this.SelectedId != null));
 		}
 
+		public override Size GetPreferredSize(Size proposedSize)
+		{
+			Size textSize = this.NameText.GetPreferredSize(proposedSize);
+			Size buttonSize = this.ButtonsPanel.GetPreferredSize(proposedSize);
+			return new Size(textSize.Width + buttonSize.Width, Math.Max(textSize.Height, buttonSize.Height));
+		}
+
 		public void SetSelectedId(int? target)
 		{
-			this.RefreshAutoComplete(true);
 			this.SelectedId = target;
+			this.RefreshAutoComplete();
 
 			bool found = false;
 			string selectionText = null;
@@ -116,15 +124,14 @@ namespace SDA_DonationTracker
 				this.ModificationMutex.ReleaseMutex();
 			}
 
-			if (!found)
-			{
-				this.SelectedId = null;
-				this.NameText.InvokeEx(() => this.NameText.Text = "");
-				this.SetOpenButtonState();
-			}
-			else
+			if (found)
 			{
 				this.NameText.InvokeEx(() => this.NameText.Text = selectionText);
+				this.SetOpenButtonState();
+			}
+			else if (this.SelectedId == null)
+			{
+				this.NameText.InvokeEx(() => this.NameText.Text = "");
 				this.SetOpenButtonState();
 			}
 		}
@@ -136,13 +143,13 @@ namespace SDA_DonationTracker
 
 		private void RefreshAutoComplete(bool waitOnResults = false)
 		{
-			if (this.LastRefreshedAutoComplete.Add(RefreshOffset) < DateTime.Now)
+			if (this.LastRefreshedAutoComplete.Add(RefreshOffset) < DateTime.Now && (this.Searcher == null || !this.Searcher.Busy))
 			{
 				this.LastRefreshedAutoComplete = DateTime.Now;
 
-				SearchContext context = this.TrackerContext.DeferredSearch(this.Model, new Dictionary<string, string>());
+				this.Searcher = this.TrackerContext.DeferredSearch(this.Model.ModelName, new Dictionary<string, string>());
 
-				context.OnComplete += (results) =>
+				this.Searcher.OnComplete += (results) =>
 				{
 					try
 					{
@@ -153,29 +160,35 @@ namespace SDA_DonationTracker
 
 						foreach (JObject obj in results.Values<JObject>())
 						{
-							JObject fieldsObj = obj.Value<JObject>("fields");
-
-							int id = obj.Value<int>("pk");
-							string label = new JObjectSimpleDisplay(obj, DisplayFields.ToArray()).Display;
+							int id = obj.GetId() ?? 0;
+							string label = this.Model.DisplayConverter(obj);
 
 							this.LabelMapping[label] = id;
 							this.AutoCompleteCollection.Add(label);
 						}
 
 						this.NameText.InvokeEx(() => this.NameText.AutoCompleteCustomSource = this.AutoCompleteCollection);
+						//this.NameText.InvokeEx(() => this.NameText.Enabled = true);
 					}
 					finally
 					{
 						this.ModificationMutex.ReleaseMutex();
 					}
 
-					this.SetSelectionFromText();
+					if (this.SelectedId != null && string.IsNullOrEmpty(this.NameText.Text))
+					{
+						this.SetSelectedId(this.SelectedId);
+					}
+					else if (!string.IsNullOrEmpty(this.NameText.Text))
+					{
+						this.SetSelectionFromText();
+					}
 				};
 
-				context.Begin();
+				this.Searcher.Begin();
 
 				// busy wait 
-				while (waitOnResults && context.Busy)
+				while (waitOnResults && this.Searcher.Busy)
 					;
 			}
 		}
@@ -200,11 +213,11 @@ namespace SDA_DonationTracker
 					this.SetOpenButtonState();
 				}
 				// Not sure if this is a good idea or not..., what happens when you try to save w/ a null donor for example?
-				//else
-				//{
-				//	this.SelectedId = null;
-				//	this.SetOpenButtonState();
-				//}
+				else if (string.IsNullOrEmpty(this.NameText.Text))
+				{
+					this.SelectedId = null;
+					this.SetOpenButtonState();
+				}
 			}
 			finally
 			{
@@ -216,7 +229,7 @@ namespace SDA_DonationTracker
 		{
 			if (this.Owner != null && this.SelectedId != null)
 			{
-				this.Owner.NavigateTo(this.Model, this.SelectedId ?? 0);
+				this.Owner.NavigateTo(this.Model.ModelName, this.SelectedId ?? 0);
 			}
 		}
 	}

@@ -134,7 +134,7 @@
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 49.48454F));
-			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.51546F));
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel3.Size = new System.Drawing.Size(556, 209);
@@ -189,7 +189,7 @@
 			this.DescriptionText.Location = new System.Drawing.Point(76, 81);
 			this.DescriptionText.Multiline = true;
 			this.DescriptionText.Name = "DescriptionText";
-			this.DescriptionText.Size = new System.Drawing.Size(477, 35);
+			this.DescriptionText.Size = new System.Drawing.Size(477, 36);
 			this.DescriptionText.TabIndex = 3;
 			// 
 			// ImageURLLabel
@@ -212,20 +212,19 @@
 			// WinnerSelector
 			// 
 			this.WinnerSelector.AutoSize = true;
-			this.WinnerSelector.DisplayFields = null;
 			this.WinnerSelector.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.WinnerSelector.Location = new System.Drawing.Point(76, 122);
+			this.WinnerSelector.Location = new System.Drawing.Point(76, 123);
 			this.WinnerSelector.Model = null;
 			this.WinnerSelector.Name = "WinnerSelector";
 			this.WinnerSelector.Owner = null;
-			this.WinnerSelector.Size = new System.Drawing.Size(477, 22);
+			this.WinnerSelector.Size = new System.Drawing.Size(477, 20);
 			this.WinnerSelector.TabIndex = 8;
 			this.WinnerSelector.TrackerContext = null;
 			// 
 			// WinnerLabel
 			// 
 			this.WinnerLabel.AutoSize = true;
-			this.WinnerLabel.Location = new System.Drawing.Point(3, 119);
+			this.WinnerLabel.Location = new System.Drawing.Point(3, 120);
 			this.WinnerLabel.Name = "WinnerLabel";
 			this.WinnerLabel.Size = new System.Drawing.Size(44, 13);
 			this.WinnerLabel.TabIndex = 9;

@@ -24,7 +24,7 @@ namespace SDA_DonationTracker
 			set
 			{
 				_TrackerContext = value;
-				this.DonorSelector.Initialize(value, "donor", new string[] { "lastname", "firstname" });
+				this.DonorSelector.Initialize(value, "donor");
 			}
 		}
 

@@ -35,7 +35,8 @@ namespace SDA_DonationTracker
 
 			foreach (var field in this.SearchFields)
 			{
-				FieldBinding binding = FieldBindingHelper.CreateBindingField(model.GetField(field));
+				SearchFieldModel searchField = this.Model.GetSearchField(field);
+				FieldBinding binding = FieldBindingHelper.CreateBindingField(searchField.FieldType, fieldName: field);
 				this.FormBinding.AddBinding(field, binding);
 				++this.SearchParamsTable.RowCount;
 				this.SearchParamsTable.Controls.Add(

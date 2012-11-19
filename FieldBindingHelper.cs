@@ -8,7 +8,7 @@ namespace SDA_DonationTracker
 {
 	public static class FieldBindingHelper
 	{
-		public static FieldBinding CreateBindingField(FieldModel fieldModel)
+		public static FieldBinding CreateBindingField(FieldModel fieldModel, string fieldName = null, TrackerContext context = null, MainForm owner = null)
 		{
 			if (fieldModel is StringFieldModel)
 			{
@@ -16,16 +16,23 @@ namespace SDA_DonationTracker
 			}
 			else if (fieldModel is DateTimeFieldModel)
 			{
-				return new DateTimePickerBinding(
-					new DateTimePicker()
-					{
-						MinDate = DateTime.MinValue,
-						MaxDate = DateTime.MaxValue,
-						CustomFormat = "yyyy/MM/dd HH:mm:ss",
-						Format = DateTimePickerFormat.Custom,
-						ShowUpDown = true,
-					}
-				);
+				DateTimePicker picker = new DateTimePicker()
+				{
+					CustomFormat = "yyyy/MM/dd HH:mm:ss",
+					Format = DateTimePickerFormat.Custom,
+					ShowUpDown = true,
+				};
+
+				if (fieldName != null && fieldName.Contains("_gte"))
+				{
+					picker.Value = picker.MinDate;
+				}
+				else
+				{
+					picker.Value = DateTime.Now;
+				}
+
+				return new DateTimePickerBinding(picker);
 			}
 			else if (fieldModel is BooleanFieldModel)
 			{
@@ -38,6 +45,22 @@ namespace SDA_DonationTracker
 			else if (fieldModel is MoneyFieldModel)
 			{
 				return new MoneyFieldBinding(new TextBox());
+			}
+			else if (fieldModel is EntityFieldModel)
+			{
+				EntitySelector selector = new EntitySelector()
+				{
+					Owner = owner,
+				};
+				if (context != null)
+				{
+					selector.Initialize(context, (fieldModel as EntityFieldModel).ModelName);
+				}
+				else
+				{
+					throw new Exception("Error, trying to create entity selector without context");
+				}
+				return new EntitySelectorBinding(selector);
 			}
 			else
 			{

@@ -38,7 +38,7 @@ namespace SDA_DonationTracker
 				{ "alias", new SearchFieldModel(new StringFieldModel(), "alias") },
 				{ "email", new SearchFieldModel(new StringFieldModel(), "email") },
 			},
-			JObjectEntityHelpers.GetDonationDisplayName);
+			JObjectEntityHelpers.GetDonorDisplayName);
 
 		public static readonly EntityModel DonationModel = new EntityModel("donation",
 			new Dictionary<string, FieldModel>()
