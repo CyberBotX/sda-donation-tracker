@@ -10,7 +10,7 @@ namespace SDA_DonationTracker
 	{
 		private List<Control> SelectionControls = new List<Control>();
 		private ListBox List;
-		private Func<JToken, T> Builder;
+		private Func<JObject, T> Builder;
 		public string DisplayProperty
 		{
 			get
@@ -32,7 +32,7 @@ namespace SDA_DonationTracker
 			}
 		}
 
-		public ListBinding(ListBox list, Func<JToken, T> builder, string displayProperty)
+		public ListBinding(ListBox list, Func<JObject, T> builder, string displayProperty)
 		{
 			this.Builder = builder;
 			this.List = list;
@@ -71,7 +71,7 @@ namespace SDA_DonationTracker
 
 		public void LoadArray(JArray results)
 		{
-			T[] newContent = results.Select(this.Builder).ToArray();
+			T[] newContent = results.Select(x => this.Builder(x as JObject)).ToArray();
 
 			this.List.InvokeEx(() => this.List.DataSource = newContent);
 		}

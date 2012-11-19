@@ -16,25 +16,16 @@ namespace SDA_DonationTracker
 	public partial class SearchDonationPanel : SearchPanel
 	{
 		public SearchDonationPanel()
-			: base(DonationModels.DonationModel, 
+			: base(
+			DonationModels.DonationModel, 
 			new string[] 
 			{ 
 				"domain",
-				//"bidstate",
-				//"commentstate",
-				//"readstate",
 				"amount_lte",
 				"amount_gte",
 				"time_lte",
 				"time_gte",
 				"comment",
-			},
-			new string[]
-			{
-				"donor__firstname",
-				"donor__lastname",
-				"amount",
-				"domain",
 			})
 		{
 			InitializeComponent();

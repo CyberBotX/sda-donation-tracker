@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
@@ -9,7 +10,7 @@ namespace SDA_DonationTracker
 	{
 		private MainForm MainForm;
 		private TrackerContext Context;
-		private ListBinding<JTokenListElement> ListBinding;
+		private ListBinding<JObjectSimpleDisplay> ListBinding;
 		private SearchContext CurrentSearch;
 
 		public SelectEventDialog(MainForm mainForm, TrackerContext context)
@@ -18,7 +19,7 @@ namespace SDA_DonationTracker
 
 			this.MainForm = mainForm;
 
-			this.ListBinding = new ListBinding<JTokenListElement>(this.EventsList, x => new JTokenListElement(x, "name"), "Display");
+			this.ListBinding = new ListBinding<JObjectSimpleDisplay>(this.EventsList, x => new JObjectSimpleDisplay(x as JObject, "name"), "Display");
 			this.ListBinding.AddSelectionControl(this.SelectButton);
 
 			this.Context = context;
@@ -37,7 +38,7 @@ namespace SDA_DonationTracker
 
 		private void SelectButton_Click(object sender, EventArgs e)
 		{
-			JTokenListElement[] results = this.ListBinding.GetSelections().ToArray();
+			JObjectSimpleDisplay[] results = this.ListBinding.GetSelections().ToArray();
 
 			if (results.Length == 1)
 			{

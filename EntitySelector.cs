@@ -156,7 +156,7 @@ namespace SDA_DonationTracker
 							JObject fieldsObj = obj.Value<JObject>("fields");
 
 							int id = obj.Value<int>("pk");
-							string label = new JTokenListElement(obj, DisplayFields.ToArray()).Display;
+							string label = new JObjectSimpleDisplay(obj, DisplayFields.ToArray()).Display;
 
 							this.LabelMapping[label] = id;
 							this.AutoCompleteCollection.Add(label);

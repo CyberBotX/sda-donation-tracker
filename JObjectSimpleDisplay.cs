@@ -3,16 +3,16 @@ using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
-	public class JTokenListElement
+	public class JObjectSimpleDisplay : JObjectEntityDisplay
 	{
-		public JToken Source
+		public JObject Source
 		{
 			get;
 			private set;
 		}
 		private string[] Fields;
 
-		public JTokenListElement(JToken source, params string[] fields)
+		public JObjectSimpleDisplay(JObject source, params string[] fields)
 		{
 			this.Source = source;
 			this.Fields = fields;

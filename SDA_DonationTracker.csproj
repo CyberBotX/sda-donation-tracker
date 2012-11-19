@@ -92,7 +92,9 @@
     <Compile Include="EntitySelectorBinding.cs" />
     <Compile Include="EntityTab.cs" />
     <Compile Include="InvokeHelper.cs" />
+    <Compile Include="JObjectEntityDisplay.cs" />
     <Compile Include="JObjectEntityHelpers.cs" />
+    <Compile Include="JObjectFuncDisplay.cs" />
     <Compile Include="PrizeTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -123,7 +125,7 @@
     <Compile Include="FieldBinding.cs" />
     <Compile Include="FieldBindingHelper.cs" />
     <Compile Include="FieldModel.cs" />
-    <Compile Include="JTokenListElement.cs" />
+    <Compile Include="JObjectSimpleDisplay.cs" />
     <Compile Include="ListBinding.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

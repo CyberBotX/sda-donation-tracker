@@ -15,25 +15,23 @@ namespace SDA_DonationTracker
 		public TrackerContext TrackerContext { get; set; }
 		public event Action<IEnumerable<int>> OnSelect;
 
-		private ListBinding<JTokenListElement> TableBinding;
+		private ListBinding<JObjectEntityDisplay> TableBinding;
 		private SearchContext CurrentSearch;
 		public EntityModel Model { get; private set; }
 		private FormBinding FormBinding;
 		private string[] SearchFields;
-		private string[] LabelFields;
 
-		public SearchPanel(EntityModel model, IEnumerable<string> searchFields, IEnumerable<string> labelFields)
+		public SearchPanel(EntityModel model, IEnumerable<string> searchFields)
 		{
 			InitializeComponent();
 
 			this.Model = model;
 			this.SearchFields = searchFields.ToArray();
-			this.LabelFields = labelFields.ToArray();
 
 			int currentFieldIndex = 2;
 
 			this.FormBinding = new FormBinding();
-			this.TableBinding = new ListBinding<JTokenListElement>(this.ResultsList, x => new JTokenListElement(x, this.LabelFields), "Display");
+			this.TableBinding = new ListBinding<JObjectEntityDisplay>(this.ResultsList, x => new JObjectFuncDisplay(x, model.DisplayConverter), "Display");
 
 			foreach (var field in this.SearchFields)
 			{

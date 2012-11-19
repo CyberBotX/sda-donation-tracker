@@ -63,7 +63,7 @@ namespace SDA_DonationTracker
 			JArray results = this.RunSearch("event", Util.CreateSearchParams());
 
 			if (results.Count > 0)
-				this.EventId = results.Select(x => x.Value<int>("pk")).Max();
+				this.EventId = results.Select(x => (x as JObject)).Aggregate((x, y) => DateTimeFieldModel.ParseDate(x.GetField("date")).CompareTo(DateTimeFieldModel.ParseDate(x.GetField("date"))) >= 0 ? x : y).GetId() ?? 0;
 		}
 
 		public void ClearSessionId()
