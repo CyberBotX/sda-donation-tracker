@@ -76,7 +76,7 @@ namespace SDA_DonationTracker
 			{
 				{ "event", new EntityFieldModel("event") },
 				{ "name", new StringFieldModel() },
-				{ "runner", new StringFieldModel() },
+				{ "runners", new StringFieldModel() },
 				{ "description", new StringFieldModel() },
 				{ "starttime", new DateTimeFieldModel() },
 				{ "endtime", new DateTimeFieldModel() },

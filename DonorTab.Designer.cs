@@ -89,7 +89,7 @@
 			this.tableLayoutPanel2.Controls.Add(this.EmailText, 1, 3);
 			this.tableLayoutPanel2.Controls.Add(this.EmailLabel, 0, 3);
 			this.tableLayoutPanel2.Controls.Add(this.OpenDonationButton, 1, 5);
-			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
+			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 6;

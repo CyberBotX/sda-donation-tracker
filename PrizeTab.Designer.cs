@@ -42,8 +42,12 @@
 			this.DescriptionText = new System.Windows.Forms.TextBox();
 			this.ImageURLLabel = new System.Windows.Forms.Label();
 			this.ImageURLText = new System.Windows.Forms.TextBox();
-			this.WinnerSelector = new SDA_DonationTracker.EntitySelector();
 			this.WinnerLabel = new System.Windows.Forms.Label();
+			this.StartGameLabel = new System.Windows.Forms.Label();
+			this.EndGameLabel = new System.Windows.Forms.Label();
+			this.WinnerSelector = new SDA_DonationTracker.EntitySelector();
+			this.StartGameSelector = new SDA_DonationTracker.EntitySelector();
+			this.EndGameSelector = new SDA_DonationTracker.EntitySelector();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
@@ -126,16 +130,22 @@
 			this.tableLayoutPanel3.Controls.Add(this.ImageURLText, 1, 1);
 			this.tableLayoutPanel3.Controls.Add(this.WinnerSelector, 1, 4);
 			this.tableLayoutPanel3.Controls.Add(this.WinnerLabel, 0, 4);
+			this.tableLayoutPanel3.Controls.Add(this.StartGameLabel, 0, 5);
+			this.tableLayoutPanel3.Controls.Add(this.EndGameLabel, 0, 6);
+			this.tableLayoutPanel3.Controls.Add(this.StartGameSelector, 1, 5);
+			this.tableLayoutPanel3.Controls.Add(this.EndGameSelector, 1, 6);
 			this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
 			this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-			this.tableLayoutPanel3.RowCount = 7;
+			this.tableLayoutPanel3.RowCount = 9;
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 49.48454F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.51546F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel3.Size = new System.Drawing.Size(556, 209);
 			this.tableLayoutPanel3.TabIndex = 1;
@@ -189,7 +199,7 @@
 			this.DescriptionText.Location = new System.Drawing.Point(76, 81);
 			this.DescriptionText.Multiline = true;
 			this.DescriptionText.Name = "DescriptionText";
-			this.DescriptionText.Size = new System.Drawing.Size(477, 36);
+			this.DescriptionText.Size = new System.Drawing.Size(477, 16);
 			this.DescriptionText.TabIndex = 3;
 			// 
 			// ImageURLLabel
@@ -209,11 +219,38 @@
 			this.ImageURLText.Size = new System.Drawing.Size(477, 20);
 			this.ImageURLText.TabIndex = 7;
 			// 
+			// WinnerLabel
+			// 
+			this.WinnerLabel.AutoSize = true;
+			this.WinnerLabel.Location = new System.Drawing.Point(3, 100);
+			this.WinnerLabel.Name = "WinnerLabel";
+			this.WinnerLabel.Size = new System.Drawing.Size(44, 13);
+			this.WinnerLabel.TabIndex = 9;
+			this.WinnerLabel.Text = "Winner:";
+			// 
+			// StartGameLabel
+			// 
+			this.StartGameLabel.AutoSize = true;
+			this.StartGameLabel.Location = new System.Drawing.Point(3, 126);
+			this.StartGameLabel.Name = "StartGameLabel";
+			this.StartGameLabel.Size = new System.Drawing.Size(63, 13);
+			this.StartGameLabel.TabIndex = 10;
+			this.StartGameLabel.Text = "Start Game:";
+			// 
+			// EndGameLabel
+			// 
+			this.EndGameLabel.AutoSize = true;
+			this.EndGameLabel.Location = new System.Drawing.Point(3, 146);
+			this.EndGameLabel.Name = "EndGameLabel";
+			this.EndGameLabel.Size = new System.Drawing.Size(60, 13);
+			this.EndGameLabel.TabIndex = 11;
+			this.EndGameLabel.Text = "End Game:";
+			// 
 			// WinnerSelector
 			// 
 			this.WinnerSelector.AutoSize = true;
 			this.WinnerSelector.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.WinnerSelector.Location = new System.Drawing.Point(76, 123);
+			this.WinnerSelector.Location = new System.Drawing.Point(76, 103);
 			this.WinnerSelector.Model = null;
 			this.WinnerSelector.Name = "WinnerSelector";
 			this.WinnerSelector.Owner = null;
@@ -221,14 +258,29 @@
 			this.WinnerSelector.TabIndex = 8;
 			this.WinnerSelector.TrackerContext = null;
 			// 
-			// WinnerLabel
+			// StartGameSelector
 			// 
-			this.WinnerLabel.AutoSize = true;
-			this.WinnerLabel.Location = new System.Drawing.Point(3, 120);
-			this.WinnerLabel.Name = "WinnerLabel";
-			this.WinnerLabel.Size = new System.Drawing.Size(44, 13);
-			this.WinnerLabel.TabIndex = 9;
-			this.WinnerLabel.Text = "Winner:";
+			this.StartGameSelector.AutoSize = true;
+			this.StartGameSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.StartGameSelector.Location = new System.Drawing.Point(76, 129);
+			this.StartGameSelector.Model = null;
+			this.StartGameSelector.Name = "StartGameSelector";
+			this.StartGameSelector.Owner = null;
+			this.StartGameSelector.Size = new System.Drawing.Size(477, 14);
+			this.StartGameSelector.TabIndex = 12;
+			this.StartGameSelector.TrackerContext = null;
+			// 
+			// EndGameSelector
+			// 
+			this.EndGameSelector.AutoSize = true;
+			this.EndGameSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.EndGameSelector.Location = new System.Drawing.Point(76, 149);
+			this.EndGameSelector.Model = null;
+			this.EndGameSelector.Name = "EndGameSelector";
+			this.EndGameSelector.Owner = null;
+			this.EndGameSelector.Size = new System.Drawing.Size(477, 14);
+			this.EndGameSelector.TabIndex = 13;
+			this.EndGameSelector.TrackerContext = null;
 			// 
 			// PrizeTab
 			// 
@@ -263,5 +315,9 @@
 		private System.Windows.Forms.TextBox ImageURLText;
 		private EntitySelector WinnerSelector;
 		private System.Windows.Forms.Label WinnerLabel;
+		private System.Windows.Forms.Label StartGameLabel;
+		private System.Windows.Forms.Label EndGameLabel;
+		private EntitySelector StartGameSelector;
+		private EntitySelector EndGameSelector;
 	}
 }

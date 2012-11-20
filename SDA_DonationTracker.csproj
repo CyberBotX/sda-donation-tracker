@@ -101,6 +101,12 @@
     <Compile Include="PrizeTab.Designer.cs">
       <DependentUpon>PrizeTab.cs</DependentUpon>
     </Compile>
+    <Compile Include="RunTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunTab.Designer.cs">
+      <DependentUpon>RunTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="SaveContext.cs" />
     <Compile Include="DateTimeFieldModel.cs" />
     <Compile Include="DateTimePickerBinding.cs" />
@@ -150,6 +156,12 @@
     </Compile>
     <Compile Include="SearchPrizePanel.Designer.cs">
       <DependentUpon>SearchPrizePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SearchRunPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchRunPanel.Designer.cs">
+      <DependentUpon>SearchRunPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="SearchTab.cs">
       <SubType>UserControl</SubType>
@@ -217,8 +229,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RunTab.resx">
+      <DependentUpon>RunTab.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SearchDonationPanel.resx">
       <DependentUpon>SearchDonationPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchRunPanel.resx">
+      <DependentUpon>SearchRunPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SearchTab.resx">
       <DependentUpon>SearchTab.cs</DependentUpon>

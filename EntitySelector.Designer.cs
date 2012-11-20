@@ -52,8 +52,8 @@
 			// SplitContainer.Panel2
 			// 
 			this.SplitContainer.Panel2.Controls.Add(this.ButtonsPanel);
-			this.SplitContainer.Size = new System.Drawing.Size(349, 29);
-			this.SplitContainer.SplitterDistance = 188;
+			this.SplitContainer.Size = new System.Drawing.Size(265, 38);
+			this.SplitContainer.SplitterDistance = 165;
 			this.SplitContainer.TabIndex = 0;
 			// 
 			// NameText
@@ -63,7 +63,7 @@
 			this.NameText.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.NameText.Location = new System.Drawing.Point(0, 0);
 			this.NameText.Name = "NameText";
-			this.NameText.Size = new System.Drawing.Size(188, 20);
+			this.NameText.Size = new System.Drawing.Size(165, 20);
 			this.NameText.TabIndex = 0;
 			// 
 			// ButtonsPanel
@@ -73,11 +73,12 @@
 			this.ButtonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ButtonsPanel.Location = new System.Drawing.Point(0, 0);
 			this.ButtonsPanel.Name = "ButtonsPanel";
-			this.ButtonsPanel.Size = new System.Drawing.Size(157, 29);
+			this.ButtonsPanel.Size = new System.Drawing.Size(96, 38);
 			this.ButtonsPanel.TabIndex = 0;
 			// 
 			// OpenButton
 			// 
+			this.OpenButton.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.OpenButton.Location = new System.Drawing.Point(3, 3);
 			this.OpenButton.Name = "OpenButton";
 			this.OpenButton.Size = new System.Drawing.Size(75, 23);
@@ -93,7 +94,7 @@
 			this.AutoSize = true;
 			this.Controls.Add(this.SplitContainer);
 			this.Name = "EntitySelector";
-			this.Size = new System.Drawing.Size(349, 29);
+			this.Size = new System.Drawing.Size(265, 38);
 			this.SplitContainer.Panel1.ResumeLayout(false);
 			this.SplitContainer.Panel1.PerformLayout();
 			this.SplitContainer.Panel2.ResumeLayout(false);

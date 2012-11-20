@@ -21,6 +21,8 @@ namespace SDA_DonationTracker
 					CustomFormat = "yyyy/MM/dd HH:mm:ss",
 					Format = DateTimePickerFormat.Custom,
 					ShowUpDown = true,
+					ShowCheckBox = true,
+					Checked = false,
 				};
 
 				if (fieldName != null && fieldName.Contains("_gte"))

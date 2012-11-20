@@ -95,12 +95,14 @@ namespace SDA_DonationTracker
 					this.NavigateToDonation(id);
 				else if (model.Equals("prize", StringComparison.OrdinalIgnoreCase))
 					this.NavigateToPrize(id);
+				else if (model.Equals("run", StringComparison.OrdinalIgnoreCase))
+					this.NavigateToRun(id);
 				else
 					throw new Exception("Error, navigation to " + model + " not supported");
 			}
 		}
 
-		public void NavigateToDonor(int id)
+		private void NavigateToDonor(int id)
 		{
 			DonorTab form = new DonorTab()
 			{
@@ -123,7 +125,7 @@ namespace SDA_DonationTracker
 			form.RefreshData();
 		}
 
-		public void NavigateToDonation(int id)
+		private void NavigateToDonation(int id)
 		{
 			DonationTab form = new DonationTab()
 			{
@@ -146,7 +148,7 @@ namespace SDA_DonationTracker
 			form.RefreshData();
 		}
 
-		public void NavigateToPrize(int id)
+		private void NavigateToPrize(int id)
 		{
 			PrizeTab form = new PrizeTab()
 			{
@@ -156,7 +158,7 @@ namespace SDA_DonationTracker
 				Owner = this,
 			};
 
-			TabPageEx donationTab = new TabPageEx()
+			TabPageEx prizeTab = new TabPageEx()
 			{
 				Controls =
 				{
@@ -164,8 +166,31 @@ namespace SDA_DonationTracker
 				}
 			};
 
-			this.TabControl.TabPages.Add(donationTab);
-			this.TabControl.SelectTab(donationTab);
+			this.TabControl.TabPages.Add(prizeTab);
+			this.TabControl.SelectTab(prizeTab);
+			form.RefreshData();
+		}
+
+		private void NavigateToRun(int id)
+		{
+			RunTab form = new RunTab()
+			{
+				Id = id,
+				TrackerContext = this.TrackerContext,
+				Dock = DockStyle.Fill,
+				Owner = this,
+			};
+
+			TabPageEx runTab = new TabPageEx()
+			{
+				Controls =
+				{
+					form
+				}
+			};
+
+			this.TabControl.TabPages.Add(runTab);
+			this.TabControl.SelectTab(runTab);
 			form.RefreshData();
 		}
 
@@ -195,8 +220,7 @@ namespace SDA_DonationTracker
 
 			TabPageEx donorTab = new TabPageEx()
 			{
-				Text = string.Format("New Donor"),
-				Name = string.Format("New Donor"),
+				Text = "New Donor",
 				Controls =
 				{
 					form
@@ -219,8 +243,7 @@ namespace SDA_DonationTracker
 
 			TabPageEx donationTab = new TabPageEx()
 			{
-				Text = string.Format("New Donation"),
-				Name = string.Format("New Donation"),
+				Text = "New Donation",
 				Controls =
 				{
 					form
@@ -229,6 +252,52 @@ namespace SDA_DonationTracker
 
 			this.TabControl.TabPages.Add(donationTab);
 			this.TabControl.SelectTab(donationTab);
+		}
+
+		public void CreateNewPrize()
+		{
+			PrizeTab form = new PrizeTab()
+			{
+				Id = null,
+				TrackerContext = this.TrackerContext,
+				Dock = DockStyle.Fill,
+				Owner = this,
+			};
+
+			TabPageEx prizeTab = new TabPageEx()
+			{
+				Text = "New Prize",
+				Controls =
+				{
+					form
+				}
+			};
+
+			this.TabControl.TabPages.Add(prizeTab);
+			this.TabControl.SelectTab(prizeTab);
+		}
+
+		public void CreateNewRun()
+		{
+			RunTab form = new RunTab()
+			{
+				Id = null,
+				TrackerContext = this.TrackerContext,
+				Dock = DockStyle.Fill,
+				Owner = this,
+			};
+
+			TabPageEx runTab = new TabPageEx()
+			{
+				Text = "New Run",
+				Controls =
+				{
+					form
+				}
+			};
+
+			this.TabControl.TabPages.Add(runTab);
+			this.TabControl.SelectTab(runTab);
 		}
 
 		private void TrackertestManualMenuItem_Click(object sender, EventArgs e)
@@ -257,7 +326,6 @@ namespace SDA_DonationTracker
 			TabPageEx donorTab = new TabPageEx()
 			{
 				Text = "Donor Search",
-				Name = "Donor Search",
 				Controls =
 				{
 					new SearchTab(new SearchDonorPanel())
@@ -269,6 +337,7 @@ namespace SDA_DonationTracker
 				}
 			};
 			this.TabControl.TabPages.Add(donorTab);
+			this.TabControl.SelectTab(donorTab);
 		}
 
 		private void OnTabClose(object sender, CloseEventArgs e)
@@ -286,10 +355,9 @@ namespace SDA_DonationTracker
 
 		private void donationToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			TabPageEx donorTab = new TabPageEx()
+			TabPageEx donationTab = new TabPageEx()
 			{
 				Text = "Donation Search",
-				Name = "Donation Search",
 				Controls =
 				{
 					new SearchTab(new SearchDonationPanel())
@@ -300,7 +368,8 @@ namespace SDA_DonationTracker
 					}
 				}
 			};
-			this.TabControl.TabPages.Add(donorTab);
+			this.TabControl.TabPages.Add(donationTab);
+			this.TabControl.SelectTab(donationTab);
 		}
 		
 		private void CreateDonorMenuItem_Click(object sender, EventArgs e)
@@ -315,10 +384,9 @@ namespace SDA_DonationTracker
 
 		private void prizeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			TabPageEx donorTab = new TabPageEx()
+			TabPageEx prizeTab = new TabPageEx()
 			{
 				Text = "Prize Search",
-				Name = "Prize Search",
 				Controls =
 				{
 					new SearchTab(new SearchPrizePanel())
@@ -329,7 +397,37 @@ namespace SDA_DonationTracker
 					}
 				}
 			};
-			this.TabControl.TabPages.Add(donorTab);
+			this.TabControl.TabPages.Add(prizeTab);
+			this.TabControl.SelectTab(prizeTab);
+		}
+
+		private void runToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			TabPageEx runTab = new TabPageEx()
+			{
+				Text = "Run Search",
+				Controls =
+				{
+					new SearchTab(new SearchRunPanel())
+					{
+						TrackerContext = this.TrackerContext,
+						Owner = this,
+						Dock = DockStyle.Fill
+					}
+				}
+			};
+			this.TabControl.TabPages.Add(runTab);
+			this.TabControl.SelectTab(runTab);
+		}
+
+		private void prizeToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			this.CreateNewPrize();
+		}
+
+		private void runToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			this.CreateNewRun();
 		}
 	}
 }

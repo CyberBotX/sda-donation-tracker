@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
@@ -24,6 +25,8 @@ namespace SDA_DonationTracker
 			{
 				_TrackerContext = value;
 				this.WinnerSelector.Initialize(value, "donor");
+				this.StartGameSelector.Initialize(value, "run");
+				this.EndGameSelector.Initialize(value, "run");
 			}
 		}
 
@@ -37,6 +40,8 @@ namespace SDA_DonationTracker
 			{
 				_Owner = value;
 				this.WinnerSelector.Owner = value;
+				this.StartGameSelector.Owner = value;
+				this.EndGameSelector.Owner = value;
 			}
 		}
 
@@ -44,7 +49,7 @@ namespace SDA_DonationTracker
 		private MainForm _Owner;
 
 		private FormBinding FormBinding;
-		private string PrizeName;
+		private JObject CachedObject;
 
 		public PrizeTab()
 		{
@@ -56,6 +61,8 @@ namespace SDA_DonationTracker
 			this.FormBinding.AddBinding("image", this.ImageURLText);
 			this.FormBinding.AddBinding("description", this.DescriptionText);
 			this.FormBinding.AddBinding("winner", this.WinnerSelector);
+			this.FormBinding.AddBinding("startgame", this.StartGameSelector);
+			this.FormBinding.AddBinding("endgame", this.EndGameSelector);
 
 			this.FormBinding.AddAssociatedControl(this.RefreshButton);
 			this.FormBinding.AddAssociatedControl(this.SaveButton);
@@ -73,10 +80,10 @@ namespace SDA_DonationTracker
 
 		private void ResetName()
 		{
-			if (this.Id == null)
+			if (this.CachedObject == null)
 				this.Owner.SetTabName(this, "New Prize");
 			else
-				this.Owner.SetTabName(this, this.PrizeName);
+				this.Owner.SetTabName(this, this.CachedObject.GetPrizeDisplayName());
 		}
 
 		public void RefreshData()
@@ -91,8 +98,8 @@ namespace SDA_DonationTracker
 
 			prizeSearch.OnComplete += (results) =>
 			{
-				this.FormBinding.LoadObject(results.First());
-				this.PrizeName = this.NameText.Text;
+				this.CachedObject = results.First() as JObject;
+				this.FormBinding.LoadObject(this.CachedObject);
 				this.FormBinding.EnableControls();
 				this.ResetControlButtonStates();
 				this.ResetName();
@@ -123,8 +130,8 @@ namespace SDA_DonationTracker
 			saveContext.OnComplete += (result) =>
 			{
 				this.Id = result.Value<int>("pk");
-
-				this.FormBinding.LoadObject(result);
+				this.CachedObject = result;
+				this.FormBinding.LoadObject(this.CachedObject);
 				this.FormBinding.EnableControls();
 				this.ResetControlButtonStates();
 				this.ResetName();

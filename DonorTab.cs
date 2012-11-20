@@ -24,6 +24,7 @@ namespace SDA_DonationTracker
 
 		private FormBinding FormBinding;
 		private TableBinding TableBinding;
+		private JObject CachedObject;
 
 		public DonorTab()
 		{
@@ -56,10 +57,10 @@ namespace SDA_DonationTracker
 
 		private void ResetName()
 		{
-			if (this.Id == null)
+			if (this.CachedObject == null)
 				this.Owner.SetTabName(this, "New Donor");
 			else
-				this.Owner.SetTabName(this, "Donor#" + this.Id);
+				this.Owner.SetTabName(this, this.CachedObject.GetDonorDisplayName());
 		}
 
 		public void RefreshData()
@@ -74,7 +75,8 @@ namespace SDA_DonationTracker
 
 			donorSearch.OnComplete += (results) =>
 			{
-				this.FormBinding.LoadObject(results.First());
+				this.CachedObject = results.First() as JObject;
+				this.FormBinding.LoadObject(this.CachedObject);
 				this.FormBinding.EnableControls();
 				this.ResetControlButtonStates();
 				this.ResetName();
@@ -122,8 +124,8 @@ namespace SDA_DonationTracker
 			saveContext.OnComplete += (result) =>
 			{
 				this.Id = result.Value<int>("pk");
-
-				this.FormBinding.LoadObject(result);
+				this.CachedObject = result;
+				this.FormBinding.LoadObject(this.CachedObject);
 				this.FormBinding.EnableControls();
 				this.TableBinding.EnableControls();
 				this.ResetControlButtonStates();
