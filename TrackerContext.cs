@@ -121,6 +121,9 @@ namespace SDA_DonationTracker
 			if (this.IsEventModel(model))
 				saveParams = saveParams.Concat1(new KeyValuePair<string, string>("event", this.EventId.ToString()));
 
+			if (string.Equals(model, "run", StringComparison.OrdinalIgnoreCase))
+				saveParams = saveParams.Concat1(new KeyValuePair<string, string>("sortkey", "0"));
+
 			if (!this.SessionSet)
 				throw new Exception("Error, session is not set.");
 
