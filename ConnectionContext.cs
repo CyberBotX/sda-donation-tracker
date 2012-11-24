@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Net;
 using System.IO;
+using System.Net;
+using System.Threading;
 
 namespace SDA_DonationTracker
 {
@@ -58,7 +55,7 @@ namespace SDA_DonationTracker
 		{
 			this.Context = context;
 			this.Status = ContextStatus.Idle;
-			this.Connection = new Thread(Impl_Run);
+			this.Connection = new Thread(this.Impl_Run);
 		}
 
 		protected abstract void Run();
@@ -67,8 +64,8 @@ namespace SDA_DonationTracker
 		{
 			this.Status = ContextStatus.Pending;
 			this.ErrorString = null;
-			if (OnBegin != null)
-				OnBegin.Invoke();
+			if (this.OnBegin != null)
+				this.OnBegin.Invoke();
 			this.Connection.Start();
 		}
 
@@ -83,7 +80,7 @@ namespace SDA_DonationTracker
 			try
 			{
 				this.Status = ContextStatus.Started;
-				Run();
+				this.Run();
 				this.Status = ContextStatus.Completed;
 			}
 			catch (WebException e)
@@ -94,15 +91,15 @@ namespace SDA_DonationTracker
 				string str = rdr.ReadToEnd();
 				Console.WriteLine(str[0]);
 				this.ErrorString = e.Message;
-				if (OnError != null)
-					OnError.Invoke();
+				if (this.OnError != null)
+					this.OnError.Invoke();
 			}
 			catch (Exception e)
 			{
 				this.Status = ContextStatus.Error;
 				this.ErrorString = e.Message;
-				if (OnError != null)
-					OnError.Invoke();
+				if (this.OnError != null)
+					this.OnError.Invoke();
 			}
 		}
 	}

@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace SDA_DonationTracker
 {
 	public class CheckBoxBinding : FieldBinding
 	{
 		public CheckBox CheckBox { get; private set; }
-		public Control BoundControl { get { return CheckBox; } }
+		public Control BoundControl { get { return this.CheckBox; } }
 
 		public CheckBoxBinding(CheckBox checkBox)
 		{
-			CheckBox = checkBox;
+			this.CheckBox = checkBox;
 		}
 
 		public void LoadField(string data)
@@ -23,7 +19,7 @@ namespace SDA_DonationTracker
 
 		public string RetreiveField()
 		{
-			return CheckBox.Checked.ToString();
+			return this.CheckBox.Checked.ToString();
 		}
 	}
 }

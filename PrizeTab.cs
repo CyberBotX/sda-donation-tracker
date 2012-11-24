@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 
@@ -19,11 +14,11 @@ namespace SDA_DonationTracker
 		{
 			get
 			{
-				return _TrackerContext;
+				return this._TrackerContext;
 			}
 			set
 			{
-				_TrackerContext = value;
+				this._TrackerContext = value;
 				this.WinnerSelector.Initialize(value, "donor");
 				this.StartGameSelector.Initialize(value, "run");
 				this.EndGameSelector.Initialize(value, "run");
@@ -38,7 +33,7 @@ namespace SDA_DonationTracker
 			}
 			set
 			{
-				_Owner = value;
+				this._Owner = value;
 				this.WinnerSelector.Owner = value;
 				this.StartGameSelector.Owner = value;
 				this.EndGameSelector.Owner = value;
@@ -53,7 +48,7 @@ namespace SDA_DonationTracker
 
 		public PrizeTab()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 
 			this.FormBinding = new FormBinding();
 			this.FormBinding.AddBinding("name", this.NameText);

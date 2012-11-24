@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
-using System.Threading;
 
 namespace SDA_DonationTracker
 {
@@ -47,7 +43,7 @@ namespace SDA_DonationTracker
 
 		public EntitySelector()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 
 			this.ModificationMutex = new Mutex();
 			this.Binding = new BindingContext();
@@ -110,14 +106,12 @@ namespace SDA_DonationTracker
 			{
 				this.ModificationMutex.WaitOne();
 
-				foreach (var entry in this.LabelMapping)
-				{
+				foreach (KeyValuePair<string, int> entry in this.LabelMapping)
 					if (entry.Value == target)
 					{
 						selectionText = entry.Key;
 						found = true;
 					}
-				}
 			}
 			finally
 			{
@@ -176,13 +170,9 @@ namespace SDA_DonationTracker
 					}
 
 					if (this.SelectedId != null && string.IsNullOrEmpty(this.NameText.Text))
-					{
 						this.SetSelectedId(this.SelectedId);
-					}
 					else if (!string.IsNullOrEmpty(this.NameText.Text))
-					{
 						this.SetSelectionFromText();
-					}
 				};
 
 				this.Searcher.Begin();
@@ -195,8 +185,8 @@ namespace SDA_DonationTracker
 
 		private void OnTextChanged(object obj, EventArgs args)
 		{
-			RefreshAutoComplete();
-			SetSelectionFromText();
+			this.RefreshAutoComplete();
+			this.SetSelectionFromText();
 		}
 
 		private void SetSelectionFromText()
@@ -228,9 +218,7 @@ namespace SDA_DonationTracker
 		private void OpenButton_Click(object sender, EventArgs e)
 		{
 			if (this.Owner != null && this.SelectedId != null)
-			{
 				this.Owner.NavigateTo(this.Model.ModelName, this.SelectedId ?? 0);
-			}
 		}
 	}
 }

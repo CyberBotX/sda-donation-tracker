@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
-using System;
 
 namespace SDA_DonationTracker
 {

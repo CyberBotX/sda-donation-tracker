@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using System.Windows.Forms;
 
 namespace SDA_DonationTracker
 {
@@ -23,15 +19,11 @@ namespace SDA_DonationTracker
 
 			JObject fields = data.Value<JObject>("fields");
 
-			foreach (var field in formBinding.GetBindingKeys())
-			{
+			foreach (string field in formBinding.GetBindingKeys())
 				result.Add(field, fields.Value<string>(field));
-			}
 
 			if (self.Id != null)
-			{
 				result.Add("id", self.Id.ToString());
-			}
 
 			return result;
 		}

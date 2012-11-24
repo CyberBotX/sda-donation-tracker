@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SDA_DonationTracker
@@ -10,18 +7,15 @@ namespace SDA_DonationTracker
 	{
 		public ComboBox ComboBox { get; private set; }
 		public Type EnumType { get; private set; }
-		public Control BoundControl
-		{
-			get { return ComboBox; }
-		}
+		public Control BoundControl { get { return this.ComboBox; } }
 
 		public ComboBoxBinding(ComboBox comboBox, Type enumType)
 		{
-			ComboBox = comboBox;
-			EnumType = enumType;
-			ComboBox.DataSource = Enum.GetValues(EnumType);
-			ComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-			//ComboBox.SelectedIndex = 0;
+			this.ComboBox = comboBox;
+			this.EnumType = enumType;
+			this.ComboBox.DataSource = Enum.GetValues(this.EnumType);
+			this.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+			//this.ComboBox.SelectedIndex = 0;
 		}
 
 		public void LoadField(string data)
@@ -31,13 +25,13 @@ namespace SDA_DonationTracker
 
 		public string RetreiveField()
 		{
-			return ComboBox.SelectedValue.ToString();
+			return this.ComboBox.SelectedValue.ToString();
 		}
 
 		private void SetSelectedValue(string data)
 		{
-			object o = Enum.Parse(EnumType, data);
-			ComboBox.SelectedItem = o;
+			object o = Enum.Parse(this.EnumType, data);
+			this.ComboBox.SelectedItem = o;
 		}
 	}
 }

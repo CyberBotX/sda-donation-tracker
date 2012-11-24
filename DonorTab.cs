@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using System.Windows.Forms;
-using System;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
+using System.Linq;
+using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
@@ -174,17 +173,17 @@ namespace SDA_DonationTracker
 
 		private void SaveButton_Click(object sender, EventArgs e)
 		{
-			SaveData();
+			this.SaveData();
 		}
 
 		private void RefreshButton_Click(object sender, EventArgs e)
 		{
-			RefreshData();
+			this.RefreshData();
 		}
 
 		private void DeleteButton_Click(object sender, EventArgs e)
 		{
-			DeleteData();
+			this.DeleteData();
 		}
 
 		private void OpenDonationButton_Click(object sender, EventArgs e)

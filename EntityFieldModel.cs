@@ -29,7 +29,6 @@ namespace SDA_DonationTracker
 			this.ModelName = modelName;
 		}
 
-
 		public string Serialize(object t)
 		{
 			throw new NotImplementedException();

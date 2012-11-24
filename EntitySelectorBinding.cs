@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace SDA_DonationTracker
 {
@@ -30,13 +26,9 @@ namespace SDA_DonationTracker
 			int? selectedId = this.Selector.GetSelectedId();
 
 			if (selectedId != null)
-			{
 				return selectedId.ToString();
-			}
 			else
-			{
 				return null;
-			}
 		}
 	}
 }

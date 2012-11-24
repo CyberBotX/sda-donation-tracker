@@ -21,18 +21,6 @@ namespace SDA_DonationTracker
 			return self.Concat(new T[] { toAdd });
 		}
 
-		/*public static string JoinSeperated(this IEnumerable<string> self, string join)
-		{
-			if (self.Any())
-			{
-				return self.Aggregate((x, y) => x + join + y);
-			}
-			else
-			{
-				return "";
-			}
-		}*/
-
 		public static string SymbolToNatural(this string self)
 		{
 			StringBuilder builder = new StringBuilder();

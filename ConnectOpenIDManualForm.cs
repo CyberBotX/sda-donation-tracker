@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace SDA_DonationTracker
@@ -6,20 +7,36 @@ namespace SDA_DonationTracker
 	public partial class ConnectOpenIDManualForm : Form
 	{
 		public TrackerContext Context;
+		private MainForm MainForm;
 
-		public ConnectOpenIDManualForm()
+		public ConnectOpenIDManualForm(MainForm mainForm)
 		{
+			this.MainForm = mainForm;
 			this.InitializeComponent();
 		}
 
 		private void LoginButton_Click(object sender, EventArgs e)
 		{
-			if (string.IsNullOrWhiteSpace(this.DomainText.Text) || string.IsNullOrWhiteSpace(this.SessionIdText.Text))
+			if (string.IsNullOrWhiteSpace(this.DomainText.Text) ||
+				string.IsNullOrWhiteSpace(this.EmailText.Text) ||
+				string.IsNullOrWhiteSpace(this.PasswordText.Text))
 			{
-				MessageBox.Show(this, "All fields are required.", "Missing fields", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(this, "All fields are required.", "Missing fields",
+					MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
-			this.Context.SetSessionId(this.SessionIdText.Text.Trim(), this.DomainText.Text.Trim());
+			TrackerWebBrowser Browser = new TrackerWebBrowser();
+			Thread thread = new Thread(() =>
+			{
+				Browser.DoLogin(this.DomainText.Text.Trim(), this.EmailText.Text.Trim(),
+					this.PasswordText.Text.Trim());
+				Application.Run();
+			});
+			thread.SetApartmentState(ApartmentState.STA);
+			thread.Start();
+			thread.Join();
+			if (Browser.LoggedIn)
+				this.Context.SetSessionId(Browser.SessionID, this.DomainText.Text.Trim());
 			this.Close();
 		}
 

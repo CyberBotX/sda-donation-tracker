@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
@@ -23,25 +20,17 @@ namespace SDA_DonationTracker
 			string result = self.Value<string>("model").Split('.')[1];
 
 			if (result == "speedrun")
-			{
 				return "run";
-			}
 			else
-			{
 				return result;
-			}
 		}
 
 		public static void SetModel(this JObject self, string model)
 		{
 			if (string.Equals(model, "run", StringComparison.OrdinalIgnoreCase))
-			{
 				self["model"] = "tracker.speedrun";
-			}
 			else
-			{
 				self["model"] = "tracker." + model;
-			}
 		}
 
 		public static JObject GetFieldsObject(this JObject self)
@@ -83,25 +72,15 @@ namespace SDA_DonationTracker
 		public static string RawDonorDisplayName(int? id, string email, string firstName, string lastName, string alias)
 		{
 			if (!string.IsNullOrEmpty(alias))
-			{
 				return alias;
-			}
 			else if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
-			{
 				return firstName + " " + lastName;
-			}
 			else if (!string.IsNullOrEmpty(email))
-			{
 				return email;
-			}
 			else if (id != null)
-			{
 				return "Donor#" + id;
-			}
 			else
-			{
 				return "New Donor";
-			}
 		}
 
 		public static string GetDonationDisplayName(this JObject self)
@@ -115,13 +94,9 @@ namespace SDA_DonationTracker
 			string domain = self.GetField("domain");
 
 			if (string.IsNullOrEmpty(domain))
-			{
 				return "New Donation";
-			}
 			else
-			{
 				return domain + ":" + amount + ":" + RawDonorDisplayName(donorId, donorEmail, donorFirst, donorLast, donorAlias);
-			}
 		}
 
 		public static string GetChallengeDisplayName(this JObject self)
@@ -130,13 +105,9 @@ namespace SDA_DonationTracker
 			string runName = self.GetField("speedrun__name");
 
 			if (string.IsNullOrEmpty(name))
-			{
 				return "New Challenge";
-			}
 			else
-			{
 				return runName + ":" + name;
-			}
 		}
 
 		public static string GetChoiceDisplayName(this JObject self)
@@ -145,13 +116,9 @@ namespace SDA_DonationTracker
 			string runName = self.GetField("speedrun__name");
 
 			if (string.IsNullOrEmpty(name))
-			{
 				return "New Choice";
-			}
 			else
-			{
 				return runName + ":" + name;
-			}
 		}
 
 		public static string GetRunDisplayName(this JObject self)
@@ -159,13 +126,9 @@ namespace SDA_DonationTracker
 			string name = self.GetField("name");
 
 			if (string.IsNullOrEmpty(name))
-			{
 				return "New Run";
-			}
 			else
-			{
 				return name;
-			}
 		}
 
 		public static string GetPrizeDisplayName(this JObject self)
@@ -173,13 +136,9 @@ namespace SDA_DonationTracker
 			string name = self.GetField("name");
 
 			if (string.IsNullOrEmpty(name))
-			{
 				return "New Prize";
-			}
 			else
-			{
 				return name;
-			}
 		}
 
 		public static string GetOptionDisplayName(this JObject self)
@@ -189,13 +148,9 @@ namespace SDA_DonationTracker
 			string name = self.GetField("name");
 
 			if (string.IsNullOrEmpty(name))
-			{
 				return "New Choice Option";
-			}
 			else
-			{
 				return runName + ":" + choiceName + ":" + name;
-			}
 		}
 
 		public static string GetChoiceBidDisplayName(this JObject self)

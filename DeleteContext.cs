@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
@@ -30,8 +27,8 @@ namespace SDA_DonationTracker
 		{
 			this.Result = this.Context.RunDelete(this.Model, this.Id);
 
-			if (OnComplete != null)
-				OnComplete.Invoke(this.Result);
+			if (this.OnComplete != null)
+				this.OnComplete.Invoke(this.Result);
 		}
 	}
 }

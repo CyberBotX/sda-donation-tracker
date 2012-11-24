@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-
-namespace SDA_DonationTracker
+﻿namespace SDA_DonationTracker
 {
 	// TODO: 
 	// - do this for all of the other entities
@@ -16,10 +7,9 @@ namespace SDA_DonationTracker
 	public partial class SearchDonationPanel : SearchPanel
 	{
 		public SearchDonationPanel()
-			: base(
-			DonationModels.DonationModel, 
-			new string[] 
-			{ 
+			: base(DonationModels.DonationModel,
+			new string[]
+			{
 				"amount_lte",
 				"amount_gte",
 				"time_lte",
@@ -27,7 +17,7 @@ namespace SDA_DonationTracker
 				"comment",
 			})
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 		}
 	}
 }

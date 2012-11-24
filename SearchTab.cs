@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SDA_DonationTracker
@@ -27,7 +21,7 @@ namespace SDA_DonationTracker
 		public SearchTab(SearchPanel searchPanel)
 		{
 			this.SearchPanel = searchPanel;
-			InitializeComponent();
+			this.InitializeComponent();
 			this.SearchPanel.AddSelectionControl(this.OpenButton);
 		}
 
@@ -35,8 +29,8 @@ namespace SDA_DonationTracker
 		{
 			//Console.WriteLine(string.Join("\n", this.SearchPanel.GetSelections()));
 
-			foreach (var id in this.SearchPanel.GetSelections())
-				Owner.NavigateTo(this.SearchPanel.Model.ModelName, id);
+			foreach (int id in this.SearchPanel.GetSelections())
+				this.Owner.NavigateTo(this.SearchPanel.Model.ModelName, id);
 		}
 	}
 }

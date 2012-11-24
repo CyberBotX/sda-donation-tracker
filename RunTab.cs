@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 
@@ -27,7 +22,7 @@ namespace SDA_DonationTracker
 
 		public RunTab()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 
 			this.FormBinding = new FormBinding();
 			this.FormBinding.AddBinding("name", this.NameText);
@@ -149,7 +144,6 @@ namespace SDA_DonationTracker
 			this.FormBinding.DisableControls();
 			deleteContext.Begin();
 		}
-
 
 		private void RefreshButton_Click(object sender, EventArgs e)
 		{

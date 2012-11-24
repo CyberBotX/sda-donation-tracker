@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SDA_DonationTracker
@@ -9,11 +6,11 @@ namespace SDA_DonationTracker
 	public class DateTimePickerBinding : FieldBinding
 	{
 		public DateTimePicker Picker { get; private set; }
-		public Control BoundControl { get { return Picker; } }
+		public Control BoundControl { get { return this.Picker; } }
 
 		public DateTimePickerBinding(DateTimePicker picker)
 		{
-			Picker = picker;
+			this.Picker = picker;
 		}
 
 		public void LoadField(string data)
@@ -23,15 +20,13 @@ namespace SDA_DonationTracker
 
 		public string RetreiveField()
 		{
-			if (Picker.Checked)
+			if (this.Picker.Checked)
 			{
-				DateTime t = Picker.Value;
+				DateTime t = this.Picker.Value;
 				return string.Format("{0}-{1}-{2} {3}:{4}:{5}", t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second);
 			}
 			else
-			{
 				return "";
-			}
 		}
 	}
 }

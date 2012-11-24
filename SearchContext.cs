@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
@@ -32,9 +31,9 @@ namespace SDA_DonationTracker
 			this.Result = null;
 
 			this.OnBegin += () =>
-				{
-					this.Result = null;
-				};
+			{
+				this.Result = null;
+			};
 		}
 
 		protected override void Run()

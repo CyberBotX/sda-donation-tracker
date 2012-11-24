@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 
@@ -23,7 +19,7 @@ namespace SDA_DonationTracker
 
 		public SearchPanel(EntityModel model, IEnumerable<string> searchFields)
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 
 			this.Model = model;
 			this.SearchFields = searchFields.ToArray();
@@ -33,33 +29,32 @@ namespace SDA_DonationTracker
 			this.FormBinding = new FormBinding();
 			this.TableBinding = new ListBinding<JObjectEntityDisplay>(this.ResultsList, x => new JObjectFuncDisplay(x, model.DisplayConverter), "Display");
 
-			foreach (var field in this.SearchFields)
+			foreach (string field in this.SearchFields)
 			{
 				SearchFieldModel searchField = this.Model.GetSearchField(field);
 				FieldBinding binding = FieldBindingHelper.CreateBindingField(searchField.FieldType, fieldName: field);
 				this.FormBinding.AddBinding(field, binding);
 				++this.SearchParamsTable.RowCount;
-				this.SearchParamsTable.Controls.Add(
-					new Label() 
-					{
-						Text = field.SymbolToNatural(), 
-						Dock = DockStyle.Fill 
-					}, 0, currentFieldIndex);
+				this.SearchParamsTable.Controls.Add(new Label()
+				{
+					Text = field.SymbolToNatural(), 
+					Dock = DockStyle.Fill 
+				}, 0, currentFieldIndex);
 				this.SearchParamsTable.Controls.Add(binding.BoundControl, 1, currentFieldIndex);
 				binding.BoundControl.Dock = DockStyle.Fill;
 				++currentFieldIndex;
 			}
 
-			SearchButton = new Button()
+			this.SearchButton = new Button()
 			{
 				Text = "Search",
 				Dock = DockStyle.Fill,
 			};
 
 			++this.SearchParamsTable.RowCount;
-			this.SearchButton.Click += SearchButton_Click;
+			this.SearchButton.Click += this.SearchButton_Click;
 			this.SearchParamsTable.Controls.Add(this.SearchButton, 1, currentFieldIndex);
-			this.BasicSearchButton.Click += BasicSearchButton_Click;
+			this.BasicSearchButton.Click += this.BasicSearchButton_Click;
 
 			this.FormBinding.AddAssociatedControl(this.SearchButton);
 			this.FormBinding.AddAssociatedControl(this.BasicSearchButton);
@@ -67,10 +62,8 @@ namespace SDA_DonationTracker
 
 			this.TableBinding.OnSelection += (selections) =>
 			{
-				if (OnSelect != null)
-				{
-					OnSelect.Invoke(GetSelections());
-				}
+				if (this.OnSelect != null)
+					this.OnSelect.Invoke(this.GetSelections());
 			};
 		}
 
@@ -97,7 +90,7 @@ namespace SDA_DonationTracker
 			JObject searchObj = this.FormBinding.SaveObject();
 			JObject fieldsObj = searchObj.Value<JObject>("fields");
 
-			foreach (var field in this.SearchFields)
+			foreach (string field in this.SearchFields)
 			{
 				string value = fieldsObj.Value<string>(field);
 				if (!string.IsNullOrEmpty(value))
@@ -110,9 +103,7 @@ namespace SDA_DonationTracker
 		private void SearchButton_Click(object sender, EventArgs e)
 		{
 			if (this.TrackerContext == null)
-			{
 				throw new Exception("Error, no TrackerContext was set.");
-			}
 
 			this.AbortExistingSearch();
 

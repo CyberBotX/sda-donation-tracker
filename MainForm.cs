@@ -1,6 +1,6 @@
 using System;
-using System.Windows.Forms;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace SDA_DonationTracker
 {
@@ -302,7 +302,7 @@ namespace SDA_DonationTracker
 
 		private void TrackertestManualMenuItem_Click(object sender, EventArgs e)
 		{
-			ConnectOpenIDManualForm form = new ConnectOpenIDManualForm()
+			ConnectOpenIDManualForm form = new ConnectOpenIDManualForm(this)
 			{
 				Context = this.TrackerContext
 			};

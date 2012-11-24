@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SDA_DonationTracker
@@ -13,13 +10,9 @@ namespace SDA_DonationTracker
 		public static void InvokeEx(this Control self, Action toRun)
 		{
 			if (self.InvokeRequired)
-			{
 				self.Invoke(new ActionDelegate(RunAnAction), toRun);
-			}
 			else
-			{
 				toRun();
-			}
 		}
 
 		private static void RunAnAction(Action toRun)

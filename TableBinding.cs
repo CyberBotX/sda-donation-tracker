@@ -1,9 +1,9 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System;
 
 namespace SDA_DonationTracker
 {
@@ -56,7 +56,7 @@ namespace SDA_DonationTracker
 		{
 			BiModelMapping mapping = new BiModelMapping();
 
-			foreach (var pair in modelToColumnMapping)
+			foreach (KeyValuePair<string, string> pair in modelToColumnMapping)
 			{
 				mapping.TableToModel[pair.Value] = pair.Key;
 				mapping.ModelToTable[pair.Key] = pair.Value;
@@ -69,11 +69,8 @@ namespace SDA_DonationTracker
 		{
 			BiModelMapping mapping = new BiModelMapping();
 
-			foreach (var column in this.Columns)
-			{
-				mapping.TableToModel[column] = column;
-				mapping.ModelToTable[column] = column;
-			}
+			foreach (string column in this.Columns)
+				mapping.TableToModel[column] = mapping.ModelToTable[column] = column;
 
 			this.ModelMappings[modelName] = mapping;
 		}
@@ -93,10 +90,7 @@ namespace SDA_DonationTracker
 			this.Table.Columns[ModelColumn].ColumnMapping = MappingType.Hidden;
 
 			foreach (string s in this.Columns)
-			{
-				this.Table.Columns.Add(s.ToLower(), typeof(string));
-				this.Table.Columns[s].Caption = s.SymbolToNatural();
-			}
+				this.Table.Columns.Add(s.ToLower(), typeof(string)).Caption = s.SymbolToNatural();
 
 			foreach (JObject toks in data.Values<JObject>())
 			{
@@ -115,9 +109,7 @@ namespace SDA_DonationTracker
 						row[col] = fields.Value<string>(tableToModel[col]);
 				}
 				else
-				{
 					throw new Exception("Model mapping for " + modelName + " unregistered");
-				}
 			}
 
 			this.DataGrid.InvokeEx(() => this.DataGrid.DataSource = Table);
@@ -153,9 +145,7 @@ namespace SDA_DonationTracker
 						fields.Add(tableToModel[col], row[col].ToString());
 				}
 				else
-				{
 					throw new Exception("Model mapping for " + model + " unregistered");
-				}
 			}
 
 			return result;

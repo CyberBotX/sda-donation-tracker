@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace SDA_DonationTracker
 {
@@ -14,7 +10,7 @@ namespace SDA_DonationTracker
 			private set;
 		}
 
-		public Control BoundControl { get { return TextBox; } }
+		public Control BoundControl { get { return this.TextBox; } }
 
 		public TextBoxBinding(TextBoxBase textBox)
 		{
