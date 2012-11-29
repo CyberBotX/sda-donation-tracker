@@ -11,6 +11,11 @@ namespace SDA_DonationTracker
 		public DateTimePickerBinding(DateTimePicker picker)
 		{
 			this.Picker = picker;
+			this.Picker.InvokeEx(() =>
+				{
+					this.Picker.CustomFormat = DateTimeFieldModel.DateFormatForPicker;
+					this.Picker.Format = DateTimePickerFormat.Custom;
+				});
 		}
 
 		public void LoadField(string data)
@@ -23,7 +28,7 @@ namespace SDA_DonationTracker
 			if (this.Picker.Checked)
 			{
 				DateTime t = this.Picker.Value;
-				return string.Format("{0}-{1}-{2} {3}:{4}:{5}", t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second);
+				return DateTimeFieldModel.SerializeDate(t);
 			}
 			else
 				return "";

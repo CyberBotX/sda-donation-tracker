@@ -45,6 +45,7 @@
 			this.CommentStateBox = new System.Windows.Forms.ComboBox();
 			this.CommentStateLabel = new System.Windows.Forms.Label();
 			this.DonorLabel = new System.Windows.Forms.Label();
+			this.DonorSelector = new SDA_DonationTracker.EntitySelector();
 			this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
 			this.CommentText = new System.Windows.Forms.TextBox();
 			this.InternalCommentText = new System.Windows.Forms.TextBox();
@@ -55,7 +56,6 @@
 			this.SaveButton = new System.Windows.Forms.Button();
 			this.DeleteButton = new System.Windows.Forms.Button();
 			this.BidsTable = new System.Windows.Forms.DataGridView();
-			this.DonorSelector = new SDA_DonationTracker.EntitySelector();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
 			this.splitContainer2.Panel1.SuspendLayout();
@@ -184,7 +184,7 @@
 			// 
 			// TimePicker
 			// 
-			this.TimePicker.CustomFormat = "yyyy/MM/dd hh:mm:ss";
+			this.TimePicker.CustomFormat = "yyyy/MM/dd HH:mm:ss";
 			this.TimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
 			this.TimePicker.Location = new System.Drawing.Point(91, 29);
 			this.TimePicker.Name = "TimePicker";
@@ -271,6 +271,20 @@
 			this.DonorLabel.Size = new System.Drawing.Size(39, 13);
 			this.DonorLabel.TabIndex = 12;
 			this.DonorLabel.Text = "Donor:";
+			// 
+			// DonorSelector
+			// 
+			this.DonorSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.DonorSelector.AutoSize = true;
+			this.DonorSelector.Location = new System.Drawing.Point(91, 162);
+			this.DonorSelector.Model = null;
+			this.DonorSelector.Name = "DonorSelector";
+			this.DonorSelector.Owner = null;
+			this.DonorSelector.Size = new System.Drawing.Size(323, 20);
+			this.DonorSelector.TabIndex = 13;
+			this.DonorSelector.TrackerContext = null;
 			// 
 			// tableLayoutPanel4
 			// 
@@ -386,20 +400,6 @@
 			this.BidsTable.Name = "BidsTable";
 			this.BidsTable.Size = new System.Drawing.Size(743, 145);
 			this.BidsTable.TabIndex = 2;
-			// 
-			// DonorSelector
-			// 
-			this.DonorSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.DonorSelector.AutoSize = true;
-			this.DonorSelector.Location = new System.Drawing.Point(91, 162);
-			this.DonorSelector.Model = null;
-			this.DonorSelector.Name = "DonorSelector";
-			this.DonorSelector.Owner = null;
-			this.DonorSelector.Size = new System.Drawing.Size(323, 20);
-			this.DonorSelector.TabIndex = 13;
-			this.DonorSelector.TrackerContext = null;
 			// 
 			// DonationTab
 			// 

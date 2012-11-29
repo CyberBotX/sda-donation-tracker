@@ -4,7 +4,9 @@ namespace SDA_DonationTracker
 {
 	public class DateTimeFieldModel : FieldModel
 	{
-		public static readonly string DateFormat = "MM/dd/yyyy HH:mm:ss";
+		public static readonly string DateFormatFromServer = "MM/dd/yyyy HH:mm:ss";
+		public static readonly string DateFormatFromPicker = "yyyy-MM-dd HH:mm:ss";
+		public static readonly string DateFormatForPicker = "yyyy/MM/dd HH:mm:ss";
 
 		public Type FieldType
 		{
@@ -13,12 +15,12 @@ namespace SDA_DonationTracker
 
 		public static string SerializeDate(DateTime t)
 		{
-			return t.ToString(DateFormat);
+			return TimeZoneInfo.ConvertTimeToUtc(t, TimeZoneInfo.Local).ToString(DateFormatFromPicker);
 		}
 
 		public static DateTime ParseDate(string s)
 		{
-			return DateTime.ParseExact(s, DateFormat, null);
+			return TimeZoneInfo.ConvertTimeFromUtc(DateTime.ParseExact(s, DateFormatFromServer, null), TimeZoneInfo.Local);
 		}
 
 		public string Serialize(object t)
