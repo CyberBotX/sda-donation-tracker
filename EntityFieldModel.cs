@@ -23,6 +23,13 @@ namespace SDA_DonationTracker
 				return DonationModels.GetModel(this.ModelName);
 			}
 		}
+		public bool ReadOnly
+		{
+			get 
+			{ 
+				return false; 
+			}
+		}
 
 		public EntityFieldModel(string modelName)
 		{

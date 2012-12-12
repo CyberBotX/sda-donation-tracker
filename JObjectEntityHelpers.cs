@@ -1,10 +1,34 @@
 ﻿using System;
+using System.Linq;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace SDA_DonationTracker
 {
 	public static class JObjectEntityHelpers
 	{
+		public static JObject CreateEntityObject(string model, int? id = null)
+		{
+			JObject result = new JObject();
+			result.SetModel(model);
+			if (id != null)
+				result.SetId(id ?? 0);
+			result.Add("fields", new JObject());
+			return result;
+		}
+
+		/**
+		 * prioritizeSelf will prevent overwriting the field in self with the value in other
+		 */
+		public static void MergeFrom(this JObject self, JObject other, bool prioritizeSelf = false)
+		{
+			foreach (var field in other.GetFields())
+			{
+				if (!prioritizeSelf || !self.HasField(field.Key))
+					self.SetField(field.Key, field.Value);
+			}
+		}
+
 		public static int? GetId(this JObject self)
 		{
 			return self.Value<int?>("pk");
@@ -12,12 +36,17 @@ namespace SDA_DonationTracker
 
 		public static void SetId(this JObject self, int id)
 		{
-			self["id"] = id;
+			self["pk"] = id;
 		}
 
 		public static string GetModel(this JObject self)
 		{
-			string result = self.Value<string>("model").Split('.')[1];
+			string model = self.Value<string>("model");
+
+			if (string.IsNullOrEmpty(model))
+				return null;
+
+			string result = model.Split('.')[1];
 
 			if (result == "speedrun")
 				return "run";
@@ -38,17 +67,115 @@ namespace SDA_DonationTracker
 			return self.Value<JObject>("fields");
 		}
 
-		public static string GetField(this JObject self, string name)
+		public static bool HasField(this JObject self, string name)
 		{
 			JObject fields = self.GetFieldsObject();
-			string result = fields.Value<string>(name);
-			return result == "None" ? null : result;
+			return fields.Properties().Any(p => p.Name.Equals(name));
+		}
+
+		public static string GetField(this JObject self, string name)
+		{
+			if (self.HasField(name))
+			{
+				JObject fields = self.GetFieldsObject();
+
+				string result = fields.Value<string>(name);
+
+				// This is a hack to ensure that the output time values are in a consistent format
+				if (result != null && !result.Equals("None") && result.Length > 0 && self.GetModel() != null)
+				{
+					EntityModel model = DonationModels.GetModel(self.GetModel());
+
+					if (model.HasField(name) && model.GetField(name) is DateTimeFieldModel)
+					{
+						result = DateTimeFieldModel.SerializeDate(DateTimeFieldModel.ParseDate(result));
+					}
+				}
+				
+				return (result == null || result.Equals("None")) ? null : result;
+			}
+			else
+			{
+				return null;
+			}
 		}
 
 		public static void SetField(this JObject self, string name, string value)
 		{
 			JObject fields = self.GetFieldsObject();
+
+			// Unfortunately, 
+			if (value == null)
+				value = "None";
+
 			fields[name] = value;
+		}
+
+		public static IEnumerable<KeyValuePair<string,string> > GetFields(this JObject self)
+		{
+			JObject fields = self.GetFieldsObject();
+			//return fields.Properties().Select(p => new KeyValuePair<string, string>(p.Name, p.Value.ToString()));
+
+			return fields.Properties().Select(p => new KeyValuePair<string, string>(p.Name, self.GetField(p.Name)));
+		}
+
+		public static IEnumerable<KeyValuePair<string, string>> GetErrorFields(this JObject self)
+		{
+			JToken firstResult;
+
+			Dictionary<string, string> results = new Dictionary<string, string>();
+
+			if (self.TryGetValue("error", out firstResult))
+			{
+				results["error"] = firstResult.ToString();
+			}
+
+			JObject fields = self.GetFieldsObject();
+
+			if (fields != null)
+			{
+				foreach (JProperty p in fields.Properties())
+				{
+					results[p.Name] = p.ToString();
+				}
+			}
+			
+			if (results.Count == 0)
+			{
+				results["error"] = "unknown";
+			}
+
+			return results;
+		}
+
+		public static string GetDisplayName(this JObject self)
+		{
+			string model = self.GetModel();
+
+			if (model.IEquals("event"))
+				return self.GetEventDisplayName();
+			else if (model.IEquals("donor"))
+				return self.GetDonorDisplayName();
+			else if (model.IEquals("donation"))
+				return self.GetDonationDisplayName();
+			else if (model.IEquals("prize"))
+				return self.GetPrizeDisplayName();
+			else if (model.IEquals("run"))
+				return self.GetRunDisplayName();
+			else if (model.IEquals("challenge"))
+				return self.GetChallengeDisplayName();
+			else if (model.IEquals("choice"))
+				return self.GetChoiceDisplayName();
+			else if (model.IEquals("choiceoption"))
+				return self.GetOptionDisplayName();
+			else if (model.IEquals("choicebid"))
+				return self.GetChoiceBidDisplayName();
+			else if (model.IEquals("challengebid"))
+				return self.GetChallengeBidDisplayName();
+			else if (model.IEquals("prizecategory"))
+				return self.GetPrizeCategoryDisplayName();
+			else
+				return "Unknown Entity";
 		}
 
 		// This probably belongs at another level of abstraction, but w/e
@@ -99,6 +226,17 @@ namespace SDA_DonationTracker
 				return domain + ":" + amount + ":" + RawDonorDisplayName(donorId, donorEmail, donorFirst, donorLast, donorAlias);
 		}
 
+		public static string GetBidDisplayName(this JObject self)
+		{
+			string name = self.GetField("name");
+			string runName = self.GetField("speedrun__name");
+
+			if (string.IsNullOrEmpty(name))
+				return "New Bid";
+			else
+				return runName + ":" + name;
+		}
+
 		public static string GetChallengeDisplayName(this JObject self)
 		{
 			string name = self.GetField("name");
@@ -127,6 +265,16 @@ namespace SDA_DonationTracker
 
 			if (string.IsNullOrEmpty(name))
 				return "New Run";
+			else
+				return name;
+		}
+
+		public static string GetPrizeCategoryDisplayName(this JObject self)
+		{
+			string name = self.GetField("name");
+
+			if (string.IsNullOrEmpty(name))
+				return "New Prize Category";
 			else
 				return name;
 		}

@@ -40,15 +40,21 @@ namespace SDA_DonationTracker
 			this.donorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.donationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.prizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.choiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.challengeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.CreateMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.CreateDonorMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.donationToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.prizeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.runToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.choiceToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.challengeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TabControl = new SDA_DonationTracker.TabCtlEx();
-			this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.runToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.prizeCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.prizeCategoryToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.StatusBar.SuspendLayout();
 			this.MenuBar.SuspendLayout();
 			this.SuspendLayout();
@@ -131,7 +137,10 @@ namespace SDA_DonationTracker
             this.donorToolStripMenuItem,
             this.donationToolStripMenuItem,
             this.prizeToolStripMenuItem,
-            this.runToolStripMenuItem});
+            this.prizeCategoryToolStripMenuItem,
+            this.runToolStripMenuItem,
+            this.choiceToolStripMenuItem,
+            this.challengeToolStripMenuItem});
 			this.SearchMenu.Name = "SearchMenu";
 			this.SearchMenu.Size = new System.Drawing.Size(54, 20);
 			this.SearchMenu.Text = "Search";
@@ -158,13 +167,37 @@ namespace SDA_DonationTracker
 			this.prizeToolStripMenuItem.Text = "Prize";
 			this.prizeToolStripMenuItem.Click += new System.EventHandler(this.prizeToolStripMenuItem_Click);
 			// 
+			// runToolStripMenuItem
+			// 
+			this.runToolStripMenuItem.Name = "runToolStripMenuItem";
+			this.runToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.runToolStripMenuItem.Text = "Run";
+			this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
+			// 
+			// choiceToolStripMenuItem
+			// 
+			this.choiceToolStripMenuItem.Name = "choiceToolStripMenuItem";
+			this.choiceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.choiceToolStripMenuItem.Text = "Choice";
+			this.choiceToolStripMenuItem.Click += new System.EventHandler(this.choiceToolStripMenuItem_Click);
+			// 
+			// challengeToolStripMenuItem
+			// 
+			this.challengeToolStripMenuItem.Name = "challengeToolStripMenuItem";
+			this.challengeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.challengeToolStripMenuItem.Text = "Challenge";
+			this.challengeToolStripMenuItem.Click += new System.EventHandler(this.challengeToolStripMenuItem_Click);
+			// 
 			// CreateMenu
 			// 
 			this.CreateMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.CreateDonorMenuItem,
             this.donationToolStripMenuItem1,
             this.prizeToolStripMenuItem1,
-            this.runToolStripMenuItem1});
+            this.prizeCategoryToolStripMenuItem1,
+            this.runToolStripMenuItem1,
+            this.choiceToolStripMenuItem1,
+            this.challengeToolStripMenuItem1});
 			this.CreateMenu.Name = "CreateMenu";
 			this.CreateMenu.Size = new System.Drawing.Size(53, 20);
 			this.CreateMenu.Text = "Create";
@@ -173,23 +206,44 @@ namespace SDA_DonationTracker
 			// CreateDonorMenuItem
 			// 
 			this.CreateDonorMenuItem.Name = "CreateDonorMenuItem";
-			this.CreateDonorMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.CreateDonorMenuItem.Size = new System.Drawing.Size(127, 22);
 			this.CreateDonorMenuItem.Text = "Donor";
 			this.CreateDonorMenuItem.Click += new System.EventHandler(this.CreateDonorMenuItem_Click);
 			// 
 			// donationToolStripMenuItem1
 			// 
 			this.donationToolStripMenuItem1.Name = "donationToolStripMenuItem1";
-			this.donationToolStripMenuItem1.Size = new System.Drawing.Size(123, 22);
+			this.donationToolStripMenuItem1.Size = new System.Drawing.Size(127, 22);
 			this.donationToolStripMenuItem1.Text = "Donation";
 			this.donationToolStripMenuItem1.Click += new System.EventHandler(this.donationToolStripMenuItem1_Click);
 			// 
 			// prizeToolStripMenuItem1
 			// 
 			this.prizeToolStripMenuItem1.Name = "prizeToolStripMenuItem1";
-			this.prizeToolStripMenuItem1.Size = new System.Drawing.Size(123, 22);
+			this.prizeToolStripMenuItem1.Size = new System.Drawing.Size(127, 22);
 			this.prizeToolStripMenuItem1.Text = "Prize";
 			this.prizeToolStripMenuItem1.Click += new System.EventHandler(this.prizeToolStripMenuItem1_Click);
+			// 
+			// runToolStripMenuItem1
+			// 
+			this.runToolStripMenuItem1.Name = "runToolStripMenuItem1";
+			this.runToolStripMenuItem1.Size = new System.Drawing.Size(127, 22);
+			this.runToolStripMenuItem1.Text = "Run";
+			this.runToolStripMenuItem1.Click += new System.EventHandler(this.runToolStripMenuItem1_Click);
+			// 
+			// choiceToolStripMenuItem1
+			// 
+			this.choiceToolStripMenuItem1.Name = "choiceToolStripMenuItem1";
+			this.choiceToolStripMenuItem1.Size = new System.Drawing.Size(127, 22);
+			this.choiceToolStripMenuItem1.Text = "Choice";
+			this.choiceToolStripMenuItem1.Click += new System.EventHandler(this.choiceToolStripMenuItem1_Click);
+			// 
+			// challengeToolStripMenuItem1
+			// 
+			this.challengeToolStripMenuItem1.Name = "challengeToolStripMenuItem1";
+			this.challengeToolStripMenuItem1.Size = new System.Drawing.Size(127, 22);
+			this.challengeToolStripMenuItem1.Text = "Challenge";
+			this.challengeToolStripMenuItem1.Click += new System.EventHandler(this.challengeToolStripMenuItem1_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -219,19 +273,19 @@ namespace SDA_DonationTracker
 			this.TabControl.TabIndex = 0;
 			this.TabControl.TabStop = false;
 			// 
-			// runToolStripMenuItem
+			// prizeCategoryToolStripMenuItem
 			// 
-			this.runToolStripMenuItem.Name = "runToolStripMenuItem";
-			this.runToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.runToolStripMenuItem.Text = "Run";
-			this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
+			this.prizeCategoryToolStripMenuItem.Name = "prizeCategoryToolStripMenuItem";
+			this.prizeCategoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.prizeCategoryToolStripMenuItem.Text = "PrizeCategory";
+			this.prizeCategoryToolStripMenuItem.Click += new System.EventHandler(this.prizeCategoryToolStripMenuItem_Click);
 			// 
-			// runToolStripMenuItem1
+			// prizeCategoryToolStripMenuItem1
 			// 
-			this.runToolStripMenuItem1.Name = "runToolStripMenuItem1";
-			this.runToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-			this.runToolStripMenuItem1.Text = "Run";
-			this.runToolStripMenuItem1.Click += new System.EventHandler(this.runToolStripMenuItem1_Click);
+			this.prizeCategoryToolStripMenuItem1.Name = "prizeCategoryToolStripMenuItem1";
+			this.prizeCategoryToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.prizeCategoryToolStripMenuItem1.Text = "Prize Category";
+			this.prizeCategoryToolStripMenuItem1.Click += new System.EventHandler(this.prizeCategoryToolStripMenuItem1_Click);
 			// 
 			// MainForm
 			// 
@@ -278,6 +332,12 @@ namespace SDA_DonationTracker
 		private System.Windows.Forms.ToolStripMenuItem prizeToolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem choiceToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem choiceToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem challengeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem challengeToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem prizeCategoryToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem prizeCategoryToolStripMenuItem1;
 	}
 }
 

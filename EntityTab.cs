@@ -5,28 +5,18 @@ namespace SDA_DonationTracker
 {
 	public interface EntityTab
 	{
-		string Model { get; }
+		string ModelName { get; }
 		int? Id { get; }
 	}
 
 	public static class EntityTabMethods
 	{
-		public static Dictionary<string, string> GetSaveParams(this EntityTab self, FormBinding formBinding)
+		/*
+		public static IEnumerable<KeyValuePair<string, string>> GetSaveParams(this EntityTab self, FormBinding formBinding)
 		{
-			Dictionary<string, string> result = new Dictionary<string, string>();
-
-			JObject data = formBinding.SaveObject();
-
-			JObject fields = data.Value<JObject>("fields");
-
-			foreach (string field in formBinding.GetBindingKeys())
-				result.Add(field, fields.Value<string>(field));
-
-			if (self.Id != null)
-				result.Add("id", self.Id.ToString());
-
-			return result;
+			return Util.BuildSaveParams(formBinding, self.Id);
 		}
+		*/
 
 		public static bool EnableRefresh(this EntityTab self)
 		{

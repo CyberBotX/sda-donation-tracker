@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace SDA_DonationTracker
 {
 	public class TrackerContext
 	{
-		private static readonly string[] EventModels = { "choice", "challenge", "choicebid", "challengebid", "donation", "prize", "run" };
+		private static readonly string[] EventSearchModels = { "choiceoption", "choice", "challenge", "choicebid", "challengebid", "donation", "prize", "run" };
+		private static readonly string[] EventSaveModels = { "run", "prize", "donation" };
+
+		private Dictionary<string, EntitySelectionCache> EntityCaches;
 
 		private Cookie ClientCookie = null;
+		private int? _EventId;
+
 		public bool SessionSet
 		{
 			get
@@ -28,17 +34,23 @@ namespace SDA_DonationTracker
 			get;
 			private set;
 		}
-		public int EventId
+		public int? EventId
 		{
-			get;
-			set;
+			get
+			{
+				return _EventId;
+			}
+			set
+			{
+				_EventId = value;
+				this.ResetEntityCaches();
+			}
 		}
-		public string EventName { get; set; }
 
 		public TrackerContext()
 		{
-			this.EventId = 0;
-			this.EventName = null;
+			this.EventId = null;
+			this.EntityCaches = new Dictionary<string, EntitySelectionCache>();
 		}
 
 		public void SetSessionId(string sessionId, string domain)
@@ -63,14 +75,37 @@ namespace SDA_DonationTracker
 				this.EventId = results.Select(x => (x as JObject)).Aggregate((x, y) => DateTimeFieldModel.ParseDate(x.GetField("date")).CompareTo(DateTimeFieldModel.ParseDate(x.GetField("date"))) >= 0 ? x : y).GetId() ?? 0;
 		}
 
+		private void ResetEntityCaches()
+		{
+			this.EntityCaches = DonationModels.GetModels().Select(m => new EntitySelectionCache(this, m.ModelName)).ToDictionary(c => c.ModelName);
+
+			if (this.EventId != null)
+			{
+				this.EntityCaches["choiceoption"].RequestRefresh();
+				this.EntityCaches["challenge"].RequestRefresh();
+				this.EntityCaches["run"].RequestRefresh();
+				this.EntityCaches["prizecategory"].RequestRefresh();
+			}
+		}
+
 		public void ClearSessionId()
 		{
 			this.ClientCookie = null;
+			this.EntityCaches = new Dictionary<string, EntitySelectionCache>();
 		}
 
-		public bool IsEventModel(string model)
+		public bool IsEventSearchModel(string model)
 		{
-			foreach (string v in TrackerContext.EventModels)
+			foreach (string v in TrackerContext.EventSearchModels)
+				if (string.Equals(v, model, StringComparison.OrdinalIgnoreCase))
+					return true;
+
+			return false;
+		}
+
+		public bool IsEventSaveModel(string model)
+		{
+			foreach (string v in TrackerContext.EventSaveModels)
 				if (string.Equals(v, model, StringComparison.OrdinalIgnoreCase))
 					return true;
 
@@ -82,9 +117,13 @@ namespace SDA_DonationTracker
 			return new Uri(Domain, "tracker/search/" + StringParams(model, searchParams));
 		}
 
-		private string StringParams(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
+		private string StringParams(string modelName, IEnumerable<KeyValuePair<string, string>> searchParams)
 		{
-			return string.Format("type={0}&{1}", model, string.Join("&", searchParams.Where(x => !string.IsNullOrEmpty(x.Value)).Select(x => (x.Key.Equals("domainId") ? x.Key : x.Key.ToLower()) + "=" + Uri.EscapeDataString(x.Value))));
+			string result = "";
+
+			result = string.Format("{0}", string.Join("&", searchParams.Select(x => (x.Key.Equals("domainId") ? x.Key : x.Key.ToLower()) + "=" + (x.Value == null ? "None" : Uri.EscapeDataString(x.Value)))));
+
+			return string.Format("type={0}&{1}", modelName, result);
 		}
 
 		private WebClientEx CreateClient()
@@ -94,35 +133,72 @@ namespace SDA_DonationTracker
 			return client;
 		}
 
-		public JArray RunSearch(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
+		public JArray RunIdSearch(string model, int id)
 		{
-			if (this.IsEventModel(model))
-				searchParams = searchParams.Concat1(new KeyValuePair<string, string>("event", this.EventName));
+			return this.RunSearch(model, Util.CreateIdSearch(id), true);
+		}
+
+		public JArray RunSearch(string model, IEnumerable<KeyValuePair<string, string>> searchParams, bool singleSearch = false)
+		{
+			if (this.IsEventSearchModel(model))
+				searchParams = searchParams.Concat1(new KeyValuePair<string, string>("event", this.EventId.ToString()));
 
 			if (!this.SessionSet)
-				throw new Exception("Error, session is not set.");
+				throw new TrackerError(TrackerErrorType.NoConnection, "Error, session is not set.");
 
 			Uri u = new Uri(Domain, "tracker/search/"); //this.CreateSearchUri(model, searchParams);
 
 			WebClientEx client = this.CreateClient();
 
 			string paramsString = StringParams(model, searchParams);
+			string response = null;
 
-			string response = client.DownloadString(new Uri(u, "?" + paramsString));
+			try
+			{
+				response = client.DownloadString(new Uri(u, "?" + paramsString));
+			}
+			catch (WebException e)
+			{
+				this.HandleWebException(e);
+			}
+			JArray result = JArray.Parse(response);
 
-			return JArray.Parse(response);
+			if (singleSearch && result.Count != 1)
+				throw new TrackerError(TrackerErrorType.InstanceDoesNotExist, model + " with id = " + searchParams.Where(p => p.Key.IEquals("id")).Single().Value + " does not exist.");
+
+			return result;
+		}
+
+		private void HandleWebException(WebException e)
+		{
+			StreamReader rdr = new StreamReader(e.Response.GetResponseStream());
+
+			string message = rdr.ReadToEnd();
+
+			if (e.Status == WebExceptionStatus.ProtocolError && message.Trim()[0] == '{')
+			{
+				JObject data = JObject.Parse(message);
+
+				string errorString = string.Join("\n", data.GetErrorFields().Select(x => x.Key + ": " + x.Value));
+
+				throw new TrackerError(TrackerErrorType.InvalidField, errorString);
+			}
+			else
+			{
+				throw TrackerError.ParseErrorResponse(message);
+			}
 		}
 
 		public JObject RunSave(string model, IEnumerable<KeyValuePair<string, string>> saveParams)
 		{
-			if (this.IsEventModel(model))
+			if (this.IsEventSaveModel(model))
 				saveParams = saveParams.Concat1(new KeyValuePair<string, string>("event", this.EventId.ToString()));
 
 			if (string.Equals(model, "run", StringComparison.OrdinalIgnoreCase))
 				saveParams = saveParams.Concat1(new KeyValuePair<string, string>("sortkey", "0"));
 
 			if (!this.SessionSet)
-				throw new Exception("Error, session is not set.");
+				throw new TrackerError(TrackerErrorType.NoConnection, "Error, session is not set.");
 
 			Uri u;
 
@@ -137,7 +213,17 @@ namespace SDA_DonationTracker
 
 			WebClientEx client = this.CreateClient();
 
-			string response = client.UploadString(u, "POST", StringParams(model, saveParams));
+			string response = null;
+
+			try
+			{
+				string parameters = StringParams(model, saveParams);
+				response = client.UploadString(u, "POST", parameters);
+			}
+			catch (WebException e)
+			{
+				this.HandleWebException(e);
+			}
 
 			return JArray.Parse(response).Value<JObject>(0);
 		}
@@ -155,18 +241,34 @@ namespace SDA_DonationTracker
 			Uri u = new Uri(Domain, "tracker/delete/");
 
 			WebClientEx client = this.CreateClient();
+			string response = null;
 
-			string response = client.UploadString(u, "POST", StringParams(model, deleteParams));
+			try
+			{
+				response = client.UploadString(u, "POST", StringParams(model, deleteParams));
+			}
+			catch (WebException e)
+			{
+				this.HandleWebException(e);
+			}
 
 			return JObject.Parse(response);
 		}
 
-		public SearchContext DeferredSearch(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
+		public SearchContext DeferredIdSearch(string model, int id)
 		{
 			if (!this.SessionSet)
 				return null;
 
-			return new SearchContext(this, model, searchParams);
+			return new SearchContext(this, model, Util.CreateIdSearch(id), true);
+		}
+
+		public SearchContext DeferredSearch(string model, IEnumerable<KeyValuePair<string, string>> searchParams, bool singleSearch = false)
+		{
+			if (!this.SessionSet)
+				return null;
+
+			return new SearchContext(this, model, searchParams, singleSearch);
 		}
 
 		public SaveContext DeferredSave(string model, IEnumerable<KeyValuePair<string, string>> saveParams)
@@ -183,6 +285,16 @@ namespace SDA_DonationTracker
 				return null;
 
 			return new DeleteContext(this, model, id);
+		}
+
+		public EntitySelectionCache GetEntitySelectionCache(string model)
+		{
+			EntitySelectionCache result;
+			
+			if (this.EntityCaches.TryGetValue(model, out result))
+				return result;
+			else
+				return null;
 		}
 	}
 }

@@ -70,11 +70,75 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AggregateSearchContext.cs" />
+    <Compile Include="BiMap.cs" />
     <Compile Include="BindingContext.cs" />
     <Compile Include="BooleanFieldModel.cs" />
+    <Compile Include="ChallengeEditPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChallengeTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="CheckBoxBinding.cs" />
+    <Compile Include="ChoiceEditPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChoiceTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ComboBoxBinding.cs" />
     <Compile Include="ConnectionContext.cs" />
+    <Compile Include="DonationEditPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DonationTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditEntityDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EntityEditPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EntitySelectionCache.cs" />
+    <Compile Include="IBiMap.cs" />
+    <Compile Include="JoinWaiter.cs" />
+    <Compile Include="PrizeCategoryTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunEditPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RunTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PrizeTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchChallengePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchChoiceOptionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchChoicePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SearchPanelHelpers.cs" />
+    <Compile Include="SearchPrizeCategoryPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SelectModelTypeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectModelTypeDialog.Designer.cs">
+      <DependentUpon>SelectModelTypeDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TrackerErrorType.cs" />
     <Compile Include="ConnectOpenIDManualForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +147,10 @@
     </Compile>
     <Compile Include="ContextStatus.cs" />
     <Compile Include="DeleteContext.cs" />
+    <Compile Include="EntityAccessContext.cs" />
+    <Compile Include="EntityFormPanelConstruct.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="EntitySelector.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -91,39 +159,36 @@
     </Compile>
     <Compile Include="EntitySelectorBinding.cs" />
     <Compile Include="EntityTab.cs" />
+    <Compile Include="EntityFormPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EntityTablePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EntityTablePanelConstruct.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="InvokeHelper.cs" />
     <Compile Include="JObjectEntityDisplay.cs" />
     <Compile Include="JObjectEntityHelpers.cs" />
     <Compile Include="JObjectFuncDisplay.cs" />
-    <Compile Include="PrizeTab.cs">
+    <Compile Include="DonorTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PrizeTab.Designer.cs">
-      <DependentUpon>PrizeTab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RunTab.cs">
+    <Compile Include="NewEntityTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="RunTab.Designer.cs">
-      <DependentUpon>RunTab.cs</DependentUpon>
+    <Compile Include="NewEntityTab.Designer.cs">
+      <DependentUpon>NewEntityTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DonorEditPanel.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SaveContext.cs" />
     <Compile Include="DateTimeFieldModel.cs" />
     <Compile Include="DateTimePickerBinding.cs" />
-    <Compile Include="DonationTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DonationTab.Designer.cs">
-      <DependentUpon>DonationTab.cs</DependentUpon>
-    </Compile>
     <Compile Include="Enums.cs" />
     <Compile Include="DonationModels.cs" />
-    <Compile Include="DonorTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DonorTab.Designer.cs">
-      <DependentUpon>DonorTab.cs</DependentUpon>
-    </Compile>
     <Compile Include="EntityFieldModel.cs" />
     <Compile Include="EntityModel.cs" />
     <Compile Include="EntitySetModel.cs" />
@@ -197,6 +262,7 @@
     <Compile Include="SearchPanel.Designer.cs">
       <DependentUpon>SearchPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="TrackerError.cs" />
     <Compile Include="TrackerWebBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -207,20 +273,14 @@
     <EmbeddedResource Include="ConnectOpenIDManualForm.resx">
       <DependentUpon>ConnectOpenIDManualForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DonationTab.resx">
-      <DependentUpon>DonationTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DonorTab.resx">
-      <DependentUpon>DonorTab.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="EntitySelector.resx">
       <DependentUpon>EntitySelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PrizeTab.resx">
-      <DependentUpon>PrizeTab.cs</DependentUpon>
+    <EmbeddedResource Include="NewEntityTab.resx">
+      <DependentUpon>NewEntityTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -232,9 +292,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="RunTab.resx">
-      <DependentUpon>RunTab.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SearchDonationPanel.resx">
       <DependentUpon>SearchDonationPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -249,6 +306,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SelectEventDialog.resx">
       <DependentUpon>SelectEventDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectModelTypeDialog.resx">
+      <DependentUpon>SelectModelTypeDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
@@ -283,7 +343,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

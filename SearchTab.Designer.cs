@@ -67,7 +67,7 @@
 			this.SearchPanel.Name = "SearchPanel";
 			this.SearchPanel.Size = new System.Drawing.Size(568, 402);
 			this.SearchPanel.TabIndex = 0;
-			this.SearchPanel.TrackerContext = null;
+			this.SearchPanel.Context = null;
 			// 
 			// SearchDonationTab
 			// 

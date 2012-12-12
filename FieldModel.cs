@@ -9,6 +9,11 @@ namespace SDA_DonationTracker
 			get;
 		}
 
+		bool ReadOnly
+		{
+			get;
+		}
+
 		string Serialize(object t);
 		object Parse(string s);
 	}

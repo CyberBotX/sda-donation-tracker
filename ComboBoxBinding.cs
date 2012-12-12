@@ -30,7 +30,17 @@ namespace SDA_DonationTracker
 
 		private void SetSelectedValue(string data)
 		{
-			object o = Enum.Parse(this.EnumType, data);
+			object o;
+
+			if (string.IsNullOrEmpty(data))
+			{
+				o = Enum.GetValues(this.EnumType).GetValue(0);
+			}
+			else
+			{
+				o = Enum.Parse(this.EnumType, data);
+			}
+
 			this.ComboBox.SelectedItem = o;
 		}
 	}

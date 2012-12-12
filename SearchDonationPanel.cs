@@ -10,10 +10,10 @@
 			: base(DonationModels.DonationModel,
 			new string[]
 			{
-				"amount_lte",
-				"amount_gte",
 				"time_lte",
 				"time_gte",
+				"amount_lte",
+				"amount_gte",
 				"comment",
 			})
 		{

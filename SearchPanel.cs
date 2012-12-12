@@ -8,10 +8,22 @@ namespace SDA_DonationTracker
 {
 	public partial class SearchPanel : UserControl
 	{
-		public TrackerContext TrackerContext { get; set; }
+		public bool AllowMultiSelect
+		{
+			get
+			{
+				return this.ResultsList.SelectionMode == SelectionMode.MultiExtended || this.ResultsList.SelectionMode == SelectionMode.MultiSimple;
+			}
+			set
+			{
+				this.ResultsList.SelectionMode = value ? SelectionMode.MultiExtended : SelectionMode.One;
+			}
+		}
+
+		public TrackerContext Context { get; set; }
 		public event Action<IEnumerable<int>> OnSelect;
 
-		private ListBinding<JObjectEntityDisplay> TableBinding;
+		private ListBinding<JObjectEntityDisplay> ListBinding;
 		private SearchContext CurrentSearch;
 		public EntityModel Model { get; private set; }
 		private FormBinding FormBinding;
@@ -26,8 +38,8 @@ namespace SDA_DonationTracker
 
 			int currentFieldIndex = 2;
 
-			this.FormBinding = new FormBinding();
-			this.TableBinding = new ListBinding<JObjectEntityDisplay>(this.ResultsList, x => new JObjectFuncDisplay(x, model.DisplayConverter), "Display");
+			this.FormBinding = new FormBinding(model.ModelName, searchForm: true);
+			this.ListBinding = new ListBinding<JObjectEntityDisplay>(this.ResultsList, x => new JObjectFuncDisplay(x, model.DisplayConverter), "Display");
 
 			foreach (string field in this.SearchFields)
 			{
@@ -60,7 +72,7 @@ namespace SDA_DonationTracker
 			this.FormBinding.AddAssociatedControl(this.BasicSearchButton);
 			this.FormBinding.AddAssociatedControl(this.BasicSearchText);
 
-			this.TableBinding.OnSelection += (selections) =>
+			this.ListBinding.OnSelection += (selections) =>
 			{
 				if (this.OnSelect != null)
 					this.OnSelect.Invoke(this.GetSelections());
@@ -69,12 +81,17 @@ namespace SDA_DonationTracker
 
 		public IEnumerable<int> GetSelections()
 		{
-			return this.TableBinding.GetSelections().Select(t => t.Source.Value<int>("pk"));
+			return this.GetSelectionObjects().Select(s => s.Value<int>("pk"));
+		}
+
+		public IEnumerable<JObject> GetSelectionObjects()
+		{
+			return this.ListBinding.GetSelections().Select(t => t.Source);
 		}
 
 		public void AddSelectionControl(Control c)
 		{
-			this.TableBinding.AddSelectionControl(c);
+			this.ListBinding.AddSelectionControl(c);
 		}
 
 		private void AbortExistingSearch()
@@ -88,11 +105,10 @@ namespace SDA_DonationTracker
 			Dictionary<string, string> result = new Dictionary<string, string>();
 
 			JObject searchObj = this.FormBinding.SaveObject();
-			JObject fieldsObj = searchObj.Value<JObject>("fields");
 
 			foreach (string field in this.SearchFields)
 			{
-				string value = fieldsObj.Value<string>(field);
+				string value = searchObj.GetField(field);
 				if (!string.IsNullOrEmpty(value))
 					result.Add(field, value);
 			}
@@ -102,22 +118,22 @@ namespace SDA_DonationTracker
 
 		private void SearchButton_Click(object sender, EventArgs e)
 		{
-			if (this.TrackerContext == null)
+			if (this.Context == null)
 				throw new Exception("Error, no TrackerContext was set.");
 
 			this.AbortExistingSearch();
 
-			this.CurrentSearch = this.TrackerContext.DeferredSearch(this.Model.ModelName, this.GetSearchParams());
+			this.CurrentSearch = this.Context.DeferredSearch(this.Model.ModelName, this.GetSearchParams());
 
 			this.CurrentSearch.OnComplete += results =>
 			{
-				this.TableBinding.LoadArray(results);
+				this.ListBinding.LoadArray(results);
 				this.FormBinding.EnableControls();
-				this.TableBinding.EnableControls();
+				this.ListBinding.EnableControls();
 			};
 
 			this.FormBinding.DisableControls();
-			this.TableBinding.DisableControls();
+			this.ListBinding.DisableControls();
 			this.CurrentSearch.Begin();
 		}
 
@@ -125,17 +141,17 @@ namespace SDA_DonationTracker
 		{
 			this.AbortExistingSearch();
 
-			this.CurrentSearch = this.TrackerContext.DeferredSearch(this.Model.ModelName, new Dictionary<string, string> { { "q", BasicSearchText.Text } });
+			this.CurrentSearch = this.Context.DeferredSearch(this.Model.ModelName, new Dictionary<string, string> { { "q", BasicSearchText.Text } });
 
 			this.CurrentSearch.OnComplete += results =>
 			{
-				this.TableBinding.LoadArray(results);
+				this.ListBinding.LoadArray(results);
 				this.FormBinding.EnableControls();
-				this.TableBinding.EnableControls();
+				this.ListBinding.EnableControls();
 			};
 
 			this.FormBinding.DisableControls();
-			this.TableBinding.DisableControls();
+			this.ListBinding.DisableControls();
 			this.CurrentSearch.Begin();
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
@@ -31,6 +32,10 @@ namespace SDA_DonationTracker
 		protected override void Run()
 		{
 			this.Result = this.Context.RunSave(this.Model, this.CreateParams);
+
+			JArray trueResult = this.Context.RunIdSearch(this.Model, this.Result.GetId() ?? 0);
+
+			this.Result = trueResult.First() as JObject;
 
 			if (this.OnComplete != null)
 				this.OnComplete.Invoke(this.Result);

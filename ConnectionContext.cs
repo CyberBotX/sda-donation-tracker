@@ -49,7 +49,7 @@ namespace SDA_DonationTracker
 		}
 
 		public event Action OnBegin;
-		public event Action OnError;
+		public event Action<TrackerErrorType, string> OnError;
 
 		public ConnectionContext(TrackerContext context)
 		{
@@ -83,23 +83,19 @@ namespace SDA_DonationTracker
 				this.Run();
 				this.Status = ContextStatus.Completed;
 			}
-			catch (WebException e)
+			catch (TrackerError e)
 			{
 				this.Status = ContextStatus.Error;
-
-				StreamReader rdr = new StreamReader(e.Response.GetResponseStream());
-				string str = rdr.ReadToEnd();
-				Console.WriteLine(str[0]);
 				this.ErrorString = e.Message;
 				if (this.OnError != null)
-					this.OnError.Invoke();
+					this.OnError.Invoke(e.ErrorType, e.Message);
 			}
 			catch (Exception e)
 			{
 				this.Status = ContextStatus.Error;
 				this.ErrorString = e.Message;
 				if (this.OnError != null)
-					this.OnError.Invoke();
+					this.OnError.Invoke(TrackerErrorType.Unknown, this.ErrorString);
 			}
 		}
 	}

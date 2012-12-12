@@ -8,7 +8,19 @@ namespace SDA_DonationTracker
 	// - there should be a way to cut down on the repetitious code between different tab initializations
 	public partial class MainForm : Form
 	{
-		public TrackerContext TrackerContext = new TrackerContext();
+		private static readonly string[] NavigableEntities = new string[]
+		{
+			"donor",
+			"donation",
+			"run",
+			"choice",
+			"challenge",
+			"prize",
+			"bid",
+			"prizecategory",
+		};
+
+		public TrackerContext Context = new TrackerContext();
 
 		public MainForm()
 		{
@@ -32,6 +44,7 @@ namespace SDA_DonationTracker
 			if (result != null)
 			{
 				this.TabControl.InvokeEx(() => this.TabControl.TabPages.Remove(result));
+				result.InvokeEx(() => result.Dispose());
 			}
 		}
 
@@ -68,7 +81,7 @@ namespace SDA_DonationTracker
 				{
 					var result = controls.Single() as EntityTab;
 
-					if (result.Id == id && result.Model == model)
+					if (result.Id == id && result.ModelName == model)
 					{
 						return page;
 					}
@@ -76,6 +89,11 @@ namespace SDA_DonationTracker
 			}
 
 			return null;
+		}
+
+		public bool IsNavigable(string model)
+		{
+			return NavigableEntities.Contains(model);
 		}
 
 		public void NavigateTo(string model, int id)
@@ -89,50 +107,51 @@ namespace SDA_DonationTracker
 			}
 			else
 			{
-				if (model.Equals("donor", StringComparison.OrdinalIgnoreCase))
+				if (model.IEquals("donor"))
 					this.NavigateToDonor(id);
-				else if (model.Equals("donation", StringComparison.OrdinalIgnoreCase))
+				else if (model.IEquals("donation"))
 					this.NavigateToDonation(id);
-				else if (model.Equals("prize", StringComparison.OrdinalIgnoreCase))
+				else if (model.IEquals("prize"))
 					this.NavigateToPrize(id);
-				else if (model.Equals("run", StringComparison.OrdinalIgnoreCase))
+				else if (model.IEquals("prizecategory"))
+					this.NavigateToPrizeCategory(id);
+				else if (model.IEquals("run"))
 					this.NavigateToRun(id);
+				else if (model.IEquals("choice"))
+					this.NavigateToChoice(id);
+				else if (model.IEquals("challenge"))
+					this.NavigateToChallenge(id);
 				else
 					throw new Exception("Error, navigation to " + model + " not supported");
 			}
 		}
 
-		private void NavigateToDonor(int id)
+		private void NavigateToDonor(int? id)
 		{
-			DonorTab form = new DonorTab()
+			DonorTab content = new DonorTab(this, this.Context)
 			{
-				Id = id,
-				TrackerContext = this.TrackerContext,
 				Dock = DockStyle.Fill,
-				Owner = this,
 			};
 
-			TabPageEx donorTab = new TabPageEx()
+			TabPageEx tab = new TabPageEx()
 			{
 				Controls =
 				{
-					form
+					content,
 				}
 			};
 
-			this.TabControl.TabPages.Add(donorTab);
-			this.TabControl.SelectTab(donorTab);
-			form.RefreshData();
+			this.TabControl.TabPages.Add(tab);
+			this.TabControl.SelectTab(tab);
+
+			content.SetInstanceId(id);
 		}
 
-		private void NavigateToDonation(int id)
+		private void NavigateToDonation(int? id)
 		{
-			DonationTab form = new DonationTab()
+			DonationTab form = new DonationTab(this, this.Context)
 			{
-				Id = id,
-				TrackerContext = this.TrackerContext,
 				Dock = DockStyle.Fill,
-				Owner = this,
 			};
 
 			TabPageEx donationTab = new TabPageEx()
@@ -145,40 +164,56 @@ namespace SDA_DonationTracker
 
 			this.TabControl.TabPages.Add(donationTab);
 			this.TabControl.SelectTab(donationTab);
-			form.RefreshData();
+			form.SetInstanceId(id);
 		}
 
-		private void NavigateToPrize(int id)
+		private void NavigateToPrize(int? id)
 		{
-			PrizeTab form = new PrizeTab()
+			PrizeTab content = new PrizeTab(this, this.Context)
 			{
-				Id = id,
-				TrackerContext = this.TrackerContext,
 				Dock = DockStyle.Fill,
-				Owner = this,
 			};
 
 			TabPageEx prizeTab = new TabPageEx()
 			{
 				Controls =
 				{
-					form
+					content
 				}
 			};
 
 			this.TabControl.TabPages.Add(prizeTab);
 			this.TabControl.SelectTab(prizeTab);
-			form.RefreshData();
+
+			content.SetInstanceId(id);
 		}
 
-		private void NavigateToRun(int id)
+		private void NavigateToPrizeCategory(int? id)
 		{
-			RunTab form = new RunTab()
+			PrizeCategoryTab content = new PrizeCategoryTab(this, this.Context)
 			{
-				Id = id,
-				TrackerContext = this.TrackerContext,
 				Dock = DockStyle.Fill,
-				Owner = this,
+			};
+
+			TabPageEx prizeTab = new TabPageEx()
+			{
+				Controls =
+				{
+					content
+				}
+			};
+
+			this.TabControl.TabPages.Add(prizeTab);
+			this.TabControl.SelectTab(prizeTab);
+
+			content.SetInstanceId(id);
+		}
+
+		private void NavigateToRun(int? id)
+		{
+			RunTab form = new RunTab(this, this.Context)
+			{
+				Dock = DockStyle.Fill,
 			};
 
 			TabPageEx runTab = new TabPageEx()
@@ -191,7 +226,55 @@ namespace SDA_DonationTracker
 
 			this.TabControl.TabPages.Add(runTab);
 			this.TabControl.SelectTab(runTab);
-			form.RefreshData();
+
+			form.SetInstanceId(id);
+		}
+
+		public void NavigateToChoice(int? id)
+		{
+			ChoiceTab form = new ChoiceTab(this, this.Context)
+			{
+				Dock = DockStyle.Fill,
+			};
+
+			TabPageEx runTab = new TabPageEx()
+			{
+				Controls =
+				{
+					form
+				}
+			};
+
+			this.TabControl.TabPages.Add(runTab);
+			this.TabControl.SelectTab(runTab);
+
+			form.SetInstanceId(id);
+		}
+
+		public void NavigateToChallenge(int? id)
+		{
+			ChallengeTab form = new ChallengeTab(this, this.Context)
+			{
+				Dock = DockStyle.Fill,
+			};
+
+			TabPageEx runTab = new TabPageEx()
+			{
+				Controls =
+				{
+					form
+				}
+			};
+
+			this.TabControl.TabPages.Add(runTab);
+			this.TabControl.SelectTab(runTab);
+
+			form.SetInstanceId(id);
+		}
+
+		public void CreateNewChoice()
+		{
+			this.NavigateToChoice(null);
 		}
 
 		private void QuitMenuItem_Click(object sender, EventArgs e)
@@ -201,110 +284,48 @@ namespace SDA_DonationTracker
 
 		public void ResetMenus()
 		{
-			this.TrackerDisconnectMenuItem.Visible = this.TrackerContext.SessionSet;
-			this.TrackertestManualMenuItem.Visible = !this.TrackerContext.SessionSet;
-			this.SearchMenu.Visible = this.TrackerContext.SessionSet;
-			this.SelectEventMenuItem.Visible = this.TrackerContext.SessionSet;
-			this.CreateMenu.Visible = this.TrackerContext.SessionSet;
+			this.TrackerDisconnectMenuItem.Visible = this.Context.SessionSet;
+			this.TrackertestManualMenuItem.Visible = !this.Context.SessionSet;
+			this.SearchMenu.Visible = this.Context.SessionSet;
+			this.SelectEventMenuItem.Visible = this.Context.SessionSet;
+			this.CreateMenu.Visible = this.Context.SessionSet;
 		}
 
 		public void CreateNewDonor()
 		{
-			DonorTab form = new DonorTab()
-			{
-				Id = null,
-				TrackerContext = this.TrackerContext,
-				Dock = DockStyle.Fill,
-				Owner = this,
-			};
-
-			TabPageEx donorTab = new TabPageEx()
-			{
-				Text = "New Donor",
-				Controls =
-				{
-					form
-				}
-			};
-
-			this.TabControl.TabPages.Add(donorTab);
-			this.TabControl.SelectTab(donorTab);
+			this.NavigateToDonor(null);
 		}
 
 		public void CreateNewDonation()
 		{
-			DonationTab form = new DonationTab()
-			{
-				Id = null,
-				TrackerContext = this.TrackerContext,
-				Dock = DockStyle.Fill,
-				Owner = this,
-			};
-
-			TabPageEx donationTab = new TabPageEx()
-			{
-				Text = "New Donation",
-				Controls =
-				{
-					form
-				}
-			};
-
-			this.TabControl.TabPages.Add(donationTab);
-			this.TabControl.SelectTab(donationTab);
+			this.NavigateToDonation(null);
 		}
 
 		public void CreateNewPrize()
 		{
-			PrizeTab form = new PrizeTab()
-			{
-				Id = null,
-				TrackerContext = this.TrackerContext,
-				Dock = DockStyle.Fill,
-				Owner = this,
-			};
-
-			TabPageEx prizeTab = new TabPageEx()
-			{
-				Text = "New Prize",
-				Controls =
-				{
-					form
-				}
-			};
-
-			this.TabControl.TabPages.Add(prizeTab);
-			this.TabControl.SelectTab(prizeTab);
+			this.NavigateToPrize(null);
 		}
 
 		public void CreateNewRun()
 		{
-			RunTab form = new RunTab()
-			{
-				Id = null,
-				TrackerContext = this.TrackerContext,
-				Dock = DockStyle.Fill,
-				Owner = this,
-			};
+			this.NavigateToRun(null);
+		}
 
-			TabPageEx runTab = new TabPageEx()
-			{
-				Text = "New Run",
-				Controls =
-				{
-					form
-				}
-			};
+		public void CreateNewChallenge()
+		{
+			this.NavigateToChallenge(null);
+		}
 
-			this.TabControl.TabPages.Add(runTab);
-			this.TabControl.SelectTab(runTab);
+		public void CreateNewPrizeCategory()
+		{
+			this.NavigateToPrizeCategory(null);
 		}
 
 		private void TrackertestManualMenuItem_Click(object sender, EventArgs e)
 		{
 			ConnectOpenIDManualForm form = new ConnectOpenIDManualForm(this)
 			{
-				Context = this.TrackerContext
+				Context = this.Context
 			};
 			form.ShowInTaskbar = false;
 			form.ShowDialog(this);
@@ -316,7 +337,7 @@ namespace SDA_DonationTracker
 		{
 			if (MessageBox.Show(this, "Are you sure you want to disconnect?", "Confirm Disconnect...", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
 			{
-				this.TrackerContext.ClearSessionId();
+				this.Context.ClearSessionId();
 				this.ResetMenus();
 			}
 		}
@@ -330,7 +351,7 @@ namespace SDA_DonationTracker
 				{
 					new SearchTab(new SearchDonorPanel())
 					{
-						TrackerContext = this.TrackerContext,
+						TrackerContext = this.Context,
 						Owner = this,
 						Dock = DockStyle.Fill,
 					}
@@ -348,7 +369,7 @@ namespace SDA_DonationTracker
 
 		private void selectEventToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			SelectEventDialog dialog = new SelectEventDialog(this, this.TrackerContext);
+			SelectEventDialog dialog = new SelectEventDialog(this, this.Context);
 			dialog.ShowInTaskbar = false;
 			dialog.Show(this);
 		}
@@ -362,7 +383,7 @@ namespace SDA_DonationTracker
 				{
 					new SearchTab(new SearchDonationPanel())
 					{
-						TrackerContext = this.TrackerContext,
+						TrackerContext = this.Context,
 						Owner = this,
 						Dock = DockStyle.Fill
 					}
@@ -391,7 +412,7 @@ namespace SDA_DonationTracker
 				{
 					new SearchTab(new SearchPrizePanel())
 					{
-						TrackerContext = this.TrackerContext,
+						TrackerContext = this.Context,
 						Owner = this,
 						Dock = DockStyle.Fill
 					}
@@ -410,7 +431,7 @@ namespace SDA_DonationTracker
 				{
 					new SearchTab(new SearchRunPanel())
 					{
-						TrackerContext = this.TrackerContext,
+						TrackerContext = this.Context,
 						Owner = this,
 						Dock = DockStyle.Fill
 					}
@@ -428,6 +449,78 @@ namespace SDA_DonationTracker
 		private void runToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
 			this.CreateNewRun();
+		}
+
+		private void choiceToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			this.CreateNewChoice();
+		}
+
+		private void choiceToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			TabPageEx choiceTab = new TabPageEx()
+			{
+				Text = "Choice Search",
+				Controls =
+				{
+					new SearchTab(new SearchChoicePanel())
+					{
+						TrackerContext = this.Context,
+						Owner = this,
+						Dock = DockStyle.Fill
+					}
+				}
+			};
+			this.TabControl.TabPages.Add(choiceTab);
+			this.TabControl.SelectTab(choiceTab);
+		}
+
+		private void challengeToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			this.CreateNewChallenge();
+		}
+
+		private void challengeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			TabPageEx challengeSearchTab = new TabPageEx()
+			{
+				Text = "Challenge Search",
+				Controls =
+				{
+					new SearchTab(new SearchChallengePanel())
+					{
+						TrackerContext = this.Context,
+						Owner = this,
+						Dock = DockStyle.Fill
+					}
+				}
+			};
+			this.TabControl.TabPages.Add(challengeSearchTab);
+			this.TabControl.SelectTab(challengeSearchTab);
+		}
+
+		private void prizeCategoryToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			TabPageEx prizeCategorySearchTab = new TabPageEx()
+			{
+				Text = "Prize Category Search",
+				Controls =
+				{
+					new SearchTab(new SearchPrizeCategoryPanel())
+					{
+						TrackerContext = this.Context,
+						Owner = this,
+						Dock = DockStyle.Fill
+					}
+				}
+			};
+			this.TabControl.TabPages.Add(prizeCategorySearchTab);
+			this.TabControl.SelectTab(prizeCategorySearchTab);
+		}
+
+		private void prizeCategoryToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			this.CreateNewPrizeCategory();
 		}
 	}
 }

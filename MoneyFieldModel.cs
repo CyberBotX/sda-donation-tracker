@@ -4,6 +4,17 @@ namespace SDA_DonationTracker
 {
 	public class MoneyFieldModel : FieldModel
 	{
+		public MoneyFieldModel(bool readOnly = false)
+		{
+			this.ReadOnly = readOnly;
+		}
+
+		public bool ReadOnly
+		{
+			get;
+			private set;
+		}
+
 		public Type FieldType
 		{
 			get

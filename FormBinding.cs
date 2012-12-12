@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
@@ -7,10 +8,40 @@ namespace SDA_DonationTracker
 {
 	public class FormBinding : BindingContext
 	{
+		public bool SearchForm
+		{
+			get;
+			private set;
+		}
+
+		public FormBinding(string modelName, bool searchForm = false)
+		{
+			this.ModelName = modelName;
+			this.Model = DonationModels.GetModel(modelName);
+			this.SearchForm = searchForm;
+		}
+
+		public string ModelName
+		{
+			get;
+			private set;
+		}
+
+		public EntityModel Model
+		{
+			get;
+			private set;
+		}
+
 		private readonly string FieldsField = "fields";
 
 		private Dictionary<string, FieldBinding> Bindings = new Dictionary<string, FieldBinding>();
-		private JToken LoadedData;
+		private JObject CachedData;
+
+		public int? GetBoundId()
+		{
+			return (this.CachedData != null) ? this.CachedData.GetId() : null;
+		}
 
 		public void AddBinding(string fieldName, TextBoxBase textBox)
 		{
@@ -48,44 +79,65 @@ namespace SDA_DonationTracker
 			this.Bindings.Add(fieldName, binding);
 		}
 
-		public void LoadObject(JToken data)
+		public void LoadObject(JObject data)
 		{
-			this.LoadedData = data;
-
-			JObject fields = data.Value<JObject>(FieldsField);
+			this.CachedData = data;
 
 			foreach (KeyValuePair<string, FieldBinding> entry in this.Bindings)
 			{
-				string value = fields.Value<string>(entry.Key);
+				string value = this.CachedData.GetField(entry.Key);
 				entry.Value.LoadField(value);
 			}
 		}
 
-		public JObject SaveObject()
+		/**
+		 * Calling this with diffOnly=true will, if there is already a cached object, return
+		 * only those fields whose values have changed.
+		 */
+		public JObject SaveObject(bool diffOnly = false)
 		{
 			JObject obj = new JObject();
+			obj.Add(FieldsField, new JObject());
 
-			if (LoadedData != null)
+			if (this.CachedData != null)
 			{
-				obj.Add("pk", LoadedData.Value<string>("pk"));
-				obj.Add("model", LoadedData.Value<string>("model"));
+				if (this.CachedData.GetId() != null)
+					obj.SetId(this.CachedData.GetId() ?? 0);
+
+				obj.SetModel(this.CachedData.GetModel());
 			}
 
-			JObject fields = new JObject();
-
 			foreach (KeyValuePair<string, FieldBinding> entry in this.Bindings)
-				fields.Add(entry.Key, entry.Value.RetreiveField());
+			{
+				FieldModel field = this.SearchForm ? this.Model.GetSearchField(entry.Key).FieldType : this.Model.GetField(entry.Key);
 
-			obj.Add("fields", fields);
+				string fieldValue = entry.Value.RetreiveField();
+				if (!field.ReadOnly && (!diffOnly || this.CachedData == null || !Util.EqualsEx(fieldValue, this.CachedData.GetField(entry.Key))))
+					obj.SetField(entry.Key, fieldValue);
+			}
 
 			Console.WriteLine(obj.ToString());
 
 			return obj;
 		}
 
+		public bool HasUnsavedChanges()
+		{
+			return this.SaveObject(true).GetFields().Any();
+		}
+
 		public IEnumerable<string> GetBindingKeys()
 		{
 			return this.Bindings.Keys;
+		}
+
+		public void ClearFields()
+		{
+			this.CachedData = null;
+			foreach (KeyValuePair<string, FieldBinding> entry in this.Bindings)
+			{
+				entry.Value.LoadField(null);
+			}
 		}
 	}
 }

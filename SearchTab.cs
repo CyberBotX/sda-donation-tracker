@@ -10,11 +10,11 @@ namespace SDA_DonationTracker
 		{
 			get
 			{
-				return this.SearchPanel.TrackerContext;
+				return this.SearchPanel.Context;
 			}
 			set
 			{
-				this.SearchPanel.TrackerContext = value;
+				this.SearchPanel.Context = value;
 			}
 		}
 

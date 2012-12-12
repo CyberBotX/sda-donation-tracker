@@ -14,6 +14,7 @@ namespace SDA_DonationTracker
 
 		public void LoadField(string data)
 		{
+			data = data ?? "false";
 			this.CheckBox.InvokeEx(() => this.CheckBox.Checked = bool.Parse(data));
 		}
 

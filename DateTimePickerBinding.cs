@@ -20,7 +20,18 @@ namespace SDA_DonationTracker
 
 		public void LoadField(string data)
 		{
-			this.Picker.InvokeEx(() => this.Picker.Value = DateTimeFieldModel.ParseDate(data));
+			if (string.IsNullOrEmpty(data))
+			{
+				this.Picker.InvokeEx(() => 
+				{
+					this.Picker.Value = DateTime.Now;
+					this.Picker.Checked = false;
+				});
+			}
+			else
+			{
+				this.Picker.InvokeEx(() => this.Picker.Value = DateTimeFieldModel.ParseDate(data));
+			}
 		}
 
 		public string RetreiveField()
@@ -31,7 +42,7 @@ namespace SDA_DonationTracker
 				return DateTimeFieldModel.SerializeDate(t);
 			}
 			else
-				return "";
+				return null;
 		}
 	}
 }

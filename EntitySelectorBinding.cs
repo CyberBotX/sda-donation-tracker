@@ -4,6 +4,11 @@ namespace SDA_DonationTracker
 {
 	class EntitySelectorBinding : FieldBinding
 	{
+		~EntitySelectorBinding()
+		{
+			this.Selector.Deinitialize();
+		}
+
 		public EntitySelector Selector { get; private set; }
 
 		public Control BoundControl
@@ -18,7 +23,7 @@ namespace SDA_DonationTracker
 
 		public void LoadField(string data)
 		{
-			this.Selector.SetSelectedId(int.Parse(data));
+			this.Selector.SetSelectedId(data != null ? (int?)int.Parse(data) : null);
 		}
 
 		public string RetreiveField()

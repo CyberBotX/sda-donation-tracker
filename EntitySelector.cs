@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
@@ -13,10 +14,23 @@ namespace SDA_DonationTracker
 	// representation off of its EntityModel, requires, again, more external work)
 	public partial class EntitySelector : UserControl
 	{
-		private static readonly TimeSpan RefreshOffset = new TimeSpan(0, 0, 30);
+		public TrackerContext Context
+		{
+			get
+			{
+				return this.Cache != null ? this.Cache.Context : null;
+			}
+		}
 
-		public EntityModel Model { get; set; }
-		public TrackerContext TrackerContext { get; set; }
+		public string ModelName
+		{
+			get
+			{
+				return this.Cache != null ? this.Cache.ModelName : null;
+			}
+		}
+
+		public EntitySelectionCache Cache { get; private set; }
 
 		public MainForm Owner
 		{
@@ -31,55 +45,86 @@ namespace SDA_DonationTracker
 			}
 		}
 
-		private TrackerContext _Context;
 		private MainForm _Owner;
+
+		public int? Value
+		{
+			get
+			{
+				return this.GetSelectedId();
+			}
+			set
+			{
+				this.SetSelectedId(value);
+			}
+		}
+
+		public bool UseSelectionCache
+		{
+			get
+			{
+				return this._UseSelectionCache;
+			}
+			set
+			{
+				this._UseSelectionCache = value;
+				this.NameText.ReadOnly = !value;
+				this.ClearButton.Visible = !value;
+
+				if (value && this.Cache != null)
+				{
+					this.Cache.RequestRefresh(EntitySelectionCacheRefreshType.Light);
+				}
+			}
+		}
+
+		private bool _UseSelectionCache;
+
 		private int? SelectedId;
-		private DateTime LastRefreshedAutoComplete;
-		private AutoCompleteStringCollection AutoCompleteCollection;
-		private Dictionary<string, int> LabelMapping;
-		private BindingContext Binding;
-		private Mutex ModificationMutex;
-		private SearchContext Searcher;
 
 		public EntitySelector()
 		{
 			this.InitializeComponent();
 
-			this.ModificationMutex = new Mutex();
-			this.Binding = new BindingContext();
-
-			this.Binding.AddAssociatedControl(this.NameText);
-			this.Binding.AddAssociatedControl(this.OpenButton);
-
-			this.LabelMapping = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-			this.AutoCompleteCollection = new AutoCompleteStringCollection();
-
-			this.NameText.AutoCompleteCustomSource = this.AutoCompleteCollection;
+			this.NameText.AutoCompleteCustomSource = new AutoCompleteStringCollection();
 			this.NameText.TextChanged += OnTextChanged;
-
-			this.LastRefreshedAutoComplete = DateTime.MinValue;
 
 			this.SelectedId = null;
 		}
 
-		public void Initialize(TrackerContext context, string model)
+		public void Deinitialize()
 		{
-			try
+			if (this.Cache != null)
 			{
-				this.ModificationMutex.WaitOne();
-				this.AutoCompleteCollection.Clear();
-				this.LabelMapping.Clear();
+				this.Cache.DataRefreshed -= this.RebuildMappingInfo;
+			}
 
-				this.TrackerContext = context;
-				this.Model = DonationModels.GetModel(model);
-				this.SelectedId = null;
-				this.NameText.InvokeEx(() => this.NameText.Text = "");
-				this.RefreshAutoComplete();
-			}
-			finally
+			this.Cache = null;
+		}
+
+		public void Initialize(TrackerContext context, string modelName)
+		{
+			if (this.Cache != null)
 			{
-				this.ModificationMutex.ReleaseMutex();
+				this.Cache.DataRefreshed -= this.RebuildMappingInfo;
 			}
+
+			this.Cache = context.GetEntitySelectionCache(modelName);
+			this.Cache.DataRefreshed += this.RebuildMappingInfo;
+
+			this.SelectedId = null;
+			this.NameText.InvokeEx(() => this.NameText.AutoCompleteCustomSource = new AutoCompleteStringCollection());
+			this.NameText.InvokeEx(() => this.NameText.Text = "");
+
+			this.RebuildMappingInfo(this.Cache.GetLatestCache());
+
+			if (this.UseSelectionCache)
+			{
+				this.Cache.RequestRefresh(EntitySelectionCacheRefreshType.Strong);
+			}
+
+			this.SearchButton.Visible = SearchPanelHelpers.HasSearchPanel(this.ModelName);
+
 		}
 
 		private void SetOpenButtonState()
@@ -90,40 +135,61 @@ namespace SDA_DonationTracker
 		public override Size GetPreferredSize(Size proposedSize)
 		{
 			Size textSize = this.NameText.GetPreferredSize(proposedSize);
-			Size buttonSize = this.ButtonsPanel.GetPreferredSize(proposedSize);
-			return new Size(textSize.Width + buttonSize.Width, Math.Max(textSize.Height, buttonSize.Height));
+			Size buttonSize = this.SearchButton.GetPreferredSize(proposedSize);
+			return new Size(proposedSize.Width, Math.Max(textSize.Height, buttonSize.Height) + 5);
+		}
+
+		public void SetSelectorText(string text)
+		{
+			this.NameText.InvokeEx(() => this.NameText.Text = text);
+		}
+
+		public string GetSelectorText()
+		{
+			return this.NameText.Text;
 		}
 
 		public void SetSelectedId(int? target)
 		{
 			this.SelectedId = target;
-			this.RefreshAutoComplete();
+
+			if (this.UseSelectionCache)
+			{
+				this.Cache.RequestRefresh();
+			}
 
 			bool found = false;
-			string selectionText = null;
+			string selectionText;
 
-			try
+			if (this.SelectedId != null)
 			{
-				this.ModificationMutex.WaitOne();
+				if (UseSelectionCache)
+				{
+					found = this.Cache.GetLatestCache().TryGetLeftToRight(this.SelectedId ?? 0, out selectionText);
 
-				foreach (KeyValuePair<string, int> entry in this.LabelMapping)
-					if (entry.Value == target)
+					if (found)
 					{
-						selectionText = entry.Key;
-						found = true;
+						this.NameText.InvokeEx(() => this.NameText.Text = selectionText);
+						this.SetOpenButtonState();
 					}
+				}
+				else
+				{
+					SearchContext searcher = this.Context.DeferredIdSearch(this.ModelName, this.SelectedId ?? 0);
+					searcher.OnComplete += (results) =>
+					{
+						JObject result = results.First as JObject;
+						this.NameText.InvokeEx(() => this.NameText.Text = result.GetDisplayName());
+						this.SetOpenButtonState();
+					};
+					searcher.OnError += (type, message) =>
+					{
+						this.SelectedId = null;
+					};
+					searcher.Begin();
+				}
 			}
-			finally
-			{
-				this.ModificationMutex.ReleaseMutex();
-			}
-
-			if (found)
-			{
-				this.NameText.InvokeEx(() => this.NameText.Text = selectionText);
-				this.SetOpenButtonState();
-			}
-			else if (this.SelectedId == null)
+			else
 			{
 				this.NameText.InvokeEx(() => this.NameText.Text = "");
 				this.SetOpenButtonState();
@@ -135,90 +201,80 @@ namespace SDA_DonationTracker
 			return this.SelectedId;
 		}
 
-		private void RefreshAutoComplete(bool waitOnResults = false)
+		private void RebuildMappingInfo(IBiMap<int, string> latestData)
 		{
-			if (this.LastRefreshedAutoComplete.Add(RefreshOffset) < DateTime.Now && (this.Searcher == null || !this.Searcher.Busy))
+			AutoCompleteStringCollection autoComplete = new AutoCompleteStringCollection();
+
+			foreach (var entry in latestData.EnumerateRightToLeft())
 			{
-				this.LastRefreshedAutoComplete = DateTime.Now;
+				autoComplete.Add(entry.Key);
 
-				this.Searcher = this.TrackerContext.DeferredSearch(this.Model.ModelName, new Dictionary<string, string>());
-
-				this.Searcher.OnComplete += (results) =>
+				if (this.SelectedId == entry.Value)
 				{
-					try
-					{
-						this.ModificationMutex.WaitOne();
-
-						this.AutoCompleteCollection = new AutoCompleteStringCollection();
-						this.LabelMapping.Clear();
-
-						foreach (JObject obj in results.Values<JObject>())
-						{
-							int id = obj.GetId() ?? 0;
-							string label = this.Model.DisplayConverter(obj);
-
-							this.LabelMapping[label] = id;
-							this.AutoCompleteCollection.Add(label);
-						}
-
-						this.NameText.InvokeEx(() => this.NameText.AutoCompleteCustomSource = this.AutoCompleteCollection);
-						//this.NameText.InvokeEx(() => this.NameText.Enabled = true);
-					}
-					finally
-					{
-						this.ModificationMutex.ReleaseMutex();
-					}
-
-					if (this.SelectedId != null && string.IsNullOrEmpty(this.NameText.Text))
-						this.SetSelectedId(this.SelectedId);
-					else if (!string.IsNullOrEmpty(this.NameText.Text))
-						this.SetSelectionFromText();
-				};
-
-				this.Searcher.Begin();
-
-				// busy wait 
-				while (waitOnResults && this.Searcher.Busy)
-					;
+					this.NameText.InvokeEx(() => this.NameText.Text = entry.Key);
+				}
 			}
+
+			this.NameText.InvokeEx(() => this.NameText.AutoCompleteCustomSource = autoComplete);
+			this.SetSelectionFromText();
 		}
 
 		private void OnTextChanged(object obj, EventArgs args)
 		{
-			this.RefreshAutoComplete();
-			this.SetSelectionFromText();
+			if (this.UseSelectionCache)
+			{
+				this.Cache.RequestRefresh();
+				this.SetSelectionFromText();
+			}
 		}
 
 		private void SetSelectionFromText()
 		{
-			try
+			IBiMap<int, string> latestCache = this.Cache.GetLatestCache();
+
+			int value;
+
+			if (latestCache.TryGetRightToLeft(this.NameText.Text, out value))
 			{
-				this.ModificationMutex.WaitOne();
-
-				int value;
-
-				if (this.LabelMapping.TryGetValue(this.NameText.Text, out value))
-				{
-					this.SelectedId = value;
-					this.SetOpenButtonState();
-				}
-				// Not sure if this is a good idea or not..., what happens when you try to save w/ a null donor for example?
-				else if (string.IsNullOrEmpty(this.NameText.Text))
-				{
-					this.SelectedId = null;
-					this.SetOpenButtonState();
-				}
+				this.SelectedId = value;
+				this.SetOpenButtonState();
 			}
-			finally
+			// Not sure if this is a good idea or not..., what happens when you try to save w/ a null donor for example?
+			else if (string.IsNullOrEmpty(this.NameText.Text))
 			{
-				this.ModificationMutex.ReleaseMutex();
+				this.SelectedId = null;
+				this.SetOpenButtonState();
 			}
 		}
 
 		private void OpenButton_Click(object sender, EventArgs e)
 		{
 			if (this.Owner != null && this.SelectedId != null)
-				this.Owner.NavigateTo(this.Model.ModelName, this.SelectedId ?? 0);
+				this.Owner.NavigateTo(this.Cache.ModelName, this.SelectedId ?? 0);
+		}
+
+		private void SearchButton_Click(object sender, EventArgs e)
+		{
+			if (this.Context != null && SearchPanelHelpers.HasSearchPanel(this.ModelName))
+			{
+				SearchPanel panel = SearchPanelHelpers.CreatePanelForModel(this.ModelName);
+				panel.Context = this.Context;
+
+				SearchDialog dialog = new SearchDialog(panel);
+				dialog.ShowDialog();
+
+				if (dialog.Result != null)
+				{
+					this.SelectedId = dialog.Result.GetId();
+					this.NameText.InvokeEx(() => this.NameText.Text = dialog.Result.GetDisplayName());
+					this.SetOpenButtonState();
+				}
+			}
+		}
+
+		private void ClearButton_Click(object sender, EventArgs e)
+		{
+			this.SetSelectedId(null);
 		}
 	}
 }

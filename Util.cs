@@ -1,11 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System;
+using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
 	public static class Util
 	{
+		/**
+		 * I normally dislike using variadics like this, but it helps cut down on code a lot, 
+		 * so I'm breaking my own rule here.
+		 */
 		public static IEnumerable<KeyValuePair<string, string>> CreateSearchParams(params string[] stuff)
 		{
 			Dictionary<string, string> list = new Dictionary<string, string>(stuff.Length / 2);
@@ -16,9 +22,56 @@ namespace SDA_DonationTracker
 			return list;
 		}
 
+		public static IEnumerable<KeyValuePair<string, string>> CreateIdSearch(int id)
+		{
+			return CreateSearchParams("id", id.ToString());
+		}
+
+		public static Dictionary<string, string> BuildSaveParams(JObject obj)
+		{
+			var result = new Dictionary<string, string>();
+
+			foreach (var field in obj.GetFields())
+			{
+				result[field.Key] = field.Value;
+			}
+
+			int? id = obj.GetId();
+
+			if (id != null)
+			{
+				result["id"] = id.ToString();
+			}
+
+			return result;
+		}
+
+		/*
+		public static IEnumerable<KeyValuePair<string, string>> BuildSaveParams(FormBinding formBinding, int? knownId = null)
+		{
+			Dictionary<string, string> result = new Dictionary<string, string>();
+
+			JObject data = formBinding.SaveObject();
+
+			JObject fields = data.Value<JObject>("fields");
+
+			foreach (string field in formBinding.GetBindingKeys())
+				result.Add(field, fields.Value<string>(field));
+
+			if (knownId != null)
+				result.Add("id", knownId.ToString());
+
+			return result;
+		}*/
+
 		public static IEnumerable<T> Concat1<T>(this IEnumerable<T> self, T toAdd)
 		{
 			return self.Concat(new T[] { toAdd });
+		}
+
+		public static bool IEquals(this string self, string other)
+		{
+			return self.Equals(other, StringComparison.OrdinalIgnoreCase);
 		}
 
 		public static string SymbolToNatural(this string self)
@@ -42,6 +95,18 @@ namespace SDA_DonationTracker
 			}
 
 			return builder.ToString();
+		}
+
+		public static bool EqualsEx(object left, object right)
+		{
+			if (left == null || right == null)
+			{
+				return left == right;
+			}
+			else
+			{
+				return left.Equals(right);
+			}
 		}
 	}
 }

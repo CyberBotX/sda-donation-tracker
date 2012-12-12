@@ -6,6 +6,11 @@ namespace SDA_DonationTracker
 {
 	public class SearchContext : ConnectionContext
 	{
+		public bool SingleSearch
+		{
+			get;
+			private set; 
+		}
 		public string Model
 		{
 			get;
@@ -23,9 +28,10 @@ namespace SDA_DonationTracker
 		}
 		public event Action<JArray> OnComplete;
 
-		public SearchContext(TrackerContext context, string model, IEnumerable<KeyValuePair<string, string>> searchParams)
+		public SearchContext(TrackerContext context, string model, IEnumerable<KeyValuePair<string, string>> searchParams, bool singleSearch = false)
 			: base(context)
 		{
+			this.SingleSearch = singleSearch;
 			this.Model = model;
 			this.SearchParams = searchParams;
 			this.Result = null;
@@ -38,7 +44,7 @@ namespace SDA_DonationTracker
 
 		protected override void Run()
 		{
-			this.Result = this.Context.RunSearch(this.Model, this.SearchParams);
+			this.Result = this.Context.RunSearch(this.Model, this.SearchParams, this.SingleSearch);
 
 			if (this.OnComplete != null)
 					this.OnComplete.Invoke(this.Result);

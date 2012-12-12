@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using System;
 
 namespace SDA_DonationTracker
 {
@@ -18,7 +19,7 @@ namespace SDA_DonationTracker
 
 			this.TextBox.Validating += (o, e) =>
 			{
-				if (!this.IsDecimal(this.TextBox.Text))
+				if (this.TextBox.Text.Trim().Length > 0 && !this.IsDecimal(this.TextBox.Text))
 				{
 					e.Cancel = true;
 					this.LoadField(LastKnownGoodValue == null ? "" : LastKnownGoodValue.ToString());
@@ -42,6 +43,8 @@ namespace SDA_DonationTracker
 
 		private void SetText(string data)
 		{
+			data = data ?? "0.00";
+
 			if (data.Trim().Length == 0)
 			{
 				this.LastKnownGoodValue = null;
