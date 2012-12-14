@@ -312,9 +312,9 @@
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(3, 360);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(37, 13);
+			this.label3.Size = new System.Drawing.Size(75, 13);
 			this.label3.TabIndex = 5;
-			this.label3.Text = "Mode:";
+			this.label3.Text = "Volume Mode:";
 			// 
 			// MinimumAmountText
 			// 

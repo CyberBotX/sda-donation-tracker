@@ -96,7 +96,7 @@ namespace SDA_DonationTracker
 				{ "starttime", new DateTimeFieldModel(nullable: false) },
 				{ "endtime", new DateTimeFieldModel(nullable: false) },
 				{ "bids", new EntitySetModel("bid", "speedrun", "run", OrphanResolution.Null) },
-				//{ "drawPrizes", new EntitySetModel("prize", "endgame", OrphanResolution.Null) },
+				{ "endprizes", new EntitySetModel("prize", "endrun", "endrun", OrphanResolution.Null) },
 			},
 			new Dictionary<string, SearchFieldModel>()
 			{

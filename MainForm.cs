@@ -5,8 +5,8 @@ using System.Windows.Forms;
 namespace SDA_DonationTracker
 {
 	// TODO: 
-	// - Add code such that tabs can intercept the 'close' notification, and decide whether or not to close
-	//   - Possibly an 'ITab' interface with a 'bool ConfirmClose()' method
+	// - Create a 'Process Donations' task, that can handle assigning bids and dealing with comment approval
+	// - Add a way to call Chipin merge, gdoc merge, and prize drawings
 
 	public partial class MainForm : Form
 	{

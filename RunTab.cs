@@ -22,6 +22,7 @@ namespace SDA_DonationTracker
 
 			this.AddForm(this.RunPanel.RunForm.Binding);
 			this.AddTable(this.RunPanel.BidTable.Binding, this.Model.GetField("bids") as EntitySetModel);
+			this.AddTable(this.RunPanel.PrizeTable.Binding, this.Model.GetField("endprizes") as EntitySetModel);
 		}
 
 		protected override void Dispose(bool disposing)

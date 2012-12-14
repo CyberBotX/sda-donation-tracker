@@ -15,6 +15,7 @@ namespace SDA_DonationTracker
 		private TableLayoutPanel RootPanel;
 		public EntityFormPanelConstruct RunForm { get; private set; }
 		public EntityTablePanelConstruct BidTable { get; private set; }
+		public EntityTablePanelConstruct PrizeTable { get; private set; }
 
 		public RunEditPanel(TrackerContext context, MainForm owner)
 			: base("run", context, owner)
@@ -25,9 +26,10 @@ namespace SDA_DonationTracker
 			};
 
 			this.RootPanel.RowCount = 2;
-			this.RootPanel.ColumnCount = 1;
+			this.RootPanel.ColumnCount = 2;
 
-			this.RootPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100.0f));
+			this.RootPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.0f));
+			this.RootPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.0f));
 			this.RootPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 60.0f));
 			this.RootPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 40.0f));
 
@@ -59,11 +61,25 @@ namespace SDA_DonationTracker
 				AddAllowed = false,
 			};
 
+			this.PrizeTable = new EntityTablePanelConstruct("prize", this.Owner, this.Context,
+				new string[]
+				{
+					"name",
+				}
+			)
+			{
+				Dock = DockStyle.Fill,
+				AddAllowed = false,
+			};
+
 			this.BidTable.Binding.AddDefaultModelMapping("choice");
 			this.BidTable.Binding.AddDefaultModelMapping("challenge");
+			this.PrizeTable.Binding.AddDefaultModelMapping("prize");
 
 			this.RootPanel.Controls.Add(this.RunForm, 0, 0);
+			this.RootPanel.SetColumnSpan(this.RunForm, 2);
 			this.RootPanel.Controls.Add(this.BidTable, 0, 1);
+			this.RootPanel.Controls.Add(this.PrizeTable, 1, 1);
 
 			this.Controls.Add(this.RootPanel);
 		}
@@ -87,7 +103,7 @@ namespace SDA_DonationTracker
 		{
 			get
 			{
-				return new TableBinding[] { this.BidTable.Binding };
+				return new TableBinding[] { this.BidTable.Binding, this.PrizeTable.Binding };
 			}
 		}
 	}
