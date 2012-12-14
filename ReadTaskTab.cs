@@ -59,9 +59,13 @@ namespace SDA_DonationTracker
 
 			this.DonationBinding = new FormBinding("donation");
 			this.DonationBinding.AddInstanceBinding(new PublicDonorNameBinding(this.DonorNameText, true));
-			this.DonationBinding.AddBinding("amount", this.AmountText);
-			this.DonationBinding.AddBinding("comment", new TextBoxBinding(this.CommentText, longText: true));
-			this.DonationBinding.AddBinding("modcomemnt", new TextBoxBinding(this.ModCommentText, longText: true));
+			this.DonationBinding.AddBinding("amount", new MoneyFieldBinding(this.AmountText, readOnly: true, allowNull: false));
+			this.DonationBinding.AddBinding("comment", new TextBoxBinding(this.CommentText, readOnly: true, nullable: false, longText: true));
+			this.DonationBinding.AddBinding("modcomment", new TextBoxBinding(this.ModCommentText, readOnly: true, nullable: false, longText: true));
+			this.DonationBinding.AddBinding("readstate", this.ReadStateBox, typeof(DonationReadState));
+			this.DonationBinding.AddBinding("commentstate", this.CommentStateBox, typeof(DonationCommentState));
+			this.DonationBinding.AddBinding("bidstate", this.BidStateBox, typeof(DonationBidState));
+			
 			this.DonationBinding.AddAssociatedControl(this.OpenDonorButton);
 			this.DonationBinding.AddAssociatedControl(this.OpenDonationButton);
 			this.DonationBinding.AddAssociatedControl(this.NextButton);
@@ -195,17 +199,17 @@ namespace SDA_DonationTracker
 		{
 			if (this.CurrentObject != null)
 			{
-				JObject savingObject = this.CurrentObject;
+				JObject savingObject = this.DonationBinding.SaveObject();
+				JObject diffedObject = this.DonationBinding.SaveObject(diffOnly: true);
 
-				if (savingObject.GetField("readstate").IEquals(DonationReadState.PENDING.ToString()))
+				if (diffedObject.HasField("readstate") || savingObject.GetField("readstate").IEquals(DonationReadState.PENDING.ToString()))
 				{
-					var saveParams = new Dictionary<string, string>()
+					if (!diffedObject.HasField("readstate"))
 					{
-						{ "id", savingObject.GetId().ToString() },
-						{ "readstate", DonationReadState.READ.ToString() },
-					};
+						diffedObject.SetField("readstate", DonationReadState.READ.ToString());
+					}
 
-					SaveContext saver = this.Context.DeferredSave("donation", saveParams);
+					SaveContext saver = this.Context.DeferredSave("donation", Util.BuildSaveParams(diffedObject));
 
 					saver.OnComplete += (obj) =>
 					{

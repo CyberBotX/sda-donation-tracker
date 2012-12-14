@@ -51,6 +51,12 @@
 			this.MinimumAmountText = new System.Windows.Forms.TextBox();
 			this.ModeBox = new System.Windows.Forms.ComboBox();
 			this.MinimumMinutesText = new System.Windows.Forms.TextBox();
+			this.ReadStateLabel = new System.Windows.Forms.Label();
+			this.CommentStateLabel = new System.Windows.Forms.Label();
+			this.BidStateLabel = new System.Windows.Forms.Label();
+			this.ReadStateBox = new System.Windows.Forms.ComboBox();
+			this.CommentStateBox = new System.Windows.Forms.ComboBox();
+			this.BidStateBox = new System.Windows.Forms.ComboBox();
 			((System.ComponentModel.ISupportInitialize)(this.RootSplit)).BeginInit();
 			this.RootSplit.Panel1.SuspendLayout();
 			this.RootSplit.Panel2.SuspendLayout();
@@ -149,15 +155,24 @@
 			this.DonationPanel.Controls.Add(this.CommentText, 1, 2);
 			this.DonationPanel.Controls.Add(this.ModCommentLabel, 0, 3);
 			this.DonationPanel.Controls.Add(this.ModCommentText, 1, 3);
-			this.DonationPanel.Controls.Add(this.tableLayoutPanel1, 1, 4);
+			this.DonationPanel.Controls.Add(this.tableLayoutPanel1, 1, 7);
+			this.DonationPanel.Controls.Add(this.ReadStateLabel, 0, 4);
+			this.DonationPanel.Controls.Add(this.CommentStateLabel, 0, 5);
+			this.DonationPanel.Controls.Add(this.BidStateLabel, 0, 6);
+			this.DonationPanel.Controls.Add(this.ReadStateBox, 1, 4);
+			this.DonationPanel.Controls.Add(this.CommentStateBox, 1, 5);
+			this.DonationPanel.Controls.Add(this.BidStateBox, 1, 6);
 			this.DonationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.DonationPanel.Location = new System.Drawing.Point(0, 0);
 			this.DonationPanel.Name = "DonationPanel";
-			this.DonationPanel.RowCount = 5;
+			this.DonationPanel.RowCount = 8;
 			this.DonationPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.DonationPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.DonationPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
 			this.DonationPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+			this.DonationPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.DonationPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.DonationPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.DonationPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.DonationPanel.Size = new System.Drawing.Size(446, 380);
 			this.DonationPanel.TabIndex = 0;
@@ -183,19 +198,19 @@
 			// DonorNameText
 			// 
 			this.DonorNameText.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.DonorNameText.Location = new System.Drawing.Point(60, 3);
+			this.DonorNameText.Location = new System.Drawing.Point(91, 3);
 			this.DonorNameText.Name = "DonorNameText";
 			this.DonorNameText.ReadOnly = true;
-			this.DonorNameText.Size = new System.Drawing.Size(383, 20);
+			this.DonorNameText.Size = new System.Drawing.Size(352, 20);
 			this.DonorNameText.TabIndex = 3;
 			// 
 			// AmountText
 			// 
 			this.AmountText.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.AmountText.Location = new System.Drawing.Point(60, 29);
+			this.AmountText.Location = new System.Drawing.Point(91, 29);
 			this.AmountText.Name = "AmountText";
 			this.AmountText.ReadOnly = true;
-			this.AmountText.Size = new System.Drawing.Size(383, 20);
+			this.AmountText.Size = new System.Drawing.Size(352, 20);
 			this.AmountText.TabIndex = 4;
 			// 
 			// CommentLabel
@@ -210,17 +225,17 @@
 			// CommentText
 			// 
 			this.CommentText.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.CommentText.Location = new System.Drawing.Point(60, 55);
+			this.CommentText.Location = new System.Drawing.Point(91, 55);
 			this.CommentText.Multiline = true;
 			this.CommentText.Name = "CommentText";
 			this.CommentText.ReadOnly = true;
-			this.CommentText.Size = new System.Drawing.Size(383, 201);
+			this.CommentText.Size = new System.Drawing.Size(352, 145);
 			this.CommentText.TabIndex = 6;
 			// 
 			// ModCommentLabel
 			// 
 			this.ModCommentLabel.AutoSize = true;
-			this.ModCommentLabel.Location = new System.Drawing.Point(3, 259);
+			this.ModCommentLabel.Location = new System.Drawing.Point(3, 203);
 			this.ModCommentLabel.Name = "ModCommentLabel";
 			this.ModCommentLabel.Size = new System.Drawing.Size(45, 13);
 			this.ModCommentLabel.TabIndex = 7;
@@ -229,17 +244,17 @@
 			// ModCommentText
 			// 
 			this.ModCommentText.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ModCommentText.Location = new System.Drawing.Point(60, 262);
+			this.ModCommentText.Location = new System.Drawing.Point(91, 206);
 			this.ModCommentText.Multiline = true;
 			this.ModCommentText.Name = "ModCommentText";
 			this.ModCommentText.ReadOnly = true;
-			this.ModCommentText.Size = new System.Drawing.Size(383, 83);
+			this.ModCommentText.Size = new System.Drawing.Size(352, 58);
 			this.ModCommentText.TabIndex = 8;
 			// 
 			// OpenDonationButton
 			// 
 			this.OpenDonationButton.Enabled = false;
-			this.OpenDonationButton.Location = new System.Drawing.Point(174, 3);
+			this.OpenDonationButton.Location = new System.Drawing.Point(143, 3);
 			this.OpenDonationButton.Name = "OpenDonationButton";
 			this.OpenDonationButton.Size = new System.Drawing.Size(105, 20);
 			this.OpenDonationButton.TabIndex = 9;
@@ -256,17 +271,17 @@
 			this.tableLayoutPanel1.Controls.Add(this.OpenDonationButton, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.OpenDonorButton, 2, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(60, 351);
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(91, 351);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 1;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(383, 26);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(352, 26);
 			this.tableLayoutPanel1.TabIndex = 10;
 			// 
 			// OpenDonorButton
 			// 
 			this.OpenDonorButton.Enabled = false;
-			this.OpenDonorButton.Location = new System.Drawing.Point(285, 3);
+			this.OpenDonorButton.Location = new System.Drawing.Point(254, 3);
 			this.OpenDonorButton.Name = "OpenDonorButton";
 			this.OpenDonorButton.Size = new System.Drawing.Size(95, 20);
 			this.OpenDonorButton.TabIndex = 10;
@@ -326,6 +341,60 @@
 			this.MinimumMinutesText.Size = new System.Drawing.Size(106, 20);
 			this.MinimumMinutesText.TabIndex = 8;
 			// 
+			// ReadStateLabel
+			// 
+			this.ReadStateLabel.AutoSize = true;
+			this.ReadStateLabel.Location = new System.Drawing.Point(3, 267);
+			this.ReadStateLabel.Name = "ReadStateLabel";
+			this.ReadStateLabel.Size = new System.Drawing.Size(64, 13);
+			this.ReadStateLabel.TabIndex = 11;
+			this.ReadStateLabel.Text = "Read State:";
+			// 
+			// CommentStateLabel
+			// 
+			this.CommentStateLabel.AutoSize = true;
+			this.CommentStateLabel.Location = new System.Drawing.Point(3, 294);
+			this.CommentStateLabel.Name = "CommentStateLabel";
+			this.CommentStateLabel.Size = new System.Drawing.Size(82, 13);
+			this.CommentStateLabel.TabIndex = 12;
+			this.CommentStateLabel.Text = "Comment State:";
+			// 
+			// BidStateLabel
+			// 
+			this.BidStateLabel.AutoSize = true;
+			this.BidStateLabel.Location = new System.Drawing.Point(3, 321);
+			this.BidStateLabel.Name = "BidStateLabel";
+			this.BidStateLabel.Size = new System.Drawing.Size(50, 13);
+			this.BidStateLabel.TabIndex = 13;
+			this.BidStateLabel.Text = "BidState:";
+			// 
+			// ReadStateBox
+			// 
+			this.ReadStateBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ReadStateBox.FormattingEnabled = true;
+			this.ReadStateBox.Location = new System.Drawing.Point(91, 270);
+			this.ReadStateBox.Name = "ReadStateBox";
+			this.ReadStateBox.Size = new System.Drawing.Size(352, 21);
+			this.ReadStateBox.TabIndex = 14;
+			// 
+			// CommentStateBox
+			// 
+			this.CommentStateBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.CommentStateBox.FormattingEnabled = true;
+			this.CommentStateBox.Location = new System.Drawing.Point(91, 297);
+			this.CommentStateBox.Name = "CommentStateBox";
+			this.CommentStateBox.Size = new System.Drawing.Size(352, 21);
+			this.CommentStateBox.TabIndex = 15;
+			// 
+			// BidStateBox
+			// 
+			this.BidStateBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.BidStateBox.FormattingEnabled = true;
+			this.BidStateBox.Location = new System.Drawing.Point(91, 324);
+			this.BidStateBox.Name = "BidStateBox";
+			this.BidStateBox.Size = new System.Drawing.Size(352, 21);
+			this.BidStateBox.TabIndex = 16;
+			// 
 			// ReadTaskTab
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -371,5 +440,11 @@
 		private System.Windows.Forms.TextBox MinimumAmountText;
 		private System.Windows.Forms.ComboBox ModeBox;
 		private System.Windows.Forms.TextBox MinimumMinutesText;
+		private System.Windows.Forms.Label ReadStateLabel;
+		private System.Windows.Forms.Label CommentStateLabel;
+		private System.Windows.Forms.Label BidStateLabel;
+		private System.Windows.Forms.ComboBox ReadStateBox;
+		private System.Windows.Forms.ComboBox CommentStateBox;
+		private System.Windows.Forms.ComboBox BidStateBox;
 	}
 }
