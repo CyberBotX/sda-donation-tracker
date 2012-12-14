@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace SDA_DonationTracker
 {
-	public class DonationTab : NewEntityTab
+	public class DonationTab : EntityTab
 	{
 		private DonationEditPanel Panel;
 

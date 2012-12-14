@@ -16,6 +16,16 @@ namespace SDA_DonationTracker
 			private set;
 		}
 
+		// Technically, these could be nullable, but I don't have a way to represent it in the UI easily
+		// (furthermore, the preferred way to handle this is to just use another enum member)
+		public bool Nullable
+		{
+			get
+			{
+				return false;
+			}
+		}
+
 		public EnumFieldModel(Type enumType, bool readOnly = false)
 		{
 			this.ReadOnly = readOnly;

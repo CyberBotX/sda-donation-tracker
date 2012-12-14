@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SDA_DonationTracker
 {
-	public class DonorTab : NewEntityTab
+	public class DonorTab : EntityTab
 	{
 		private DonorEditPanel DonorPanel;
 

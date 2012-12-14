@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace SDA_DonationTracker
 {
-	public partial class SearchTab : UserControl
+	public partial class SearchTab : UserControl, ITab
 	{
 		public MainForm Owner { get; set; }
 		public TrackerContext TrackerContext
@@ -23,6 +23,11 @@ namespace SDA_DonationTracker
 			this.SearchPanel = searchPanel;
 			this.InitializeComponent();
 			this.SearchPanel.AddSelectionControl(this.OpenButton);
+		}
+
+		public bool ConfirmClose()
+		{
+			return true;
 		}
 
 		private void OpenButton_Click(object sender, EventArgs e)

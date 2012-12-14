@@ -8,9 +8,10 @@ namespace SDA_DonationTracker
 		public static readonly string DateFormatFromPicker = "yyyy-MM-dd HH:mm:ss";
 		public static readonly string DateFormatForPicker = "yyyy/MM/dd HH:mm:ss";
 
-		public DateTimeFieldModel(bool readOnly = false)
+		public DateTimeFieldModel(bool readOnly = false, bool nullable = true)
 		{
 			this.ReadOnly = readOnly;
+			this.Nullable = nullable;
 		}
 
 		public Type FieldType
@@ -19,6 +20,12 @@ namespace SDA_DonationTracker
 		}
 
 		public bool ReadOnly
+		{
+			get;
+			private set;
+		}
+
+		public bool Nullable
 		{
 			get;
 			private set;

@@ -7,9 +7,10 @@ namespace SDA_DonationTracker
 		public CheckBox CheckBox { get; private set; }
 		public Control BoundControl { get { return this.CheckBox; } }
 
-		public CheckBoxBinding(CheckBox checkBox)
+		public CheckBoxBinding(CheckBox checkBox, bool readOnly = false)
 		{
 			this.CheckBox = checkBox;
+			this.CheckBox.Enabled = !readOnly;
 		}
 
 		public void LoadField(string data)

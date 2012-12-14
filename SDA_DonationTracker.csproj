@@ -102,10 +102,21 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="EntitySelectionCache.cs" />
+    <Compile Include="EntityTabHelpers.cs" />
     <Compile Include="IBiMap.cs" />
+    <Compile Include="InstanceBinding.cs" />
+    <Compile Include="IntFieldBinding.cs" />
+    <Compile Include="ITab.cs" />
     <Compile Include="JoinWaiter.cs" />
     <Compile Include="PrizeCategoryTab.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PublicDonationDonorNameBinding.cs" />
+    <Compile Include="ReadTaskTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ReadTaskTab.Designer.cs">
+      <DependentUpon>ReadTaskTab.cs</DependentUpon>
     </Compile>
     <Compile Include="RunEditPanel.cs">
       <SubType>UserControl</SubType>
@@ -158,7 +169,7 @@
       <DependentUpon>EntitySelector.cs</DependentUpon>
     </Compile>
     <Compile Include="EntitySelectorBinding.cs" />
-    <Compile Include="EntityTab.cs" />
+    <Compile Include="IEntityTab.cs" />
     <Compile Include="EntityFormPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -175,11 +186,11 @@
     <Compile Include="DonorTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="NewEntityTab.cs">
+    <Compile Include="EntityTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="NewEntityTab.Designer.cs">
-      <DependentUpon>NewEntityTab.cs</DependentUpon>
+    <Compile Include="EntityTab.Designer.cs">
+      <DependentUpon>EntityTab.cs</DependentUpon>
     </Compile>
     <Compile Include="DonorEditPanel.cs">
       <SubType>UserControl</SubType>
@@ -279,8 +290,8 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewEntityTab.resx">
-      <DependentUpon>NewEntityTab.cs</DependentUpon>
+    <EmbeddedResource Include="EntityTab.resx">
+      <DependentUpon>EntityTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -292,6 +303,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ReadTaskTab.resx">
+      <DependentUpon>ReadTaskTab.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SearchDonationPanel.resx">
       <DependentUpon>SearchDonationPanel.cs</DependentUpon>
     </EmbeddedResource>

@@ -4,22 +4,12 @@ using System.Windows.Forms;
 
 namespace SDA_DonationTracker
 {
-	// TODO: figure out a reasonable way to deal with tabbing:
-	// - there should be a way to cut down on the repetitious code between different tab initializations
+	// TODO: 
+	// - Add code such that tabs can intercept the 'close' notification, and decide whether or not to close
+	//   - Possibly an 'ITab' interface with a 'bool ConfirmClose()' method
+
 	public partial class MainForm : Form
 	{
-		private static readonly string[] NavigableEntities = new string[]
-		{
-			"donor",
-			"donation",
-			"run",
-			"choice",
-			"challenge",
-			"prize",
-			"bid",
-			"prizecategory",
-		};
-
 		public TrackerContext Context = new TrackerContext();
 
 		public MainForm()
@@ -75,11 +65,11 @@ namespace SDA_DonationTracker
 		{
 			foreach (TabPageEx page in this.TabControl.TabPages)
 			{
-				var controls = page.Controls.Cast<Control>().Where(c => c is EntityTab);
+				var controls = page.Controls.Cast<Control>().Where(c => c is IEntityTab);
 
 				if (controls.Count() == 1)
 				{
-					var result = controls.Single() as EntityTab;
+					var result = controls.Single() as IEntityTab;
 
 					if (result.Id == id && result.ModelName == model)
 					{
@@ -93,12 +83,23 @@ namespace SDA_DonationTracker
 
 		public bool IsNavigable(string model)
 		{
-			return NavigableEntities.Contains(model);
+			return EntityTabHelpers.HasEditPanel(model);
 		}
 
-		public void NavigateTo(string model, int id)
+		public void NavigateTo(string model, int? id)
 		{
-			TabPageEx alreadyExists = this.FindTabOf(model, id);
+			if (!this.IsNavigable(model))
+			{
+				string message = "Error, cannot navigate to " + model + ", no edit page for it exists.";
+				this.SetStatusMessage(message);
+				MessageBox.Show(message);
+				return;
+			}
+
+			TabPageEx alreadyExists = null;
+			
+			if (id != null)
+				alreadyExists = this.FindTabOf(model, id ?? 0);
 
 			// if a tab to the specified entity exists already, simply select that tab rather than create a new one
 			if (alreadyExists != null)
@@ -107,188 +108,59 @@ namespace SDA_DonationTracker
 			}
 			else
 			{
-				if (model.IEquals("donor"))
-					this.NavigateToDonor(id);
-				else if (model.IEquals("donation"))
-					this.NavigateToDonation(id);
-				else if (model.IEquals("prize"))
-					this.NavigateToPrize(id);
-				else if (model.IEquals("prizecategory"))
-					this.NavigateToPrizeCategory(id);
-				else if (model.IEquals("run"))
-					this.NavigateToRun(id);
-				else if (model.IEquals("choice"))
-					this.NavigateToChoice(id);
-				else if (model.IEquals("challenge"))
-					this.NavigateToChallenge(id);
-				else
-					throw new Exception("Error, navigation to " + model + " not supported");
+				EntityTab content = EntityTabHelpers.CreateEntityTab(model, this, this.Context);
+				content.Dock = DockStyle.Fill;
+				TabPageEx tab = new TabPageEx()
+				{
+					Controls =
+					{
+						content,
+					}
+				};
+				this.TabControl.TabPages.Add(tab);
+				this.TabControl.SelectTab(tab);
+				content.SetInstanceId(id);
 			}
 		}
 
-		private void NavigateToDonor(int? id)
+		public void NavigateToDonor(int? id)
 		{
-			DonorTab content = new DonorTab(this, this.Context)
-			{
-				Dock = DockStyle.Fill,
-			};
-
-			TabPageEx tab = new TabPageEx()
-			{
-				Controls =
-				{
-					content,
-				}
-			};
-
-			this.TabControl.TabPages.Add(tab);
-			this.TabControl.SelectTab(tab);
-
-			content.SetInstanceId(id);
+			this.NavigateTo("donor", id);
 		}
 
-		private void NavigateToDonation(int? id)
+		public void NavigateToDonation(int? id)
 		{
-			DonationTab form = new DonationTab(this, this.Context)
-			{
-				Dock = DockStyle.Fill,
-			};
-
-			TabPageEx donationTab = new TabPageEx()
-			{
-				Controls =
-				{
-					form
-				}
-			};
-
-			this.TabControl.TabPages.Add(donationTab);
-			this.TabControl.SelectTab(donationTab);
-			form.SetInstanceId(id);
+			this.NavigateTo("donation", id);
 		}
 
-		private void NavigateToPrize(int? id)
+		public void NavigateToPrize(int? id)
 		{
-			PrizeTab content = new PrizeTab(this, this.Context)
-			{
-				Dock = DockStyle.Fill,
-			};
-
-			TabPageEx prizeTab = new TabPageEx()
-			{
-				Controls =
-				{
-					content
-				}
-			};
-
-			this.TabControl.TabPages.Add(prizeTab);
-			this.TabControl.SelectTab(prizeTab);
-
-			content.SetInstanceId(id);
+			this.NavigateTo("prize", id);
 		}
 
-		private void NavigateToPrizeCategory(int? id)
+		public void NavigateToPrizeCategory(int? id)
 		{
-			PrizeCategoryTab content = new PrizeCategoryTab(this, this.Context)
-			{
-				Dock = DockStyle.Fill,
-			};
-
-			TabPageEx prizeTab = new TabPageEx()
-			{
-				Controls =
-				{
-					content
-				}
-			};
-
-			this.TabControl.TabPages.Add(prizeTab);
-			this.TabControl.SelectTab(prizeTab);
-
-			content.SetInstanceId(id);
+			this.NavigateTo("prizecategory", id);
 		}
 
-		private void NavigateToRun(int? id)
+		public void NavigateToRun(int? id)
 		{
-			RunTab form = new RunTab(this, this.Context)
-			{
-				Dock = DockStyle.Fill,
-			};
-
-			TabPageEx runTab = new TabPageEx()
-			{
-				Controls =
-				{
-					form
-				}
-			};
-
-			this.TabControl.TabPages.Add(runTab);
-			this.TabControl.SelectTab(runTab);
-
-			form.SetInstanceId(id);
+			this.NavigateTo("run", id);
 		}
 
 		public void NavigateToChoice(int? id)
 		{
-			ChoiceTab form = new ChoiceTab(this, this.Context)
-			{
-				Dock = DockStyle.Fill,
-			};
-
-			TabPageEx runTab = new TabPageEx()
-			{
-				Controls =
-				{
-					form
-				}
-			};
-
-			this.TabControl.TabPages.Add(runTab);
-			this.TabControl.SelectTab(runTab);
-
-			form.SetInstanceId(id);
+			this.NavigateTo("choice", id);
 		}
 
 		public void NavigateToChallenge(int? id)
 		{
-			ChallengeTab form = new ChallengeTab(this, this.Context)
-			{
-				Dock = DockStyle.Fill,
-			};
-
-			TabPageEx runTab = new TabPageEx()
-			{
-				Controls =
-				{
-					form
-				}
-			};
-
-			this.TabControl.TabPages.Add(runTab);
-			this.TabControl.SelectTab(runTab);
-
-			form.SetInstanceId(id);
+			this.NavigateTo("challenge", id);
 		}
 
 		public void CreateNewChoice()
 		{
 			this.NavigateToChoice(null);
-		}
-
-		private void QuitMenuItem_Click(object sender, EventArgs e)
-		{
-			this.Close();
-		}
-
-		public void ResetMenus()
-		{
-			this.TrackerDisconnectMenuItem.Visible = this.Context.SessionSet;
-			this.TrackertestManualMenuItem.Visible = !this.Context.SessionSet;
-			this.SearchMenu.Visible = this.Context.SessionSet;
-			this.SelectEventMenuItem.Visible = this.Context.SessionSet;
-			this.CreateMenu.Visible = this.Context.SessionSet;
 		}
 
 		public void CreateNewDonor()
@@ -321,6 +193,90 @@ namespace SDA_DonationTracker
 			this.NavigateToPrizeCategory(null);
 		}
 
+		public void OpenReadTaskTab()
+		{
+			foreach (TabPageEx page in this.TabControl.TabPages)
+			{
+				var controls = page.Controls.Cast<Control>().Where(c => c is ReadTaskTab);
+
+				if (controls.Count() == 1)
+				{
+					this.TabControl.SelectTab(page);
+					return;
+				}
+			}
+
+			ReadTaskTab readTab = new ReadTaskTab()
+			{
+				Owner = this,
+				Context = this.Context,
+				Dock = DockStyle.Fill,
+			};
+
+			readTab.RefreshData();
+
+			TabPageEx tab = new TabPageEx()
+			{
+				Text = "Read Task",
+				Controls =
+				{
+					readTab
+				}
+			};
+
+			this.TabControl.TabPages.Add(tab);
+			this.TabControl.SelectTab(tab);
+		}
+
+		public bool IsSearchable(string model)
+		{
+			return SearchPanelHelpers.HasSearchPanel(model);
+		}
+
+		public void OpenSearchTab(string model)
+		{
+			if (!this.IsSearchable(model))
+			{
+				string message = "Error, cannot open search for " + model + ", no search page for it exists.";
+				this.SetStatusMessage(message);
+				MessageBox.Show(message);
+				return;
+			}
+
+			SearchPanel panel = SearchPanelHelpers.CreatePanelForModel(model);
+
+			TabPageEx tab = new TabPageEx()
+			{
+				Text = model + " Search",
+				Controls =
+				{
+					new SearchTab(panel)
+					{
+						TrackerContext = this.Context,
+						Owner = this,
+						Dock = DockStyle.Fill,
+					}
+				}
+			};
+			this.TabControl.TabPages.Add(tab);
+			this.TabControl.SelectTab(tab);
+		}
+
+		private void QuitMenuItem_Click(object sender, EventArgs e)
+		{
+			this.Close();
+		}
+
+		public void ResetMenus()
+		{
+			this.TrackerDisconnectMenuItem.Visible = this.Context.SessionSet;
+			this.TrackertestManualMenuItem.Visible = !this.Context.SessionSet;
+			this.SearchMenu.Visible = this.Context.SessionSet;
+			this.SelectEventMenuItem.Visible = this.Context.SessionSet;
+			this.CreateMenu.Visible = this.Context.SessionSet;
+			this.TasksMenu.Visible = this.Context.SessionSet;
+		}
+
 		private void TrackertestManualMenuItem_Click(object sender, EventArgs e)
 		{
 			ConnectOpenIDManualForm form = new ConnectOpenIDManualForm(this)
@@ -342,29 +298,16 @@ namespace SDA_DonationTracker
 			}
 		}
 
-		private void donorToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			TabPageEx donorTab = new TabPageEx()
-			{
-				Text = "Donor Search",
-				Controls =
-				{
-					new SearchTab(new SearchDonorPanel())
-					{
-						TrackerContext = this.Context,
-						Owner = this,
-						Dock = DockStyle.Fill,
-					}
-				}
-			};
-			this.TabControl.TabPages.Add(donorTab);
-			this.TabControl.SelectTab(donorTab);
-		}
-
 		private void OnTabClose(object sender, CloseEventArgs e)
 		{
-			// eventually this should ask the current tab if it wants to close first
-			this.TabControl.Controls.Remove(this.TabControl.TabPages[e.TabIndex]);
+			TabPage toClose = this.TabControl.TabPages[e.TabIndex];
+
+			var controls = toClose.Controls.Cast<Control>().Where(c => c is ITab);
+
+			if (!controls.Any() || (controls.First() as ITab).ConfirmClose())
+			{
+				this.TabControl.Controls.Remove(toClose);
+			}
 		}
 
 		private void selectEventToolStripMenuItem_Click(object sender, EventArgs e)
@@ -374,25 +317,41 @@ namespace SDA_DonationTracker
 			dialog.Show(this);
 		}
 
+		private void donorToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.OpenSearchTab("donor");
+		}
+
 		private void donationToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			TabPageEx donationTab = new TabPageEx()
-			{
-				Text = "Donation Search",
-				Controls =
-				{
-					new SearchTab(new SearchDonationPanel())
-					{
-						TrackerContext = this.Context,
-						Owner = this,
-						Dock = DockStyle.Fill
-					}
-				}
-			};
-			this.TabControl.TabPages.Add(donationTab);
-			this.TabControl.SelectTab(donationTab);
+			this.OpenSearchTab("donation");
 		}
-		
+
+		private void prizeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.OpenSearchTab("prize");
+		}
+
+		private void runToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.OpenSearchTab("run");
+		}
+
+		private void choiceToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.OpenSearchTab("choice");
+		}
+
+		private void challengeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.OpenSearchTab("challenge");
+		}
+
+		private void prizeCategoryToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.OpenSearchTab("prizecategory");
+		}
+
 		private void CreateDonorMenuItem_Click(object sender, EventArgs e)
 		{
 			this.CreateNewDonor();
@@ -401,44 +360,6 @@ namespace SDA_DonationTracker
 		private void donationToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
 			this.CreateNewDonation();
-		}
-
-		private void prizeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			TabPageEx prizeTab = new TabPageEx()
-			{
-				Text = "Prize Search",
-				Controls =
-				{
-					new SearchTab(new SearchPrizePanel())
-					{
-						TrackerContext = this.Context,
-						Owner = this,
-						Dock = DockStyle.Fill
-					}
-				}
-			};
-			this.TabControl.TabPages.Add(prizeTab);
-			this.TabControl.SelectTab(prizeTab);
-		}
-
-		private void runToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			TabPageEx runTab = new TabPageEx()
-			{
-				Text = "Run Search",
-				Controls =
-				{
-					new SearchTab(new SearchRunPanel())
-					{
-						TrackerContext = this.Context,
-						Owner = this,
-						Dock = DockStyle.Fill
-					}
-				}
-			};
-			this.TabControl.TabPages.Add(runTab);
-			this.TabControl.SelectTab(runTab);
 		}
 
 		private void prizeToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -456,71 +377,19 @@ namespace SDA_DonationTracker
 			this.CreateNewChoice();
 		}
 
-		private void choiceToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			TabPageEx choiceTab = new TabPageEx()
-			{
-				Text = "Choice Search",
-				Controls =
-				{
-					new SearchTab(new SearchChoicePanel())
-					{
-						TrackerContext = this.Context,
-						Owner = this,
-						Dock = DockStyle.Fill
-					}
-				}
-			};
-			this.TabControl.TabPages.Add(choiceTab);
-			this.TabControl.SelectTab(choiceTab);
-		}
-
 		private void challengeToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
 			this.CreateNewChallenge();
 		}
 
-		private void challengeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			TabPageEx challengeSearchTab = new TabPageEx()
-			{
-				Text = "Challenge Search",
-				Controls =
-				{
-					new SearchTab(new SearchChallengePanel())
-					{
-						TrackerContext = this.Context,
-						Owner = this,
-						Dock = DockStyle.Fill
-					}
-				}
-			};
-			this.TabControl.TabPages.Add(challengeSearchTab);
-			this.TabControl.SelectTab(challengeSearchTab);
-		}
-
-		private void prizeCategoryToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			TabPageEx prizeCategorySearchTab = new TabPageEx()
-			{
-				Text = "Prize Category Search",
-				Controls =
-				{
-					new SearchTab(new SearchPrizeCategoryPanel())
-					{
-						TrackerContext = this.Context,
-						Owner = this,
-						Dock = DockStyle.Fill
-					}
-				}
-			};
-			this.TabControl.TabPages.Add(prizeCategorySearchTab);
-			this.TabControl.SelectTab(prizeCategorySearchTab);
-		}
-
 		private void prizeCategoryToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
 			this.CreateNewPrizeCategory();
+		}
+
+		private void readTaskToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.OpenReadTaskTab();
 		}
 	}
 }

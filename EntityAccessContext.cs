@@ -120,9 +120,6 @@ namespace SDA_DonationTracker
 
 			searcher.OnError += (error, message) =>
 			{
-				//TODO: we need information about what the error actually is
-				// For example, if the entity doesn't exist anymore, the tab should be closed
-
 				this.OnError(error, message);
 				waiter.ProcessComplete();
 
@@ -410,12 +407,6 @@ namespace SDA_DonationTracker
 			};
 
 			deleter.Begin();
-
-			// TODO: figure out if we have to delete the related entities, 
-			// --> if so, we'll have to make sure _all_ second-order entities are included in the 
-			// entity model for each entity, and then loop through _all_ of their related fields and build the relations
-			// accordingly
-			// Answer: I don't think so, I think the website handles that, so that's good.
 		}
 
 		private void OnDeleteComplete()

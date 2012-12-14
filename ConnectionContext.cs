@@ -5,9 +5,10 @@ using System.Threading;
 
 namespace SDA_DonationTracker
 {
-	// TODO:
-	// - OnError should maybe also include a way to grab the response data, since
-	// it often includes useful info (such as json responses).
+	/**
+	 * Base class for data connection requests
+	 * Contains the basic machinery to allow for asynchronous data layer execution
+	 */
 	public abstract class ConnectionContext
 	{
 		public TrackerContext Context

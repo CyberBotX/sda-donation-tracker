@@ -20,6 +20,16 @@ namespace SDA_DonationTracker
 			get { return typeof(bool); }
 		}
 
+		// Technically, booleans could be nullable, but I don't have a convenient way to represent
+		// that in the UI at the moment
+		public bool Nullable
+		{
+			get
+			{
+				return false;
+			}
+		}
+
 		public string Serialize(object t)
 		{
 			return t.ToString();

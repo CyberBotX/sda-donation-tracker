@@ -9,13 +9,13 @@ namespace SDA_DonationTracker
 		public Type EnumType { get; private set; }
 		public Control BoundControl { get { return this.ComboBox; } }
 
-		public ComboBoxBinding(ComboBox comboBox, Type enumType)
+		public ComboBoxBinding(ComboBox comboBox, Type enumType, bool readOnly = false)
 		{
 			this.ComboBox = comboBox;
 			this.EnumType = enumType;
 			this.ComboBox.DataSource = Enum.GetValues(this.EnumType);
 			this.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-			//this.ComboBox.SelectedIndex = 0;
+			this.ComboBox.Enabled = !readOnly;
 		}
 
 		public void LoadField(string data)

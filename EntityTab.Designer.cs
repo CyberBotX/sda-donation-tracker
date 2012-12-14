@@ -1,6 +1,6 @@
 ﻿namespace SDA_DonationTracker
 {
-	partial class NewEntityTab
+	partial class EntityTab
 	{
 		/// <summary> 
 		/// Required designer variable.

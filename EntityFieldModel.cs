@@ -23,6 +23,11 @@ namespace SDA_DonationTracker
 				return DonationModels.GetModel(this.ModelName);
 			}
 		}
+		public bool Nullable
+		{
+			get;
+			private set;
+		}
 		public bool ReadOnly
 		{
 			get 
@@ -31,9 +36,10 @@ namespace SDA_DonationTracker
 			}
 		}
 
-		public EntityFieldModel(string modelName)
+		public EntityFieldModel(string modelName, bool nullable = true)
 		{
 			this.ModelName = modelName;
+			this.Nullable = nullable;
 		}
 
 		public string Serialize(object t)

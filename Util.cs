@@ -46,24 +46,6 @@ namespace SDA_DonationTracker
 			return result;
 		}
 
-		/*
-		public static IEnumerable<KeyValuePair<string, string>> BuildSaveParams(FormBinding formBinding, int? knownId = null)
-		{
-			Dictionary<string, string> result = new Dictionary<string, string>();
-
-			JObject data = formBinding.SaveObject();
-
-			JObject fields = data.Value<JObject>("fields");
-
-			foreach (string field in formBinding.GetBindingKeys())
-				result.Add(field, fields.Value<string>(field));
-
-			if (knownId != null)
-				result.Add("id", knownId.ToString());
-
-			return result;
-		}*/
-
 		public static IEnumerable<T> Concat1<T>(this IEnumerable<T> self, T toAdd)
 		{
 			return self.Concat(new T[] { toAdd });

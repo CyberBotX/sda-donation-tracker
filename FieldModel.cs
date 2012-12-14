@@ -14,6 +14,11 @@ namespace SDA_DonationTracker
 			get;
 		}
 
+		bool Nullable
+		{
+			get;
+		}
+
 		string Serialize(object t);
 		object Parse(string s);
 	}

@@ -36,11 +36,17 @@ namespace SDA_DonationTracker
 		private readonly string FieldsField = "fields";
 
 		private Dictionary<string, FieldBinding> Bindings = new Dictionary<string, FieldBinding>();
+		private List<InstanceBinding> InstanceBindings = new List<InstanceBinding>();
 		private JObject CachedData;
 
 		public int? GetBoundId()
 		{
 			return (this.CachedData != null) ? this.CachedData.GetId() : null;
+		}
+
+		public void AddInstanceBinding(InstanceBinding binding)
+		{
+			this.InstanceBindings.Add(binding);
 		}
 
 		public void AddBinding(string fieldName, TextBoxBase textBox)
@@ -82,6 +88,11 @@ namespace SDA_DonationTracker
 		public void LoadObject(JObject data)
 		{
 			this.CachedData = data;
+
+			foreach (InstanceBinding binding in this.InstanceBindings)
+			{
+				binding.LoadInstance(data);
+			}
 
 			foreach (KeyValuePair<string, FieldBinding> entry in this.Bindings)
 			{

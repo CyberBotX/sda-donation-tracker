@@ -10,21 +10,32 @@ namespace SDA_DonationTracker
 			private set;
 		}
 
+		public bool Nullable
+		{
+			get;
+			private set;
+		}
 		public Control BoundControl { get { return this.TextBox; } }
 
-		public TextBoxBinding(TextBoxBase textBox)
+		public TextBoxBinding(TextBoxBase textBox, bool readOnly = false, bool nullable = true, bool longText = false)
 		{
 			this.TextBox = textBox;
+			this.TextBox.Multiline = longText;
+			this.TextBox.ReadOnly = readOnly;
+			this.Nullable = nullable;
 		}
 
 		public void LoadField(string data)
 		{
+			if (data == null)
+				data = "";
 			this.TextBox.InvokeEx(() => this.TextBox.Text = data);
 		}
 
 		public string RetreiveField()
 		{
-			return this.TextBox.Text;
+			string outData = this.TextBox.Text;
+			return (this.Nullable && outData.Equals("")) ? null : outData;
 		}
 	}
 }

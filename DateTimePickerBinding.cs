@@ -8,9 +8,16 @@ namespace SDA_DonationTracker
 		public DateTimePicker Picker { get; private set; }
 		public Control BoundControl { get { return this.Picker; } }
 
-		public DateTimePickerBinding(DateTimePicker picker)
+		public DateTimePickerBinding(DateTimePicker picker, bool readOnly = false, bool nullable = true)
 		{
 			this.Picker = picker;
+			this.Picker.CustomFormat = DateTimeFieldModel.DateFormatFromPicker;
+			this.Picker.Format = DateTimePickerFormat.Custom;
+			this.Picker.ShowUpDown = true;
+			this.Picker.ShowCheckBox = nullable;
+			this.Picker.Checked = !nullable;
+			this.Picker.Enabled = !readOnly;
+
 			this.Picker.InvokeEx(() =>
 				{
 					this.Picker.CustomFormat = DateTimeFieldModel.DateFormatForPicker;

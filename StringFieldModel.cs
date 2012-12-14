@@ -6,10 +6,11 @@ namespace SDA_DonationTracker
 	{
 		public bool LongText { get; private set; }
 
-		public StringFieldModel(bool longText = false, bool readOnly = false)
+		public StringFieldModel(bool longText = false, bool readOnly = false, bool nullable = true)
 		{
 			this.LongText = longText;
 			this.ReadOnly = readOnly;
+			this.Nullable = nullable;
 		}
 
 		public Type FieldType
@@ -18,6 +19,12 @@ namespace SDA_DonationTracker
 		}
 
 		public bool ReadOnly
+		{
+			get;
+			private set;
+		}
+
+		public bool Nullable
 		{
 			get;
 			private set;

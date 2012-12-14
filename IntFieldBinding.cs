@@ -1,9 +1,15 @@
-﻿using System.Windows.Forms;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 
 namespace SDA_DonationTracker
 {
-	public class MoneyFieldBinding : FieldBinding
+	// TODO: 
+	// - This copies a lot (, that is, almost all of its) code with MoneyFieldBinding,
+	//   so there is probably an oppourtunity to refactor the implementations to share code
+	public class IntFieldBinding : FieldBinding
 	{
 		public TextBoxBase TextBox
 		{
@@ -11,10 +17,10 @@ namespace SDA_DonationTracker
 			private set;
 		}
 		public Control BoundControl { get { return TextBox; } }
-		private decimal? LastKnownGoodValue;
+		private int? LastKnownGoodValue;
 		private bool AllowNull;
 
-		public MoneyFieldBinding(TextBoxBase textBox, bool readOnly = false, bool allowNull = true)
+		public IntFieldBinding(TextBoxBase textBox, bool readOnly = false, bool allowNull = true)
 		{
 			this.TextBox = textBox;
 			this.TextBox.ReadOnly = readOnly;
@@ -25,18 +31,18 @@ namespace SDA_DonationTracker
 				if (this.TextBox.Text.Trim().Length == 0)
 				{
 					if (!this.AllowNull)
-						this.LoadField("0.00");
+						this.LoadField("0");
 				}
-				else if (!this.IsDecimal(this.TextBox.Text))
+				else if (!this.IsInt(this.TextBox.Text))
 				{
 					e.Cancel = true;
-					this.LoadField(this.LastKnownGoodValue == null ? (this.AllowNull ? "" : "0.00") : LastKnownGoodValue.ToString());
+					this.LoadField(this.LastKnownGoodValue == null ? (this.AllowNull ? "" : "0") : LastKnownGoodValue.ToString());
 				}
 			};
 
-			this.LastKnownGoodValue = this.AllowNull ? null : (decimal?)0.00m;
+			this.LastKnownGoodValue = this.AllowNull ? null : (int?)0;
 
-			this.LoadField(this.AllowNull ? "" : "0.00");
+			this.LoadField(this.AllowNull ? "" : "0");
 		}
 
 		public void LoadField(string data)
@@ -47,7 +53,7 @@ namespace SDA_DonationTracker
 		public string RetreiveField()
 		{
 			if (TextBox.Text.Length == 0)
-				return this.AllowNull ? null : "0.00";
+				return this.AllowNull ? null : "0";
 			else
 				return this.TextBox.Text.ToString();
 		}
@@ -67,14 +73,14 @@ namespace SDA_DonationTracker
 				}
 				else
 				{
-					this.LastKnownGoodValue = 0.00m;
-					this.TextBox.Text = "0.00";
+					this.LastKnownGoodValue = 0;
+					this.TextBox.Text = "0";
 				}
 			}
 			else
 			{
-				decimal result;
-				if (decimal.TryParse(data, out result))
+				int result;
+				if (int.TryParse(data, out result))
 				{
 					this.LastKnownGoodValue = result;
 					this.TextBox.Text = data;
@@ -84,10 +90,10 @@ namespace SDA_DonationTracker
 			}
 		}
 
-		private bool IsDecimal(string data)
+		private bool IsInt(string data)
 		{
-			decimal result;
-			return decimal.TryParse(data, out result);
+			int result;
+			return int.TryParse(data, out result);
 		}
 	}
 }

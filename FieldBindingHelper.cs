@@ -10,56 +10,25 @@ namespace SDA_DonationTracker
 			if (fieldModel is StringFieldModel)
 			{
 				StringFieldModel strModel = fieldModel as StringFieldModel;
-				return new TextBoxBinding(new TextBox()
-					{
-						Multiline = strModel.LongText,
-						ReadOnly = strModel.ReadOnly,
-					});
+				return new TextBoxBinding(new TextBox(), readOnly: fieldModel.ReadOnly, nullable: fieldModel.Nullable, longText: strModel.LongText);
 			}
 			else if (fieldModel is DateTimeFieldModel)
 			{
-				DateTimePicker picker = new DateTimePicker()
-				{
-					CustomFormat = DateTimeFieldModel.DateFormatFromPicker,
-					Format = DateTimePickerFormat.Custom,
-					ShowUpDown = true,
-					ShowCheckBox = true,
-					Checked = false,
-					Enabled = !fieldModel.ReadOnly,
-				};
+				DateTimePicker picker = new DateTimePicker();
 
 				if (fieldName != null && fieldName.Contains("_gte"))
 					picker.Value = picker.MinDate;
 				else
 					picker.Value = DateTime.Now;
 
-				return new DateTimePickerBinding(picker);
+				return new DateTimePickerBinding(picker, readOnly: fieldModel.ReadOnly, nullable: fieldModel.Nullable);
 			}
 			else if (fieldModel is BooleanFieldModel)
-				return new CheckBoxBinding(new CheckBox() { Enabled = !fieldModel.ReadOnly });
+				return new CheckBoxBinding(new CheckBox(), readOnly: fieldModel.ReadOnly);
 			else if (fieldModel is EnumFieldModel)
-				return new ComboBoxBinding(new ComboBox() { Enabled = !fieldModel.ReadOnly }, (fieldModel as EnumFieldModel).FieldType);
+				return new ComboBoxBinding(new ComboBox(), fieldModel.FieldType, readOnly: fieldModel.ReadOnly);
 			else if (fieldModel is MoneyFieldModel)
-			{
-				TextBox box = new TextBox() { ReadOnly = fieldModel.ReadOnly };
-
-				box.GotFocus += (o, e) =>
-				{
-					Console.WriteLine("Money box focus");
-				};
-
-				box.LostFocus += (o, e) =>
-				{
-					Console.WriteLine("Money box lost focus");
-				};
-
-				box.Click += (o, e) =>
-				{
-					Console.WriteLine("Money box click");
-				};
-
-				return new MoneyFieldBinding(box);
-			}
+				return new MoneyFieldBinding(new TextBox(), readOnly: fieldModel.ReadOnly, allowNull: fieldModel.Nullable);
 			else if (fieldModel is EntityFieldModel)
 			{
 				EntityFieldModel entityField = fieldModel as EntityFieldModel;

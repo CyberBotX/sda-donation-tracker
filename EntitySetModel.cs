@@ -24,6 +24,14 @@ namespace SDA_DonationTracker
 				return false;
 			}
 		}
+		// By not nullable, I mean that the 'list' always exists, even if empty
+		public bool Nullable
+		{
+			get
+			{
+				return false;
+			}
+		}
 		public string ModelName
 		{
 			get;

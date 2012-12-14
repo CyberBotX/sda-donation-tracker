@@ -148,16 +148,16 @@ namespace SDA_DonationTracker
 			return results;
 		}
 
-		public static string GetDisplayName(this JObject self)
+		public static string GetDisplayName(this JObject self, bool publicFacing = false)
 		{
 			string model = self.GetModel();
 
 			if (model.IEquals("event"))
 				return self.GetEventDisplayName();
 			else if (model.IEquals("donor"))
-				return self.GetDonorDisplayName();
+				return self.GetDonorDisplayName(publicFacing);
 			else if (model.IEquals("donation"))
-				return self.GetDonationDisplayName();
+				return self.GetDonationDisplayName(publicFacing);
 			else if (model.IEquals("prize"))
 				return self.GetPrizeDisplayName();
 			else if (model.IEquals("run"))
@@ -185,20 +185,36 @@ namespace SDA_DonationTracker
 		}
 
 		// This probably belongs at another level of abstraction, but w/e
-		public static string GetDonorDisplayName(this JObject self)
+		public static string GetDonorDisplayName(this JObject self, bool publicFacing = false)
 		{
 			string alias = self.GetField("alias");
 			string email = self.GetField("email");
 			string firstName = self.GetField("firstname");
 			string lastName = self.GetField("lastname");
+			bool anonymous = publicFacing ? bool.Parse(self.GetField("anonymous")) : false;
 			int? id = self.GetId();
 
-			return RawDonorDisplayName(id, email, firstName, lastName, alias);
+			return RawDonorDisplayName(id, email, firstName, lastName, alias, anonymous);
 		}
 
-		public static string RawDonorDisplayName(int? id, string email, string firstName, string lastName, string alias)
+		// This probably belongs at another level of abstraction, but w/e
+		public static string GetDonationDonorDisplayName(this JObject self, bool publicFacing = false)
 		{
-			if (!string.IsNullOrEmpty(alias))
+			string alias = self.GetField("donor__alias");
+			string firstName = self.GetField("donor__firstname");
+			string lastName = self.GetField("donor__lastname");
+			string email = self.GetField("donor__email");
+			bool anonymous = publicFacing ? bool.Parse(self.GetField("donor__anonymous")) : false;
+			int? donorId = self.GetId();
+
+			return RawDonorDisplayName(donorId, email, firstName, lastName, alias, anonymous);
+		}
+
+		public static string RawDonorDisplayName(int? id, string email, string firstName, string lastName, string alias, bool anonymous = false)
+		{
+			if (anonymous)
+				return "*Anonymous*";
+			else if (!string.IsNullOrEmpty(alias))
 				return alias;
 			else if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
 				return firstName + " " + lastName;
@@ -210,20 +226,16 @@ namespace SDA_DonationTracker
 				return "New Donor";
 		}
 
-		public static string GetDonationDisplayName(this JObject self)
+		public static string GetDonationDisplayName(this JObject self, bool publicFacing = false)
 		{
-			int? donorId = self.GetId();
-			string donorAlias = self.GetField("donor__alias");
-			string donorFirst = self.GetField("donor__firstname");
-			string donorLast = self.GetField("donor__lastname");
-			string donorEmail = self.GetField("donor__email");
+			int? id = self.GetId();
 			string amount = self.GetField("amount");
 			string domain = self.GetField("domain");
 
 			if (string.IsNullOrEmpty(domain))
 				return "New Donation";
 			else
-				return domain + ":" + amount + ":" + RawDonorDisplayName(donorId, donorEmail, donorFirst, donorLast, donorAlias);
+				return domain + ":" + amount + ":" + self.GetDonationDonorDisplayName(publicFacing);
 		}
 
 		public static string GetBidDisplayName(this JObject self)
