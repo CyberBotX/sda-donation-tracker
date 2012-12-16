@@ -34,8 +34,8 @@ namespace SDA_DonationTracker
 			this.FormPanel = new EntityFormPanelConstruct("donation",
 				new string[]
 				{
-					"domain",
-					"domainId",
+					//"domain",
+					//"domainId",
 					"timereceived",
 					"amount",
 					"donor",
@@ -81,6 +81,14 @@ namespace SDA_DonationTracker
 			this.RootPanel.Controls.Add(this.FormPanel, 0, 0);
 			this.RootPanel.Controls.Add(this.BidsPanel, 0, 1);
 			this.Controls.Add(this.RootPanel);
+		}
+
+		public FormBinding DonationBinding
+		{
+			get
+			{
+				return this.FormPanel.Binding;
+			}
 		}
 
 		public override IEnumerable<FormBinding> Forms

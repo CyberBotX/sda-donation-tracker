@@ -38,18 +38,40 @@ namespace SDA_DonationTracker
 		{
 			get
 			{
-				return _EventId;
+				return this.CurrentEvent == null ? null : this.CurrentEvent.GetId();
 			}
-			set
+		}
+
+		public string EventName
+		{
+			get
 			{
-				_EventId = value;
-				this.ResetEntityCaches();
+				return this.CurrentEvent == null ? null : this.CurrentEvent.GetField("name");
 			}
+		}
+
+		public string ShortEventName
+		{
+			get
+			{
+				return this.CurrentEvent == null ? null : this.CurrentEvent.GetField("short");
+			}
+		}
+
+		private JObject CurrentEvent;
+
+		public void SetCurrentEvent(JObject eventObj)
+		{
+			this.CurrentEvent = eventObj;
+			this.ResetEntityCaches();
+
+			if (this.EventChanged != null)
+				this.EventChanged(this);
 		}
 
 		public TrackerContext()
 		{
-			this.EventId = null;
+			this.CurrentEvent = null;
 			this.EntityCaches = new Dictionary<string, EntitySelectionCache>();
 		}
 
@@ -69,11 +91,15 @@ namespace SDA_DonationTracker
 				HttpOnly = true
 			};
 
-			JArray results = this.RunSearch("event", Util.CreateSearchParams());
+			JArray results = this.RunSearch("event", Util.CreateRequestParams());
 
 			if (results.Count > 0)
-				this.EventId = results.Select(x => (x as JObject)).Aggregate((x, y) => DateTimeFieldModel.ParseDate(x.GetField("date")).CompareTo(DateTimeFieldModel.ParseDate(x.GetField("date"))) >= 0 ? x : y).GetId() ?? 0;
+			{
+				this.SetCurrentEvent(results.Select(x => (x as JObject)).Aggregate((x, y) => DateTimeFieldModel.ParseDate(x.GetField("date")).CompareTo(DateTimeFieldModel.ParseDate(x.GetField("date"))) >= 0 ? x : y));
+			}
 		}
+
+		public event Action<TrackerContext> EventChanged;
 
 		private void ResetEntityCaches()
 		{
@@ -114,16 +140,22 @@ namespace SDA_DonationTracker
 
 		private Uri CreateSearchUri(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
 		{
-			return new Uri(Domain, "tracker/search/" + StringParams(model, searchParams));
+			return new Uri(Domain, "tracker/search/" + SearchParams(model, searchParams));
 		}
 
-		private string StringParams(string modelName, IEnumerable<KeyValuePair<string, string>> searchParams)
+		private string StringParams(IEnumerable<KeyValuePair<string, string>> searchParams)
 		{
-			string result = "";
+			string result = string.Format("{0}", string.Join("&", searchParams.Select(x => (x.Key.Equals("domainId") ? x.Key : x.Key.ToLower()) + "=" + (x.Value == null ? "None" : Uri.EscapeDataString(x.Value)))));
+			return result;
+		}
 
-			result = string.Format("{0}", string.Join("&", searchParams.Select(x => (x.Key.Equals("domainId") ? x.Key : x.Key.ToLower()) + "=" + (x.Value == null ? "None" : Uri.EscapeDataString(x.Value)))));
+		private string SearchParams(string modelName, IEnumerable<KeyValuePair<string, string>> searchParams)
+		{
+			string result = StringParams(searchParams.Concat1(new KeyValuePair<string, string>("type", modelName)));
+			return result;
+			//result = string.Format("{0}", string.Join("&", searchParams.Select(x => (x.Key.Equals("domainId") ? x.Key : x.Key.ToLower()) + "=" + (x.Value == null ? "None" : Uri.EscapeDataString(x.Value)))));
 
-			return string.Format("type={0}&{1}", modelName, result);
+			//return string.Format("type={0}&{1}", modelName, result);
 		}
 
 		private WebClientEx CreateClient()
@@ -150,7 +182,7 @@ namespace SDA_DonationTracker
 
 			WebClientEx client = this.CreateClient();
 
-			string paramsString = StringParams(model, searchParams);
+			string paramsString = SearchParams(model, searchParams);
 			string response = null;
 
 			try
@@ -217,7 +249,7 @@ namespace SDA_DonationTracker
 
 			try
 			{
-				string parameters = StringParams(model, saveParams);
+				string parameters = SearchParams(model, saveParams);
 				response = client.UploadString(u, "POST", parameters);
 			}
 			catch (WebException e)
@@ -245,7 +277,7 @@ namespace SDA_DonationTracker
 
 			try
 			{
-				response = client.UploadString(u, "POST", StringParams(model, deleteParams));
+				response = client.UploadString(u, "POST", SearchParams(model, deleteParams));
 			}
 			catch (WebException e)
 			{
@@ -253,6 +285,32 @@ namespace SDA_DonationTracker
 			}
 
 			return JObject.Parse(response);
+		}
+
+		public string RunChipinMerge()
+		{
+			string parameters = this.StringParams(Util.CreateRequestParams("action", "merge", "event", this.ShortEventName));
+
+			Uri u = new Uri(Domain, "tracker/chipin_action/?" + parameters);
+			WebClientEx client = this.CreateClient();
+
+			string response = null;
+
+			try
+			{
+				response = client.DownloadString(u);
+			}
+			catch (WebException e)
+			{
+				this.HandleWebException(e);
+			}
+
+			return response;
+		}
+
+		public ChipinMergeContext DeferredChipinMerge()
+		{
+			return new ChipinMergeContext(this);
 		}
 
 		public SearchContext DeferredIdSearch(string model, int id)

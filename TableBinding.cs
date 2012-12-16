@@ -153,7 +153,7 @@ namespace SDA_DonationTracker
 			});
 		}
 
-		private void OnControlBegin(object sender, DataGridViewEditingControlShowingEventArgs e)
+		private void OnControlBegin(object sender, DataGridViewEditingControlShowingEventArgs eventArgs)
 		{
 			int currentCol = this.DataGrid.CurrentCell.ColumnIndex;
 			int currentRow = this.DataGrid.CurrentCell.RowIndex;
@@ -181,9 +181,39 @@ namespace SDA_DonationTracker
 				if (cacheTable.Count > 0)
 					this.DataGrid.Columns[currentCol].Width = cacheTable.EnumerateLeftToRight().Select(p => p.Value.Length).Max() * 10;
 				else
-					this.DataGrid.Columns[currentCol].Width = 80;
+					this.DataGrid.Columns[currentCol].Width= 80;
 
 				this.ResetControlCache(cacheTable, trueValue);
+
+				TextBoxBase selector = this.DataGrid.EditingControl as TextBoxBase;
+
+				MenuItem searchMenuItem = new MenuItem()
+				{
+					Text = "Search...",
+				};
+
+				searchMenuItem.Click += (o, e) =>
+				{
+					SearchPanel panel = SearchPanelHelpers.CreatePanelForModel(entityField.ModelName);
+					panel.Context = this.Context;
+					SearchDialog dialog = new SearchDialog(panel);
+					dialog.ShowDialog();
+
+					if (dialog.Result != null)
+					{
+						remappedRow[columnModelName] = dialog.Result.GetDisplayName();
+						selector.Text = dialog.Result.GetDisplayName();
+						remappedRow[this.TrueColumnName(columnModelName)] = dialog.Result.GetId().ToString();
+					}
+				};
+
+				selector.ContextMenu = new ContextMenu()
+				{
+					MenuItems = 
+					{
+						searchMenuItem,
+					}
+				};
 			}
 		}
 

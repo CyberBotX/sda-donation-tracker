@@ -12,7 +12,7 @@ namespace SDA_DonationTracker
 		 * I normally dislike using variadics like this, but it helps cut down on code a lot, 
 		 * so I'm breaking my own rule here.
 		 */
-		public static IEnumerable<KeyValuePair<string, string>> CreateSearchParams(params string[] stuff)
+		public static IEnumerable<KeyValuePair<string, string>> CreateRequestParams(params string[] stuff)
 		{
 			Dictionary<string, string> list = new Dictionary<string, string>(stuff.Length / 2);
 
@@ -24,7 +24,7 @@ namespace SDA_DonationTracker
 
 		public static IEnumerable<KeyValuePair<string, string>> CreateIdSearch(int id)
 		{
-			return CreateSearchParams("id", id.ToString());
+			return CreateRequestParams("id", id.ToString());
 		}
 
 		public static Dictionary<string, string> BuildSaveParams(JObject obj)

@@ -10,24 +10,39 @@ using Newtonsoft.Json.Linq;
 
 namespace SDA_DonationTracker
 {
-	public enum ReadTaskVolumeMode
+	public enum ProcessDonationsMode
 	{
-		HIGH,
-		LOW,
+		BOTH,
+		BIDS,
+		COMMMENTS,
 	}
 
-	public partial class ReadTaskTab : UserControl
+	public partial class ProcessDonationsTaskTab1: UserControl
 	{
 		public TrackerContext Context
 		{
-			get;
-			set;
+			get
+			{
+				return _Context;
+			}
+			set
+			{
+				_Context = value;
+				this.DonorSelector.Initialize(value, "donor");
+			}
 		}
 
 		public MainForm Owner
 		{
-			get;
-			set;
+			get
+			{
+				return _Owner;
+			}
+			set
+			{
+				_Owner = value;
+				this.DonorSelector.Owner = value;
+			}
 		}
 
 		public bool IsBound
@@ -46,38 +61,35 @@ namespace SDA_DonationTracker
 			}
 		}
 
+		private MainForm _Owner;
+		private TrackerContext _Context;
 		private FormBinding DonationBinding;
 		private ListBinding<JObjectEntityDisplay> SearchBinding;
-		private MoneyFieldBinding MinimumAmountBinding;
-		private IntFieldBinding MinimumMinutesBinding;
 		private ComboBoxBinding ModeBinding;
 		private JObject CurrentObject;
 
-		public ReadTaskTab()
+		public ProcessDonationsTaskTab1()
 		{
 			InitializeComponent();
 
 			this.DonationBinding = new FormBinding("donation");
-			this.DonationBinding.AddInstanceBinding(new PublicDonorNameBinding(this.DonorNameText, true));
-			this.DonationBinding.AddBinding("amount", new MoneyFieldBinding(this.AmountText, readOnly: true, allowNull: false));
-			this.DonationBinding.AddBinding("comment", new TextBoxBinding(this.CommentText, readOnly: true, nullable: false, longText: true));
-			this.DonationBinding.AddBinding("modcomment", new TextBoxBinding(this.ModCommentText, readOnly: true, nullable: false, longText: true));
+			this.DonationBinding.AddBinding("donor", this.DonorSelector);
+			this.DonationBinding.AddBinding("amount", new MoneyFieldBinding(this.AmountText, allowNull: false));
+			this.DonationBinding.AddBinding("comment", new TextBoxBinding(this.CommentText, nullable: false, longText: true));
+			this.DonationBinding.AddBinding("modcomment", new TextBoxBinding(this.ModCommentText, nullable: false, longText: true));
 			this.DonationBinding.AddBinding("readstate", this.ReadStateBox, typeof(DonationReadState));
 			this.DonationBinding.AddBinding("commentstate", this.CommentStateBox, typeof(DonationCommentState));
 			this.DonationBinding.AddBinding("bidstate", this.BidStateBox, typeof(DonationBidState));
-
+			
 			this.DonationBinding.AddAssociatedControl(this.OpenDonorButton);
 			this.DonationBinding.AddAssociatedControl(this.OpenDonationButton);
 			this.DonationBinding.AddAssociatedControl(this.NextButton);
 
-			this.MinimumAmountBinding = new MoneyFieldBinding(this.MinimumAmountText);
-			this.MinimumMinutesBinding = new IntFieldBinding(this.MinimumMinutesText);
-			this.ModeBinding = new ComboBoxBinding(this.ModeBox, typeof(ReadTaskVolumeMode));
+			this.ModeBinding = new ComboBoxBinding(this.ModeBox, typeof(ProcessDonationsMode));
 
 			this.SearchBinding = new ListBinding<JObjectEntityDisplay>(this.TaskList, x => new JObjectFuncDisplay(x, DonationModels.DonationModel.DisplayConverter), "Display");
 			this.SearchBinding.AddAssociatedControl(this.RefreshButton);
-			this.SearchBinding.AddAssociatedControl(this.MinimumAmountText);
-			this.SearchBinding.AddAssociatedControl(this.MinimumMinutesText);
+			this.SearchBinding.AddAssociatedControl(this.NextButton);
 			this.SearchBinding.AddAssociatedControl(this.ModeBox);
 
 			this.SearchBinding.OnSelection += this.OnSelection;
@@ -100,37 +112,32 @@ namespace SDA_DonationTracker
 			}
 		}
 
-		private DateTime GetSearchOffsetTime()
+		private bool HasMode(ProcessDonationsMode mode)
 		{
-			int result;
-
-			if (int.TryParse(this.MinimumMinutesBinding.RetreiveField(), out result))
-				return DateTime.Now.AddMinutes(-result);
-			else
-				return DateTime.Now;
+			return this.GetDonationsMode() == mode || this.GetDonationsMode() == ProcessDonationsMode.BOTH;
 		}
 
-		private ReadTaskVolumeMode GetVolumeMode()
+		private ProcessDonationsMode GetDonationsMode()
 		{
-			return (ReadTaskVolumeMode) Enum.Parse(typeof(ReadTaskVolumeMode), this.ModeBinding.RetreiveField());
+			return (ProcessDonationsMode)Enum.Parse(typeof(ProcessDonationsMode), this.ModeBinding.RetreiveField());
 		}
 
-		private Dictionary<string, string> GetSearchParams()
+		private Dictionary<string, string> GetCommentSearchParams()
 		{
 			Dictionary<string, string> result = new Dictionary<string, string>();
 
-			result["time_lte"] = DateTimeFieldModel.SerializeDate(this.GetSearchOffsetTime());
-			result["readstate"] = DonationBidState.PENDING.ToString();
-
-			string amountString = this.MinimumAmountBinding.RetreiveField();
+			result["commentstate"] = DonationCommentState.PENDING.ToString();
 			
-			if (amountString != null)
-				result["amount_gte"] = amountString;
+			// TODO: also check that comment is not null when that becomes possible
 
-			if (this.GetVolumeMode() == ReadTaskVolumeMode.HIGH)
-			{
-				result["commentstate"] = DonationCommentState.APPROVED.ToString();
-			}
+			return result;
+		}
+
+		private Dictionary<string, string> GetBidSearchParams()
+		{
+			Dictionary<string, string> result = new Dictionary<string, string>();
+
+			result["bidstate"] = DonationBidState.PENDING.ToString();
 
 			return result;
 		}
@@ -140,19 +147,30 @@ namespace SDA_DonationTracker
 			if (this.Context == null)
 				throw new Exception("Error, no context set for this task.");
 
-			SearchContext searcher = this.Context.DeferredSearch("donation", this.GetSearchParams());
+			List<SearchContext> searches = new List<SearchContext>();
 
-			searcher.OnComplete += this.OnSearchComplete;
-			searcher.OnError += this.OnSearchError;
+			ProcessDonationsMode mode = this.GetDonationsMode();
+
+			if (this.HasMode(ProcessDonationsMode.BIDS))
+				searches.Add(this.Context.DeferredSearch("donation", this.GetBidSearchParams()));
+
+			if (this.HasMode(ProcessDonationsMode.COMMMENTS))
+				searches.Add(this.Context.DeferredSearch("donation", this.GetCommentSearchParams()));
+
+			AggregateSearchContext metaSearcher = new AggregateSearchContext(searches.ToArray());
+
+			metaSearcher.Completed += this.OnSearchComplete;
+			metaSearcher.Error += this.OnSearchError;
 
 			this.DonationBinding.DisableControls();
 			this.SearchBinding.DisableControls();
 
-			searcher.Begin();
+			metaSearcher.Begin();
 		}
 
-		private void OnSearchError(TrackerErrorType error, string message)
+		private void OnSearchError(IEnumerable<TrackerError> errors)
 		{
+			string message = errors.First().Message;
 			MessageBox.Show("Error, could not refresh task list: " + message, "Refresh Error");
 			if (this.Owner != null)
 				this.Owner.SetStatusMessage(message);
@@ -161,11 +179,22 @@ namespace SDA_DonationTracker
 
 		private void OnSearchComplete(JArray results)
 		{
-			JArray reversed = new JArray();
+			Dictionary<int, JObject> mapped = new Dictionary<int, JObject>();
 
 			// Donations are returned in reverse chronological order, but we 
 			// want to read them in chronological order
-			foreach (var tok in results.Reverse())
+			foreach (JObject tok in results)
+			{
+				mapped[tok.GetId() ?? 0] = tok;
+			}
+
+			List<JObject> aggregatedResults = mapped.Values.ToList();
+
+			aggregatedResults.Sort(JObjectEntityHelpers.CompareDonationsByTime);
+
+			JArray reversed = new JArray();
+
+			foreach (JObject tok in aggregatedResults)
 			{
 				reversed.Add(tok);
 			}
@@ -199,12 +228,18 @@ namespace SDA_DonationTracker
 		{
 			if (this.CurrentObject != null)
 			{
+				JObject currObject = this.CurrentObject;
 				JObject savingObject = this.DonationBinding.SaveObject();
 				JObject diffedObject = this.DonationBinding.SaveObject(diffOnly: true);
 
-				if (!diffedObject.HasField("readstate") && savingObject.GetField("readstate").IEquals(DonationReadState.PENDING.ToString()))
+				if (this.HasMode(ProcessDonationsMode.COMMMENTS) && !diffedObject.HasField("commentstate") && savingObject.GetField("commentstate").IEquals(DonationCommentState.PENDING.ToString()))
 				{
-					diffedObject.SetField("readstate", DonationReadState.READ.ToString());
+					diffedObject.SetField("commentstate", DonationCommentState.APPROVED.ToString());
+				}
+
+				if (this.HasMode(ProcessDonationsMode.BIDS) && !diffedObject.HasField("bidstate") && savingObject.GetField("bidstate").IEquals(DonationBidState.PENDING.ToString()))
+				{
+					diffedObject.SetField("bidstate", DonationBidState.PROCESSED.ToString());
 				}
 
 				if (diffedObject.GetFields().Any())
@@ -213,7 +248,7 @@ namespace SDA_DonationTracker
 
 					saver.OnComplete += (obj) =>
 					{
-						savingObject.MergeFrom(obj);
+						currObject.MergeFrom(obj);
 					};
 
 					saver.Begin();

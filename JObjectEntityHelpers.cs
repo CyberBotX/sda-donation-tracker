@@ -7,6 +7,13 @@ namespace SDA_DonationTracker
 {
 	public static class JObjectEntityHelpers
 	{
+		public static int CompareDonationsByTime(this JObject self, JObject other)
+		{
+			DateTime left = DateTimeFieldModel.ParseDate(self.GetField("timereceived"));
+			DateTime right = DateTimeFieldModel.ParseDate(other.GetField("timereceived"));
+			return left.CompareTo(right);
+		}
+
 		public static JObject CreateEntityObject(string model, int? id = null)
 		{
 			JObject result = new JObject();

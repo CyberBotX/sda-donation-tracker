@@ -81,6 +81,12 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CheckBoxBinding.cs" />
+    <Compile Include="ChipinMergeTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChipinMergeTab.Designer.cs">
+      <DependentUpon>ChipinMergeTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChoiceEditPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -89,6 +95,27 @@
     </Compile>
     <Compile Include="ComboBoxBinding.cs" />
     <Compile Include="ConnectionContext.cs" />
+    <Compile Include="ChipinMergeContext.cs" />
+    <Compile Include="ProcessDonationsTaskTab2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProcessDonationsTaskTab2.Designer.cs">
+      <DependentUpon>ProcessDonationsTaskTab2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PanelHelpers.cs" />
+    <Compile Include="ExternalProcessContext.cs" />
+    <Compile Include="ExternalProcessTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ExternalProcessTab.Designer.cs">
+      <DependentUpon>ExternalProcessTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProcessDonationsTaskTab1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProcessDonationsTaskTab1.Designer.cs">
+      <DependentUpon>ProcessDonationsTaskTab1.cs</DependentUpon>
+    </Compile>
     <Compile Include="DonationEditPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -149,6 +176,7 @@
     <Compile Include="SelectModelTypeDialog.Designer.cs">
       <DependentUpon>SelectModelTypeDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="TaskManager.cs" />
     <Compile Include="TrackerErrorType.cs" />
     <Compile Include="ConnectOpenIDManualForm.cs">
       <SubType>Form</SubType>
@@ -281,8 +309,20 @@
     <Compile Include="WebClientEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <EmbeddedResource Include="ChipinMergeTab.resx">
+      <DependentUpon>ChipinMergeTab.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConnectOpenIDManualForm.resx">
       <DependentUpon>ConnectOpenIDManualForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProcessDonationsTaskTab2.resx">
+      <DependentUpon>ProcessDonationsTaskTab2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExternalProcessTab.resx">
+      <DependentUpon>ExternalProcessTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProcessDonationsTaskTab1.resx">
+      <DependentUpon>ProcessDonationsTaskTab1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EntitySelector.resx">
       <DependentUpon>EntitySelector.cs</DependentUpon>

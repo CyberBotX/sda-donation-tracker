@@ -35,6 +35,7 @@
 			// 
 			// ModelTypeBox
 			// 
+			this.ModelTypeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.ModelTypeBox.FormattingEnabled = true;
 			this.ModelTypeBox.Location = new System.Drawing.Point(12, 32);
 			this.ModelTypeBox.Name = "ModelTypeBox";
@@ -51,10 +52,10 @@
 			this.OkButton.UseVisualStyleBackColor = true;
 			this.OkButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
-			// CancelButton
+			// CloseButton
 			// 
 			this.CloseButton.Location = new System.Drawing.Point(216, 73);
-			this.CloseButton.Name = "CancelButton";
+			this.CloseButton.Name = "CloseButton";
 			this.CloseButton.Size = new System.Drawing.Size(75, 23);
 			this.CloseButton.TabIndex = 2;
 			this.CloseButton.Text = "Cancel";

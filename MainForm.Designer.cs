@@ -54,9 +54,11 @@ namespace SDA_DonationTracker
 			this.challengeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.TasksMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.readTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.processDonationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TabControl = new SDA_DonationTracker.TabCtlEx();
+			this.processDonations2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.StatusBar.SuspendLayout();
 			this.MenuBar.SuspendLayout();
 			this.SuspendLayout();
@@ -265,7 +267,9 @@ namespace SDA_DonationTracker
 			// TasksMenu
 			// 
 			this.TasksMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.readTaskToolStripMenuItem});
+            this.readTaskToolStripMenuItem,
+            this.processDonationsToolStripMenuItem,
+            this.processDonations2ToolStripMenuItem});
 			this.TasksMenu.Name = "TasksMenu";
 			this.TasksMenu.Size = new System.Drawing.Size(48, 20);
 			this.TasksMenu.Text = "Tasks";
@@ -274,9 +278,16 @@ namespace SDA_DonationTracker
 			// readTaskToolStripMenuItem
 			// 
 			this.readTaskToolStripMenuItem.Name = "readTaskToolStripMenuItem";
-			this.readTaskToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.readTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.readTaskToolStripMenuItem.Text = "Read Task";
 			this.readTaskToolStripMenuItem.Click += new System.EventHandler(this.readTaskToolStripMenuItem_Click);
+			// 
+			// processDonationsToolStripMenuItem
+			// 
+			this.processDonationsToolStripMenuItem.Name = "processDonationsToolStripMenuItem";
+			this.processDonationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.processDonationsToolStripMenuItem.Text = "Process Donations";
+			this.processDonationsToolStripMenuItem.Click += new System.EventHandler(this.processDonationsToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
 			// 
@@ -305,6 +316,13 @@ namespace SDA_DonationTracker
 			this.TabControl.Size = new System.Drawing.Size(592, 327);
 			this.TabControl.TabIndex = 0;
 			this.TabControl.TabStop = false;
+			// 
+			// processDonations2ToolStripMenuItem
+			// 
+			this.processDonations2ToolStripMenuItem.Name = "processDonations2ToolStripMenuItem";
+			this.processDonations2ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.processDonations2ToolStripMenuItem.Text = "Process Donations 2";
+			this.processDonations2ToolStripMenuItem.Click += new System.EventHandler(this.processDonations2ToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -359,6 +377,8 @@ namespace SDA_DonationTracker
 		private System.Windows.Forms.ToolStripMenuItem prizeCategoryToolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem TasksMenu;
 		private System.Windows.Forms.ToolStripMenuItem readTaskToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem processDonationsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem processDonations2ToolStripMenuItem;
 	}
 }
 

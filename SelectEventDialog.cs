@@ -42,7 +42,7 @@ namespace SDA_DonationTracker
 
 			if (results.Length == 1)
 			{
-				this.Context.EventId = results[0].Source.Value<int>("pk");
+				this.Context.SetCurrentEvent(results[0].Source);
 				this.MainForm.ResetMenus();
 				this.Close();
 			}

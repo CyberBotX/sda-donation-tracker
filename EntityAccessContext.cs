@@ -92,7 +92,16 @@ namespace SDA_DonationTracker
 
 			if (newId == null && this.RootId == null)
 			{
-				this.OnError(TrackerErrorType.NullKey, "There is no active instance to refresh.");
+				foreach (var form in this.FormBindings)
+				{
+					form.DisableControls();
+				}
+				foreach (var table in this.TableBindings)
+				{
+					table.Item1.DisableControls();
+				}
+
+				//this.OnError(TrackerErrorType.NullKey, "There is no active instance to refresh.");
 				return;
 			}
 
@@ -156,7 +165,7 @@ namespace SDA_DonationTracker
 					models = new string[]{ mapping.ModelName };
 				}
 
-				AggregateSearchContext searcher = new AggregateSearchContext(models.Select(m => new SearchContext(this.Context, m, Util.CreateSearchParams(mapping.SearchKeyField, id.ToString()))));
+				AggregateSearchContext searcher = new AggregateSearchContext(models.Select(m => new SearchContext(this.Context, m, Util.CreateRequestParams(mapping.SearchKeyField, id.ToString()))));
 
 				searcher.Completed += (results) =>
 				{
@@ -183,7 +192,7 @@ namespace SDA_DonationTracker
 				this.RefreshComplete();
 		}
 
-		public void Save()
+		public void Save(bool autoRefresh = true)
 		{
 			JoinWaiter waiter = new JoinWaiter(() =>
 			{
@@ -215,21 +224,29 @@ namespace SDA_DonationTracker
 				rootObject.MergeFrom(savedObject);
 			}
 
+			foreach (var table in this.TableBindings)
+			{
+				table.Item1.DisableControls();
+			}
+
 			SaveContext rootSaver = this.Context.DeferredSave(this.ModelName, Util.BuildSaveParams(rootObject));
 			waiter.AddProcess();
 
 			rootSaver.OnComplete += (result) =>
 			{
-				this.CachedData = result;
-
-				foreach (var form in this.FormBindings)
+				if (autoRefresh)
 				{
-					form.LoadObject(this.CachedData);
-					form.EnableControls();
-				}
+					this.CachedData = result;
 
-				if (initialSave && this.RootId != null)
-					this.RunTablesSave(this.RootId ?? 0, waiter);
+					foreach (var form in this.FormBindings)
+					{
+						form.LoadObject(this.CachedData);
+						form.EnableControls();
+					}
+
+					if (initialSave && this.RootId != null)
+						this.RunTablesSave(this.RootId ?? 0, waiter);
+				}
 
 				waiter.ProcessComplete();
 			};
@@ -310,7 +327,7 @@ namespace SDA_DonationTracker
 
 					if (mapping.Resolution == OrphanResolution.Null)
 					{
-						SaveContext saver = this.Context.DeferredSave(value.GetModel(), Util.CreateSearchParams("id", value.GetId().ToString(), mapping.KeyField, null));
+						SaveContext saver = this.Context.DeferredSave(value.GetModel(), Util.CreateRequestParams("id", value.GetId().ToString(), mapping.KeyField, null));
 
 						saver.OnComplete += (result) =>
 						{

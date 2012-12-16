@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace SDA_DonationTracker
 {
@@ -11,6 +12,7 @@ namespace SDA_DonationTracker
 	public partial class MainForm : Form
 	{
 		public TrackerContext Context = new TrackerContext();
+		private static readonly string RootTitle = "SDA Donation Tracker";
 
 		public MainForm()
 		{
@@ -20,6 +22,17 @@ namespace SDA_DonationTracker
 
 			this.TabControl.OnClose += this.OnTabClose;
 			this.TabControl.ConfirmOnClose = false;
+
+			this.Context.EventChanged += this.OnEventChanged;
+		}
+
+		private void OnEventChanged(TrackerContext c)
+		{
+			this.InvokeEx(() =>
+			{
+				this.Text = RootTitle + " - " + this.Context.EventName;
+				this.TabControl.TabPages.Clear();
+			});
 		}
 
 		public void SetStatusMessage(string message)
@@ -228,6 +241,76 @@ namespace SDA_DonationTracker
 			this.TabControl.SelectTab(tab);
 		}
 
+		public void OpenProcessDonationsTaskTab()
+		{
+			foreach (TabPageEx page in this.TabControl.TabPages)
+			{
+				var controls = page.Controls.Cast<Control>().Where(c => c is ProcessDonationsTaskTab1);
+
+				if (controls.Count() == 1)
+				{
+					this.TabControl.SelectTab(page);
+					return;
+				}
+			}
+
+			ProcessDonationsTaskTab1 processTab = new ProcessDonationsTaskTab1()
+			{
+				Owner = this,
+				Context = this.Context,
+				Dock = DockStyle.Fill,
+			};
+
+			processTab.RefreshData();
+
+			TabPageEx tab = new TabPageEx()
+			{
+				Text = "Donations Task",
+				Controls =
+				{
+					processTab
+				}
+			};
+
+			this.TabControl.TabPages.Add(tab);
+			this.TabControl.SelectTab(tab);
+		}
+
+		public void OpenProcessDonationsTaskTab2()
+		{
+			foreach (TabPageEx page in this.TabControl.TabPages)
+			{
+				var controls = page.Controls.Cast<Control>().Where(c => c is ProcessDonationsTaskTab2);
+
+				if (controls.Count() == 1)
+				{
+					this.TabControl.SelectTab(page);
+					return;
+				}
+			}
+
+			ProcessDonationsTaskTab2 processTab = new ProcessDonationsTaskTab2()
+			{
+				Dock = DockStyle.Fill,
+			};
+
+			processTab.Initialize(this, this.Context);
+
+			processTab.RefreshData();
+
+			TabPageEx tab = new TabPageEx()
+			{
+				Text = "Donations Task MK 2",
+				Controls =
+				{
+					processTab
+				}
+			};
+
+			this.TabControl.TabPages.Add(tab);
+			this.TabControl.SelectTab(tab);
+		}
+
 		public bool IsSearchable(string model)
 		{
 			return SearchPanelHelpers.HasSearchPanel(model);
@@ -260,6 +343,38 @@ namespace SDA_DonationTracker
 			};
 			this.TabControl.TabPages.Add(tab);
 			this.TabControl.SelectTab(tab);
+		}
+
+		private void OpenExternalProcessTab(ExternalProcessTab panel, bool unique = false, bool autoStart = true)
+		{
+			if (unique)
+			{
+				foreach (TabPage page in this.TabControl.TabPages)
+				{
+					IEnumerable<ExternalProcessTab> processControls = page.Controls.Cast<Control>().Where(x => x is ExternalProcessTab).Cast<ExternalProcessTab>();
+
+					if (processControls.Any() && processControls.First().TaskName.IEquals(panel.TaskName))
+					{
+						this.TabControl.SelectTab(page);
+					}
+				}
+			}
+
+			TabPageEx tab = new TabPageEx()
+			{
+				Text = panel.TaskName,
+				Controls =
+				{
+					panel,
+				}
+			};
+			this.TabControl.TabPages.Add(tab);
+			this.TabControl.SelectTab(tab);
+
+			if (autoStart)
+			{
+				panel.StartProcess();
+			}
 		}
 
 		private void QuitMenuItem_Click(object sender, EventArgs e)
@@ -306,6 +421,7 @@ namespace SDA_DonationTracker
 
 			if (!controls.Any() || (controls.First() as ITab).ConfirmClose())
 			{
+				PanelHelpers.DeinitializeEntitySelectors(toClose);
 				this.TabControl.Controls.Remove(toClose);
 			}
 		}
@@ -390,6 +506,21 @@ namespace SDA_DonationTracker
 		private void readTaskToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			this.OpenReadTaskTab();
+		}
+
+		private void chipinMergeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.OpenExternalProcessTab(new ChipinMergeTab() { Context = this.Context }, true, true);
+		}
+
+		private void processDonationsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.OpenProcessDonationsTaskTab();
+		}
+
+		private void processDonations2ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.OpenProcessDonationsTaskTab2();
 		}
 	}
 }

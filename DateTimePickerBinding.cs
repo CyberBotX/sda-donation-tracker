@@ -7,15 +7,17 @@ namespace SDA_DonationTracker
 	{
 		public DateTimePicker Picker { get; private set; }
 		public Control BoundControl { get { return this.Picker; } }
+		public bool Nullable { get; private set; }
 
 		public DateTimePickerBinding(DateTimePicker picker, bool readOnly = false, bool nullable = true)
 		{
+			this.Nullable = nullable;
 			this.Picker = picker;
 			this.Picker.CustomFormat = DateTimeFieldModel.DateFormatFromPicker;
 			this.Picker.Format = DateTimePickerFormat.Custom;
 			this.Picker.ShowUpDown = true;
-			this.Picker.ShowCheckBox = nullable;
-			this.Picker.Checked = !nullable;
+			this.Picker.ShowCheckBox = this.Nullable;
+			this.Picker.Checked = !this.Nullable;
 			this.Picker.Enabled = !readOnly;
 
 			this.Picker.InvokeEx(() =>
@@ -43,7 +45,7 @@ namespace SDA_DonationTracker
 
 		public string RetreiveField()
 		{
-			if (this.Picker.Checked)
+			if (!this.Nullable || this.Picker.Checked)
 			{
 				DateTime t = this.Picker.Value;
 				return DateTimeFieldModel.SerializeDate(t);
