@@ -327,6 +327,38 @@ namespace SDA_DonationTracker
 			return response;
 		}
 
+		public string DrawPrize(int prizeId)
+		{
+			Uri u = new Uri(Domain, "tracker/draw_prize/" + prizeId.ToString());
+
+			string response = null;
+			WebClientEx client = this.CreateClient();
+
+			try
+			{
+				response = client.DownloadString(u);
+			}
+			catch (WebException e)
+			{
+				this.HandleWebException(e);
+			}
+
+			JObject keyInfo = JObject.Parse(response);
+
+			string key = keyInfo.Value<string>("key");
+
+			try
+			{
+				response = client.UploadString(u, "POST", "key=" + key);
+			}
+			catch (WebException e)
+			{
+				this.HandleWebException(e);
+			}
+
+			return response;
+		}
+
 		public ScheduleMergeContext DeferredScheduleMerge()
 		{
 			return new ScheduleMergeContext(this);
@@ -367,6 +399,14 @@ namespace SDA_DonationTracker
 				return null;
 
 			return new DeleteContext(this, model, id);
+		}
+
+		public PrizeAssignContext DeferredPrizeAssign(int prizeId)
+		{
+			if (!this.SessionSet)
+				return null;
+
+			return new PrizeAssignContext(this, prizeId);
 		}
 
 		public EntitySelectionCache GetEntitySelectionCache(string model)

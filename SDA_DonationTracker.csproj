@@ -96,6 +96,7 @@
     <Compile Include="ComboBoxBinding.cs" />
     <Compile Include="ConnectionContext.cs" />
     <Compile Include="ChipinMergeContext.cs" />
+    <Compile Include="PrizeAssignContext.cs" />
     <Compile Include="ProcessDonationsTaskTab2.cs">
       <SubType>UserControl</SubType>
     </Compile>

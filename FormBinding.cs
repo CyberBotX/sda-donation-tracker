@@ -142,6 +142,11 @@ namespace SDA_DonationTracker
 			return this.Bindings.Keys;
 		}
 
+		public void LoadSingleField(string field, string value)
+		{
+			this.Bindings[field].LoadField(value);
+		}
+
 		public void ClearFields()
 		{
 			this.CachedData = null;
