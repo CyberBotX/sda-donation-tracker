@@ -55,10 +55,12 @@ namespace SDA_DonationTracker
 			this.TasksMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.readTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.processDonationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.processDonations2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.chipinMergeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TabControl = new SDA_DonationTracker.TabCtlEx();
-			this.processDonations2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.scheduleMergeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.StatusBar.SuspendLayout();
 			this.MenuBar.SuspendLayout();
 			this.SuspendLayout();
@@ -269,7 +271,9 @@ namespace SDA_DonationTracker
 			this.TasksMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.readTaskToolStripMenuItem,
             this.processDonationsToolStripMenuItem,
-            this.processDonations2ToolStripMenuItem});
+            this.processDonations2ToolStripMenuItem,
+            this.chipinMergeToolStripMenuItem,
+            this.scheduleMergeToolStripMenuItem});
 			this.TasksMenu.Name = "TasksMenu";
 			this.TasksMenu.Size = new System.Drawing.Size(48, 20);
 			this.TasksMenu.Text = "Tasks";
@@ -289,6 +293,13 @@ namespace SDA_DonationTracker
 			this.processDonationsToolStripMenuItem.Text = "Process Donations";
 			this.processDonationsToolStripMenuItem.Click += new System.EventHandler(this.processDonationsToolStripMenuItem_Click);
 			// 
+			// processDonations2ToolStripMenuItem
+			// 
+			this.processDonations2ToolStripMenuItem.Name = "processDonations2ToolStripMenuItem";
+			this.processDonations2ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.processDonations2ToolStripMenuItem.Text = "Process Donations 2";
+			this.processDonations2ToolStripMenuItem.Click += new System.EventHandler(this.processDonations2ToolStripMenuItem_Click);
+			// 
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -302,6 +313,13 @@ namespace SDA_DonationTracker
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
 			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.aboutToolStripMenuItem.Text = "&About...";
+			// 
+			// chipinMergeToolStripMenuItem
+			// 
+			this.chipinMergeToolStripMenuItem.Name = "chipinMergeToolStripMenuItem";
+			this.chipinMergeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.chipinMergeToolStripMenuItem.Text = "Chipin Merge";
+			this.chipinMergeToolStripMenuItem.Click += new System.EventHandler(this.chipinMergeToolStripMenuItem_Click_1);
 			// 
 			// TabControl
 			// 
@@ -317,12 +335,12 @@ namespace SDA_DonationTracker
 			this.TabControl.TabIndex = 0;
 			this.TabControl.TabStop = false;
 			// 
-			// processDonations2ToolStripMenuItem
+			// scheduleMergeToolStripMenuItem
 			// 
-			this.processDonations2ToolStripMenuItem.Name = "processDonations2ToolStripMenuItem";
-			this.processDonations2ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.processDonations2ToolStripMenuItem.Text = "Process Donations 2";
-			this.processDonations2ToolStripMenuItem.Click += new System.EventHandler(this.processDonations2ToolStripMenuItem_Click);
+			this.scheduleMergeToolStripMenuItem.Name = "scheduleMergeToolStripMenuItem";
+			this.scheduleMergeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.scheduleMergeToolStripMenuItem.Text = "Schedule Merge";
+			this.scheduleMergeToolStripMenuItem.Click += new System.EventHandler(this.scheduleMergeToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -379,6 +397,8 @@ namespace SDA_DonationTracker
 		private System.Windows.Forms.ToolStripMenuItem readTaskToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem processDonationsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem processDonations2ToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem chipinMergeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem scheduleMergeToolStripMenuItem;
 	}
 }
 

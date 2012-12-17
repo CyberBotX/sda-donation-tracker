@@ -41,7 +41,7 @@ namespace SDA_DonationTracker
 			this.Process.Completed += this.OnComplete;
 			this.Process.OnError += this.OnError;
 			this.Process.Begin();
-
+			this.ProgressBar.Style = ProgressBarStyle.Marquee;
 			this.ProgressBar.Value = 100;
 		}
 
@@ -63,6 +63,7 @@ namespace SDA_DonationTracker
 				this.ControlButton.Click -= this.AbortProcessEvent;
 				this.ControlButton.Click += this.StartProcessEvent;
 				this.ControlButton.Text = "Begin";
+				this.ProgressBar.Style = ProgressBarStyle.Continuous;
 				this.ProgressBar.Value = 0;
 			});
 		}

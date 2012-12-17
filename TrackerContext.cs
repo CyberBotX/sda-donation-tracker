@@ -287,11 +287,9 @@ namespace SDA_DonationTracker
 			return JObject.Parse(response);
 		}
 
-		public string RunChipinMerge()
+		public string RunScheduleMerge()
 		{
-			string parameters = this.StringParams(Util.CreateRequestParams("action", "merge", "event", this.ShortEventName));
-
-			Uri u = new Uri(Domain, "tracker/chipin_action/?" + parameters);
+			Uri u = new Uri(Domain, "tracker/merge_schedule/" + this.EventId.ToString());
 			WebClientEx client = this.CreateClient();
 
 			string response = null;
@@ -306,6 +304,32 @@ namespace SDA_DonationTracker
 			}
 
 			return response;
+		}
+
+		public string RunChipinMerge()
+		{
+			string parameters = this.StringParams(Util.CreateRequestParams("action", "merge", "event", this.ShortEventName));
+
+			Uri u = new Uri(Domain, "tracker/chipin/?event=" + Uri.EscapeUriString(this.ShortEventName));
+			WebClientEx client = this.CreateClient();
+
+			string response = null;
+
+			try
+			{
+				response = client.DownloadString(u);
+			}
+			catch (WebException e)
+			{
+				this.HandleWebException(e);
+			}
+
+			return response;
+		}
+
+		public ScheduleMergeContext DeferredScheduleMerge()
+		{
+			return new ScheduleMergeContext(this);
 		}
 
 		public ChipinMergeContext DeferredChipinMerge()

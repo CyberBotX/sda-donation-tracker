@@ -508,11 +508,6 @@ namespace SDA_DonationTracker
 			this.OpenReadTaskTab();
 		}
 
-		private void chipinMergeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			this.OpenExternalProcessTab(new ChipinMergeTab() { Context = this.Context }, true, true);
-		}
-
 		private void processDonationsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			this.OpenProcessDonationsTaskTab();
@@ -521,6 +516,16 @@ namespace SDA_DonationTracker
 		private void processDonations2ToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			this.OpenProcessDonationsTaskTab2();
+		}
+
+		private void chipinMergeToolStripMenuItem_Click_1(object sender, EventArgs e)
+		{
+			this.OpenExternalProcessTab(new ChipinMergeTab() { Context = this.Context }, true, true);
+		}
+
+		private void scheduleMergeToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.OpenExternalProcessTab(new ScheduleMergeTab() { Context = this.Context }, true, true);
 		}
 	}
 }

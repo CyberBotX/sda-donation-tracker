@@ -154,6 +154,10 @@
     <Compile Include="PrizeTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ScheduleMergeContext.cs" />
+    <Compile Include="ScheduleMergeTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SearchChallengePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

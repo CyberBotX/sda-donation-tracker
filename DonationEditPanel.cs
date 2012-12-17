@@ -26,8 +26,8 @@ namespace SDA_DonationTracker
 				},
 				RowStyles =
 				{
-					new RowStyle(SizeType.Percent, 60.0f),
-					new RowStyle(SizeType.Percent, 40.0f),
+					new RowStyle(SizeType.Percent, 75.0f),
+					new RowStyle(SizeType.Percent, 25.0f),
 				},
 			};
 

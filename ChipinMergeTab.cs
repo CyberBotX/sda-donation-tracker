@@ -22,6 +22,8 @@ namespace SDA_DonationTracker
 			InitializeComponent();
 
 			this.ProcessFactory = this.CreateChipinMerge;
+
+			this.TaskName = "Chipin Merge";
 		}
 
 		public ExternalProcessContext CreateChipinMerge()
