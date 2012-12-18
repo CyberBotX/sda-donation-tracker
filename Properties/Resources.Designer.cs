@@ -59,5 +59,12 @@ namespace SDA_DonationTracker.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Icon sdaicon {
+            get {
+                object obj = ResourceManager.GetObject("sdaicon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

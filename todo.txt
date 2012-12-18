@@ -1,0 +1,13 @@
+Features:
+- Better error dialogs:
+  - make them seem less like raw dumps of json objects
+
+- Prize drawing task:
+  - list all undrawn prizes whose time (or games' time) has passed
+
+- Pinned objects task:
+  - list all bids for games/prizes that are upcomming
+  - list all bids of games/prizes that are pinned that have passed
+
+Bugs:
+

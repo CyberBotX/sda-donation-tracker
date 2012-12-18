@@ -38,7 +38,7 @@ namespace SDA_DonationTracker
 			this.ControlButton.Click += this.AbortProcessEvent;
 			this.StatusLabel.Text = "Running...";
 			this.Process = this.ProcessFactory();
-			this.Process.Completed += this.OnComplete;
+			this.Process.OnComplete += this.OnComplete;
 			this.Process.OnError += this.OnError;
 			this.Process.Begin();
 			this.ProgressBar.Style = ProgressBarStyle.Marquee;
@@ -54,7 +54,7 @@ namespace SDA_DonationTracker
 		{
 			if (this.Process != null)
 			{
-				this.Process.Completed -= this.OnComplete;
+				this.Process.OnComplete -= this.OnComplete;
 				this.Process.OnError -= this.OnError;
 			}
 

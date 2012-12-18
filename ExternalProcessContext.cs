@@ -7,7 +7,7 @@ namespace SDA_DonationTracker
 {
 	public abstract class ExternalProcessContext : ConnectionContext
 	{
-		public event Action<string> Completed;
+		public event Action<string> OnComplete;
 
 		protected abstract string ExecuteProcess();
 
@@ -20,9 +20,9 @@ namespace SDA_DonationTracker
 		{
 			string results = this.ExecuteProcess();
 
-			if (Completed != null)
+			if (OnComplete != null)
 			{
-				this.Completed(results);
+				this.OnComplete(results);
 			}
 		}
 	}

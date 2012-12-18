@@ -162,15 +162,5 @@ namespace SDA_DonationTracker
 				}
 			}
 		}
-
-		protected override void Dispose(bool disposing)
-		{
-			foreach (Control control in this.Controls)
-			{
-				control.Dispose();
-			}
-
-			base.Dispose(disposing);
-		}
 	}
 }

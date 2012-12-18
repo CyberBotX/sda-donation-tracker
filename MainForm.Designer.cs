@@ -28,6 +28,7 @@ namespace SDA_DonationTracker
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.StatusBar = new System.Windows.Forms.StatusStrip();
 			this.StatusBarLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MenuBar = new System.Windows.Forms.MenuStrip();
@@ -56,11 +57,11 @@ namespace SDA_DonationTracker
 			this.readTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.processDonationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.processDonations2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.chipinMergeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.scheduleMergeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.chipinMergeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.TabControl = new SDA_DonationTracker.TabCtlEx();
-			this.scheduleMergeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.StatusBar.SuspendLayout();
 			this.MenuBar.SuspendLayout();
 			this.SuspendLayout();
@@ -300,6 +301,20 @@ namespace SDA_DonationTracker
 			this.processDonations2ToolStripMenuItem.Text = "Process Donations 2";
 			this.processDonations2ToolStripMenuItem.Click += new System.EventHandler(this.processDonations2ToolStripMenuItem_Click);
 			// 
+			// chipinMergeToolStripMenuItem
+			// 
+			this.chipinMergeToolStripMenuItem.Name = "chipinMergeToolStripMenuItem";
+			this.chipinMergeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.chipinMergeToolStripMenuItem.Text = "Chipin Merge";
+			this.chipinMergeToolStripMenuItem.Click += new System.EventHandler(this.chipinMergeToolStripMenuItem_Click_1);
+			// 
+			// scheduleMergeToolStripMenuItem
+			// 
+			this.scheduleMergeToolStripMenuItem.Name = "scheduleMergeToolStripMenuItem";
+			this.scheduleMergeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.scheduleMergeToolStripMenuItem.Text = "Schedule Merge";
+			this.scheduleMergeToolStripMenuItem.Click += new System.EventHandler(this.scheduleMergeToolStripMenuItem_Click);
+			// 
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -313,13 +328,6 @@ namespace SDA_DonationTracker
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
 			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.aboutToolStripMenuItem.Text = "&About...";
-			// 
-			// chipinMergeToolStripMenuItem
-			// 
-			this.chipinMergeToolStripMenuItem.Name = "chipinMergeToolStripMenuItem";
-			this.chipinMergeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.chipinMergeToolStripMenuItem.Text = "Chipin Merge";
-			this.chipinMergeToolStripMenuItem.Click += new System.EventHandler(this.chipinMergeToolStripMenuItem_Click_1);
 			// 
 			// TabControl
 			// 
@@ -335,13 +343,6 @@ namespace SDA_DonationTracker
 			this.TabControl.TabIndex = 0;
 			this.TabControl.TabStop = false;
 			// 
-			// scheduleMergeToolStripMenuItem
-			// 
-			this.scheduleMergeToolStripMenuItem.Name = "scheduleMergeToolStripMenuItem";
-			this.scheduleMergeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.scheduleMergeToolStripMenuItem.Text = "Schedule Merge";
-			this.scheduleMergeToolStripMenuItem.Click += new System.EventHandler(this.scheduleMergeToolStripMenuItem_Click);
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -352,6 +353,7 @@ namespace SDA_DonationTracker
 			this.Controls.Add(this.MenuBar);
 			this.DoubleBuffered = true;
 			this.HelpButton = true;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.MenuBar;
 			this.Name = "MainForm";
 			this.Text = "SDA Donation Tracker";
