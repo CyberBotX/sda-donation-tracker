@@ -102,7 +102,7 @@ namespace SDA_DonationTracker
 				// Google account, and asks the user to allow for the authorization.
 				else if (e.Url.AbsolutePath == "/o/openid2/auth")
 				{
-					if (MessageBox.Show(this, @"Google requires authorization to allow the tracker\n
+					if (MessageBox.Show(this, @"Google requires authorization to allow the tracker
 to access your account.  Do you wish to allow this?", "Google Authorization",
 						MessageBoxButtons.YesNo, MessageBoxIcon.Question,
 						MessageBoxDefaultButton.Button1) == DialogResult.Yes)
@@ -116,7 +116,7 @@ to access your account.  Do you wish to allow this?", "Google Authorization",
 			}
 			// This block comes up after logging in to Google, and starts the login to the tracker.
 			else if (e.Url.Host == "www.google.com" && e.Url.AbsolutePath == "/settings/account")
-				this.Navigate(string.Format("http://{0}/openid/login/", this.TrackerDomain));
+				this.Navigate(string.Format("http://{0}/tracker/openid/login/", this.TrackerDomain));
 			// This block comes up for the tracker site, we only want to process it if the main
 			// tracker page has come up.
 			else if (e.Url.Host == this.TrackerDomain && e.Url.AbsolutePath == "/tracker/")
