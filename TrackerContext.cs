@@ -95,7 +95,7 @@ namespace SDA_DonationTracker
 
 			if (results.Count > 0)
 			{
-				this.SetCurrentEvent(results.Select(x => (x as JObject)).Aggregate((x, y) => DateTimeFieldModel.ParseDate(x.GetField("date")).CompareTo(DateTimeFieldModel.ParseDate(x.GetField("date"))) >= 0 ? x : y));
+				this.SetCurrentEvent(results.Select(x => (x as JObject)).Aggregate((x, y) => DateTimeFieldModel.ParseDate(x.GetField("date")).CompareTo(DateTimeFieldModel.ParseDate(y.GetField("date"))) >= 0 ? x : y));
 			}
 		}
 

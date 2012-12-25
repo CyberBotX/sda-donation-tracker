@@ -117,8 +117,11 @@ to access your account.  Do you wish to allow this?", "Google Authorization",
 			// This block comes up after logging in to Google, and starts the login to the tracker.
       else if (e.Url.Host == "www.google.com" && e.Url.AbsolutePath == "/settings/account")
       {
-        this.Navigate(string.Format("http://{0}/tracker/openid/login/", this.TrackerDomain));
-        this.Navigate(string.Format("http://{0}/openid/login/", this.TrackerDomain));
+        // you'd better believe I'm doing this
+        if (this.TrackerDomain.IEquals("sda.sorrowind.net"))
+          this.Navigate(string.Format("http://{0}/tracker/openid/login/", this.TrackerDomain));
+        else
+          this.Navigate(string.Format("http://{0}/openid/login/", this.TrackerDomain));
       }
       // This block comes up for the tracker site, we only want to process it if the main
       // tracker page has come up.
