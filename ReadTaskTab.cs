@@ -153,7 +153,7 @@ namespace SDA_DonationTracker
 
 		private void OnSearchError(TrackerErrorType error, string message)
 		{
-			MessageBox.Show("Error, could not refresh task list: " + message, "Refresh Error");
+			this.InvokeEx(() => MessageBox.Show("Error, could not refresh task list: " + message, "Refresh Error"));
 			if (this.Owner != null)
 				this.Owner.SetStatusMessage(message);
 			this.SearchBinding.EnableControls();
