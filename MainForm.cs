@@ -384,8 +384,9 @@ namespace SDA_DonationTracker
 
 		public void ResetMenus()
 		{
+      this.ManualConnectMenuItem.Visible = !this.Context.SessionSet;
 			this.TrackerDisconnectMenuItem.Visible = this.Context.SessionSet;
-			this.TrackertestManualMenuItem.Visible = !this.Context.SessionSet;
+			this.TrackerOpenIDConnectMenuItem.Visible = !this.Context.SessionSet;
 			this.SearchMenu.Visible = this.Context.SessionSet;
 			this.SelectEventMenuItem.Visible = this.Context.SessionSet;
 			this.CreateMenu.Visible = this.Context.SessionSet;
@@ -394,7 +395,7 @@ namespace SDA_DonationTracker
 
 		private void TrackertestManualMenuItem_Click(object sender, EventArgs e)
 		{
-			ConnectOpenIDForm form = new ConnectOpenIDForm(this)
+			ConnectOpenIDManualForm form = new ConnectOpenIDManualForm(this)
 			{
 				Context = this.Context
 			};
@@ -527,5 +528,17 @@ namespace SDA_DonationTracker
 		{
 			this.OpenExternalProcessTab(new ScheduleMergeTab() { Context = this.Context }, true, true);
 		}
+
+    private void manuallySetSessionIdToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      SetSessionIdForm form = new SetSessionIdForm()
+      {
+        Context = this.Context,
+      };
+
+      form.ShowDialog();
+
+      this.ResetMenus();
+    }
 	}
 }

@@ -1,6 +1,6 @@
 ﻿namespace SDA_DonationTracker
 {
-    partial class ConnectOpenIDForm
+    partial class ConnectOpenIDManualForm
     {
         /// <summary>
         /// Required designer variable.

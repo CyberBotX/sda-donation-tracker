@@ -99,6 +99,12 @@
     <Compile Include="ComboBoxBinding.cs" />
     <Compile Include="ConnectionContext.cs" />
     <Compile Include="ChipinMergeContext.cs" />
+    <Compile Include="SetSessionIdForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SetSessionIdForm.Designer.cs">
+      <DependentUpon>SetSessionIdForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PrizeAssignContext.cs" />
     <Compile Include="ProcessDonationsTaskTab2.cs">
       <SubType>UserControl</SubType>
