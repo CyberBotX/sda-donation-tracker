@@ -4,12 +4,12 @@ using System.Windows.Forms;
 
 namespace SDA_DonationTracker
 {
-	public partial class ConnectOpenIDManualForm : Form
+	public partial class ConnectOpenIDForm : Form
 	{
 		public TrackerContext Context;
 		private MainForm MainForm;
 
-		public ConnectOpenIDManualForm(MainForm mainForm)
+		public ConnectOpenIDForm(MainForm mainForm)
 		{
 			this.MainForm = mainForm;
 			this.InitializeComponent();

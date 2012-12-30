@@ -394,7 +394,7 @@ namespace SDA_DonationTracker
 
 		private void TrackertestManualMenuItem_Click(object sender, EventArgs e)
 		{
-			ConnectOpenIDManualForm form = new ConnectOpenIDManualForm(this)
+			ConnectOpenIDForm form = new ConnectOpenIDForm(this)
 			{
 				Context = this.Context
 			};

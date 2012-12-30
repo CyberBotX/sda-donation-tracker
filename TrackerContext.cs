@@ -111,6 +111,7 @@ namespace SDA_DonationTracker
 				this.EntityCaches["challenge"].RequestRefresh();
 				this.EntityCaches["run"].RequestRefresh();
 				this.EntityCaches["prizecategory"].RequestRefresh();
+        this.EntityCaches["prize"].RequestRefresh();
 			}
 		}
 

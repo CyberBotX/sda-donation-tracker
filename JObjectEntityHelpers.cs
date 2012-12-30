@@ -148,7 +148,7 @@ namespace SDA_DonationTracker
 			{
 				foreach (JProperty p in fields.Properties())
 				{
-          results[p.Name] = p.Value<string>();
+          results[p.Name] = p.Value.ToString();
 				}
 			}
 			
