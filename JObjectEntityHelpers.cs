@@ -95,7 +95,8 @@ namespace SDA_DonationTracker
 
 					if (model.HasField(name) && model.GetField(name) is DateTimeFieldModel)
 					{
-						result = DateTimeFieldModel.SerializeDate(DateTimeFieldModel.ParseDate(result));
+						DateTime timeResult = fields.Value<DateTime>(name);
+						result = timeResult.ToString(DateTimeFieldModel.DateFormatFromPicker) + "Z";
 					}
 				}
 				

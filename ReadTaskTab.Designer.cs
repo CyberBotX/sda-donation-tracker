@@ -281,13 +281,13 @@
 			this.CommentText.Multiline = true;
 			this.CommentText.Name = "CommentText";
 			this.CommentText.ReadOnly = true;
-			this.CommentText.Size = new System.Drawing.Size(352, 144);
+			this.CommentText.Size = new System.Drawing.Size(352, 143);
 			this.CommentText.TabIndex = 6;
 			// 
 			// ModCommentLabel
 			// 
 			this.ModCommentLabel.AutoSize = true;
-			this.ModCommentLabel.Location = new System.Drawing.Point(3, 202);
+			this.ModCommentLabel.Location = new System.Drawing.Point(3, 201);
 			this.ModCommentLabel.Name = "ModCommentLabel";
 			this.ModCommentLabel.Size = new System.Drawing.Size(45, 13);
 			this.ModCommentLabel.TabIndex = 7;
@@ -296,7 +296,7 @@
 			// ModCommentText
 			// 
 			this.ModCommentText.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ModCommentText.Location = new System.Drawing.Point(91, 205);
+			this.ModCommentText.Location = new System.Drawing.Point(91, 204);
 			this.ModCommentText.Multiline = true;
 			this.ModCommentText.Name = "ModCommentText";
 			this.ModCommentText.ReadOnly = true;
@@ -312,11 +312,11 @@
 			this.tableLayoutPanel1.Controls.Add(this.OpenDonationButton, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.OpenDonorButton, 2, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(91, 350);
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(91, 349);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 1;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(352, 27);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(352, 28);
 			this.tableLayoutPanel1.TabIndex = 10;
 			// 
 			// OpenDonationButton
@@ -344,7 +344,7 @@
 			// ReadStateLabel
 			// 
 			this.ReadStateLabel.AutoSize = true;
-			this.ReadStateLabel.Location = new System.Drawing.Point(3, 266);
+			this.ReadStateLabel.Location = new System.Drawing.Point(3, 265);
 			this.ReadStateLabel.Name = "ReadStateLabel";
 			this.ReadStateLabel.Size = new System.Drawing.Size(64, 13);
 			this.ReadStateLabel.TabIndex = 11;
@@ -353,7 +353,7 @@
 			// CommentStateLabel
 			// 
 			this.CommentStateLabel.AutoSize = true;
-			this.CommentStateLabel.Location = new System.Drawing.Point(3, 293);
+			this.CommentStateLabel.Location = new System.Drawing.Point(3, 292);
 			this.CommentStateLabel.Name = "CommentStateLabel";
 			this.CommentStateLabel.Size = new System.Drawing.Size(82, 13);
 			this.CommentStateLabel.TabIndex = 12;
@@ -362,7 +362,7 @@
 			// BidStateLabel
 			// 
 			this.BidStateLabel.AutoSize = true;
-			this.BidStateLabel.Location = new System.Drawing.Point(3, 320);
+			this.BidStateLabel.Location = new System.Drawing.Point(3, 319);
 			this.BidStateLabel.Name = "BidStateLabel";
 			this.BidStateLabel.Size = new System.Drawing.Size(50, 13);
 			this.BidStateLabel.TabIndex = 13;
@@ -372,7 +372,7 @@
 			// 
 			this.ReadStateBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ReadStateBox.FormattingEnabled = true;
-			this.ReadStateBox.Location = new System.Drawing.Point(91, 269);
+			this.ReadStateBox.Location = new System.Drawing.Point(91, 268);
 			this.ReadStateBox.Name = "ReadStateBox";
 			this.ReadStateBox.Size = new System.Drawing.Size(352, 21);
 			this.ReadStateBox.TabIndex = 14;
@@ -381,7 +381,7 @@
 			// 
 			this.CommentStateBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.CommentStateBox.FormattingEnabled = true;
-			this.CommentStateBox.Location = new System.Drawing.Point(91, 296);
+			this.CommentStateBox.Location = new System.Drawing.Point(91, 295);
 			this.CommentStateBox.Name = "CommentStateBox";
 			this.CommentStateBox.Size = new System.Drawing.Size(352, 21);
 			this.CommentStateBox.TabIndex = 15;
@@ -390,7 +390,7 @@
 			// 
 			this.BidStateBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.BidStateBox.FormattingEnabled = true;
-			this.BidStateBox.Location = new System.Drawing.Point(91, 323);
+			this.BidStateBox.Location = new System.Drawing.Point(91, 322);
 			this.BidStateBox.Name = "BidStateBox";
 			this.BidStateBox.Size = new System.Drawing.Size(352, 21);
 			this.BidStateBox.TabIndex = 16;

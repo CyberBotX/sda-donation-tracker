@@ -92,6 +92,8 @@ namespace SDA_DonationTracker
 			this.SearchBinding.AddAssociatedControl(this.NextButton);
 			this.SearchBinding.AddAssociatedControl(this.ModeBox);
 
+			this.ModeBinding.LoadField(ProcessDonationsMode.COMMMENTS.ToString());
+
 			this.SearchBinding.OnSelection += this.OnSelection;
 
 			this.CurrentObject = null;
