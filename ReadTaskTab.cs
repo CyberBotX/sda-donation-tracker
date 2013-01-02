@@ -12,12 +12,16 @@ namespace SDA_DonationTracker
 {
 	public enum ReadTaskVolumeMode
 	{
-		HIGH,
 		LOW,
+		HIGH,
 	}
 
 	public partial class ReadTaskTab : UserControl
 	{
+		private static readonly int DefaultMinimumMinuteOffset = 5;
+		private static readonly decimal DefaultMinimumAmount = 1.00m;
+		private static readonly ReadTaskVolumeMode DefaultVolumeMode = ReadTaskVolumeMode.LOW;
+
 		public TrackerContext Context
 		{
 			get;
@@ -79,6 +83,10 @@ namespace SDA_DonationTracker
 			this.SearchBinding.AddAssociatedControl(this.MinimumAmountText);
 			this.SearchBinding.AddAssociatedControl(this.MinimumMinutesText);
 			this.SearchBinding.AddAssociatedControl(this.ModeBox);
+
+			this.MinimumAmountBinding.LoadField(DefaultMinimumAmount.ToString());
+			this.MinimumMinutesBinding.LoadField(DefaultMinimumMinuteOffset.ToString());
+			this.ModeBinding.LoadField(DefaultVolumeMode.ToString());
 
 			this.SearchBinding.OnSelection += this.OnSelection;
 
@@ -153,7 +161,7 @@ namespace SDA_DonationTracker
 
 		private void OnSearchError(TrackerErrorType error, string message)
 		{
-			MessageBox.Show("Error, could not refresh task list: " + message, "Refresh Error");
+			this.InvokeEx(() => MessageBox.Show("Error, could not refresh task list: " + message, "Refresh Error"));
 			if (this.Owner != null)
 				this.Owner.SetStatusMessage(message);
 			this.SearchBinding.EnableControls();

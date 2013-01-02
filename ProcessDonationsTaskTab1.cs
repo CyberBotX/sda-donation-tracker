@@ -92,6 +92,8 @@ namespace SDA_DonationTracker
 			this.SearchBinding.AddAssociatedControl(this.NextButton);
 			this.SearchBinding.AddAssociatedControl(this.ModeBox);
 
+			this.ModeBinding.LoadField(ProcessDonationsMode.COMMMENTS.ToString());
+
 			this.SearchBinding.OnSelection += this.OnSelection;
 
 			this.CurrentObject = null;
@@ -171,7 +173,7 @@ namespace SDA_DonationTracker
 		private void OnSearchError(IEnumerable<TrackerError> errors)
 		{
 			string message = errors.First().Message;
-			MessageBox.Show("Error, could not refresh task list: " + message, "Refresh Error");
+			this.InvokeEx(() => MessageBox.Show("Error, could not refresh task list: " + message, "Refresh Error"));
 			if (this.Owner != null)
 				this.Owner.SetStatusMessage(message);
 			this.SearchBinding.EnableControls();

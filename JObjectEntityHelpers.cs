@@ -95,7 +95,8 @@ namespace SDA_DonationTracker
 
 					if (model.HasField(name) && model.GetField(name) is DateTimeFieldModel)
 					{
-						result = DateTimeFieldModel.SerializeDate(DateTimeFieldModel.ParseDate(result));
+						DateTime timeResult = fields.Value<DateTime>(name);
+						result = timeResult.ToString(DateTimeFieldModel.DateFormatFromPicker) + "Z";
 					}
 				}
 				
@@ -134,8 +135,13 @@ namespace SDA_DonationTracker
 
 			if (self.TryGetValue("error", out firstResult))
 			{
-				results["error"] = firstResult.ToString();
+        results["error"] = firstResult.Value<string>();
 			}
+
+      if (self.TryGetValue("exception", out firstResult))
+      {
+        results["exception"] = firstResult.Value<string>();
+      }
 
 			JObject fields = self.GetFieldsObject();
 
@@ -143,7 +149,7 @@ namespace SDA_DonationTracker
 			{
 				foreach (JProperty p in fields.Properties())
 				{
-					results[p.Name] = p.ToString();
+          results[p.Name] = p.Value.ToString();
 				}
 			}
 			

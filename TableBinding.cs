@@ -205,11 +205,22 @@ namespace SDA_DonationTracker
 					}
 				};
 
+				MenuItem refreshMenuItem = new MenuItem()
+				{
+					Text = "Force Refresh",
+				};
+
+				refreshMenuItem.Click += (o, e) =>
+				{
+					cache.RequestRefresh(EntitySelectionCacheRefreshType.Force);
+				};
+
 				selector.ContextMenu = new ContextMenu()
 				{
 					MenuItems = 
 					{
 						searchMenuItem,
+						refreshMenuItem,
 					}
 				};
 			}

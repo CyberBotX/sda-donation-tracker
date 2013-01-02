@@ -22,6 +22,8 @@ namespace SDA_DonationTracker
 			this.TextBox = textBox;
 			this.TextBox.Multiline = longText;
 			this.TextBox.ReadOnly = readOnly;
+      if (this.TextBox is TextBox && longText)
+        (this.TextBox as TextBox).ScrollBars = ScrollBars.Vertical;
 			this.Nullable = nullable;
 		}
 

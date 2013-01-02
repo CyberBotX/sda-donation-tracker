@@ -11,6 +11,12 @@ namespace SDA_DonationTracker
 
 	public partial class MainForm : Form
 	{
+		// opening too many tabs at once will cause the application to crash due to running out of window
+		// handles.
+		private static readonly int MaxOpenedTabs = 64;
+
+		private int TabAmountWarningCount = 0;
+
 		public TrackerContext Context = new TrackerContext();
 		private static readonly string RootTitle = "SDA Donation Tracker";
 
@@ -26,11 +32,72 @@ namespace SDA_DonationTracker
 			this.Context.EventChanged += this.OnEventChanged;
 		}
 
+		private void CloseTabPage(TabPage page)
+		{
+			this.InvokeEx(() =>
+			{
+				int indexOf = this.TabControl.TabPages.IndexOf(page);
+
+				if (indexOf != -1)
+				{
+					PanelHelpers.DeinitializeEntitySelectors(page);
+					int nextTab = (indexOf != this.TabControl.TabPages.Count - 1) ? indexOf + 1 : indexOf - 1;
+
+					if (this.TabControl.TabPages.Count > 1 && indexOf == this.TabControl.SelectedIndex)
+						this.TabControl.SelectedIndex = nextTab;
+
+					this.TabControl.TabPages.Remove(page);
+					// its very important to dispose the page, otherwise its HWND won't be released in 
+					// a timely manner, possibly leading to a crash
+					page.Dispose();
+				}
+			});
+		}
+
+		private void AddTabPage(TabPage page)
+		{
+			this.InvokeEx(() =>
+			{
+				if (this.TabControl.TabPages.Count >= MaxOpenedTabs)
+				{
+					switch (this.TabAmountWarningCount)
+					{
+						case 0:
+							MessageBox.Show("Holy smokes, close some of those tabs!!!");
+							break;
+						case 1:
+							MessageBox.Show("Seriously, this if I let you open any more, the program is going to crash.");
+							break;
+						case 2:
+							MessageBox.Show("I'm not joking around.");
+							break;
+						case 3:
+							MessageBox.Show("This is your last warning");
+							break;
+						case 4:
+							MessageBox.Show("Really");
+							break;
+					}
+					++this.TabAmountWarningCount;
+				}
+				else
+				{
+					this.TabControl.TabPages.Add(page);
+					this.TabControl.SelectTab(page);
+				}
+			});
+		}
+
 		private void OnEventChanged(TrackerContext c)
 		{
 			this.InvokeEx(() =>
 			{
 				this.Text = RootTitle + " - " + this.Context.EventName;
+				foreach (TabPage control in this.TabControl.TabPages)
+				{
+					this.TabControl.TabPages.Remove(control);
+					control.Dispose();
+				}
 				this.TabControl.TabPages.Clear();
 			});
 		}
@@ -46,8 +113,7 @@ namespace SDA_DonationTracker
 
 			if (result != null)
 			{
-				this.TabControl.InvokeEx(() => this.TabControl.TabPages.Remove(result));
-				result.InvokeEx(() => result.Dispose());
+				this.CloseTabPage(result);
 			}
 		}
 
@@ -130,8 +196,7 @@ namespace SDA_DonationTracker
 						content,
 					}
 				};
-				this.TabControl.TabPages.Add(tab);
-				this.TabControl.SelectTab(tab);
+				this.AddTabPage(tab);
 				content.SetInstanceId(id);
 			}
 		}
@@ -237,8 +302,7 @@ namespace SDA_DonationTracker
 				}
 			};
 
-			this.TabControl.TabPages.Add(tab);
-			this.TabControl.SelectTab(tab);
+			this.AddTabPage(tab);
 		}
 
 		public void OpenProcessDonationsTaskTab()
@@ -272,8 +336,7 @@ namespace SDA_DonationTracker
 				}
 			};
 
-			this.TabControl.TabPages.Add(tab);
-			this.TabControl.SelectTab(tab);
+			this.AddTabPage(tab);
 		}
 
 		public void OpenProcessDonationsTaskTab2()
@@ -306,9 +369,7 @@ namespace SDA_DonationTracker
 					processTab
 				}
 			};
-
-			this.TabControl.TabPages.Add(tab);
-			this.TabControl.SelectTab(tab);
+			this.AddTabPage(tab);
 		}
 
 		public bool IsSearchable(string model)
@@ -341,8 +402,7 @@ namespace SDA_DonationTracker
 					}
 				}
 			};
-			this.TabControl.TabPages.Add(tab);
-			this.TabControl.SelectTab(tab);
+			this.AddTabPage(tab);
 		}
 
 		private void OpenExternalProcessTab(ExternalProcessTab panel, bool unique = false, bool autoStart = true)
@@ -368,8 +428,7 @@ namespace SDA_DonationTracker
 					panel,
 				}
 			};
-			this.TabControl.TabPages.Add(tab);
-			this.TabControl.SelectTab(tab);
+			this.AddTabPage(tab);
 
 			if (autoStart)
 			{
@@ -384,8 +443,9 @@ namespace SDA_DonationTracker
 
 		public void ResetMenus()
 		{
+      this.ManualConnectMenuItem.Visible = !this.Context.SessionSet;
 			this.TrackerDisconnectMenuItem.Visible = this.Context.SessionSet;
-			this.TrackertestManualMenuItem.Visible = !this.Context.SessionSet;
+			this.TrackerOpenIDConnectMenuItem.Visible = !this.Context.SessionSet;
 			this.SearchMenu.Visible = this.Context.SessionSet;
 			this.SelectEventMenuItem.Visible = this.Context.SessionSet;
 			this.CreateMenu.Visible = this.Context.SessionSet;
@@ -421,8 +481,7 @@ namespace SDA_DonationTracker
 
 			if (!controls.Any() || (controls.First() as ITab).ConfirmClose())
 			{
-				PanelHelpers.DeinitializeEntitySelectors(toClose);
-				this.TabControl.Controls.Remove(toClose);
+				this.CloseTabPage(toClose);
 			}
 		}
 
@@ -527,5 +586,17 @@ namespace SDA_DonationTracker
 		{
 			this.OpenExternalProcessTab(new ScheduleMergeTab() { Context = this.Context }, true, true);
 		}
+
+    private void manuallySetSessionIdToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      SetSessionIdForm form = new SetSessionIdForm()
+      {
+        Context = this.Context,
+      };
+
+      form.ShowDialog();
+
+      this.ResetMenus();
+    }
 	}
 }

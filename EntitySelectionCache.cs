@@ -16,7 +16,7 @@ namespace SDA_DonationTracker
 
 	public class EntitySelectionCache
 	{
-		private static readonly TimeSpan LightRefreshOffset = new TimeSpan(0, 5, 0);
+		private static readonly TimeSpan LightRefreshOffset = new TimeSpan(0, 2, 0);
 		private static readonly TimeSpan StrongRefreshOffset = new TimeSpan(0, 0, 10);
 		private static readonly TimeSpan ForceRefreshOffset = new TimeSpan(0, 0, 0);
 
