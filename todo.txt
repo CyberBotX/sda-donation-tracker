@@ -11,3 +11,11 @@ Features:
 
 Bugs:
 
+- When closing a 'fresh' tab, it still indicates that there are unsaved changes on the tab
+  - Probably a 'null' vs 'blank' thing in most cases
+
+- When you add a new choice, it takes too long for the option to show up
+  - And when you search it, it gives a 'value error' error when you try to save with the result
+    - Only if the value is _not_ in the bimap though
+    
+- The tab orders on the donation tasks tabs are all out of wack, fix them to make sense

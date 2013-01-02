@@ -78,6 +78,7 @@ namespace SDA_DonationTracker
 			{
 				Dock = DockStyle.Fill,
 				AddAllowed = true,
+				TabIndex = 11,
 			};
 
 			this.BidsTable.Binding.AddModelMapping("choicebid",

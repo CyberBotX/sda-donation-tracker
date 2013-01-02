@@ -107,7 +107,7 @@
 			this.TaskList.Location = new System.Drawing.Point(3, 32);
 			this.TaskList.Name = "TaskList";
 			this.TaskList.Size = new System.Drawing.Size(217, 325);
-			this.TaskList.TabIndex = 0;
+			this.TaskList.TabIndex = 2;
 			// 
 			// NextButton
 			// 
@@ -127,7 +127,7 @@
 			this.RefreshButton.Location = new System.Drawing.Point(3, 3);
 			this.RefreshButton.Name = "RefreshButton";
 			this.RefreshButton.Size = new System.Drawing.Size(105, 23);
-			this.RefreshButton.TabIndex = 2;
+			this.RefreshButton.TabIndex = 0;
 			this.RefreshButton.Text = "Refresh";
 			this.RefreshButton.UseVisualStyleBackColor = true;
 			this.RefreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
@@ -148,7 +148,7 @@
 			this.ModeBox.Location = new System.Drawing.Point(114, 363);
 			this.ModeBox.Name = "ModeBox";
 			this.ModeBox.Size = new System.Drawing.Size(106, 21);
-			this.ModeBox.TabIndex = 7;
+			this.ModeBox.TabIndex = 3;
 			// 
 			// DonationPanel
 			// 
@@ -209,7 +209,7 @@
 			this.AmountText.Location = new System.Drawing.Point(91, 38);
 			this.AmountText.Name = "AmountText";
 			this.AmountText.Size = new System.Drawing.Size(352, 20);
-			this.AmountText.TabIndex = 4;
+			this.AmountText.TabIndex = 5;
 			// 
 			// CommentLabel
 			// 
@@ -226,13 +226,13 @@
 			this.CommentText.Location = new System.Drawing.Point(91, 64);
 			this.CommentText.Multiline = true;
 			this.CommentText.Name = "CommentText";
-			this.CommentText.Size = new System.Drawing.Size(352, 132);
+			this.CommentText.Size = new System.Drawing.Size(352, 131);
 			this.CommentText.TabIndex = 6;
 			// 
 			// ModCommentLabel
 			// 
 			this.ModCommentLabel.AutoSize = true;
-			this.ModCommentLabel.Location = new System.Drawing.Point(3, 199);
+			this.ModCommentLabel.Location = new System.Drawing.Point(3, 198);
 			this.ModCommentLabel.Name = "ModCommentLabel";
 			this.ModCommentLabel.Size = new System.Drawing.Size(45, 13);
 			this.ModCommentLabel.TabIndex = 7;
@@ -241,11 +241,11 @@
 			// ModCommentText
 			// 
 			this.ModCommentText.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ModCommentText.Location = new System.Drawing.Point(91, 202);
+			this.ModCommentText.Location = new System.Drawing.Point(91, 201);
 			this.ModCommentText.Multiline = true;
 			this.ModCommentText.Name = "ModCommentText";
 			this.ModCommentText.Size = new System.Drawing.Size(352, 53);
-			this.ModCommentText.TabIndex = 8;
+			this.ModCommentText.TabIndex = 7;
 			// 
 			// tableLayoutPanel1
 			// 
@@ -256,11 +256,11 @@
 			this.tableLayoutPanel1.Controls.Add(this.OpenDonationButton, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.OpenDonorButton, 2, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(91, 342);
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(91, 341);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 1;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(352, 35);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(352, 36);
 			this.tableLayoutPanel1.TabIndex = 10;
 			// 
 			// OpenDonationButton
@@ -269,7 +269,7 @@
 			this.OpenDonationButton.Location = new System.Drawing.Point(143, 3);
 			this.OpenDonationButton.Name = "OpenDonationButton";
 			this.OpenDonationButton.Size = new System.Drawing.Size(105, 20);
-			this.OpenDonationButton.TabIndex = 9;
+			this.OpenDonationButton.TabIndex = 11;
 			this.OpenDonationButton.Text = "Open Donation";
 			this.OpenDonationButton.UseVisualStyleBackColor = true;
 			this.OpenDonationButton.Click += new System.EventHandler(this.OpenDonationButton_Click);
@@ -280,7 +280,7 @@
 			this.OpenDonorButton.Location = new System.Drawing.Point(254, 3);
 			this.OpenDonorButton.Name = "OpenDonorButton";
 			this.OpenDonorButton.Size = new System.Drawing.Size(95, 20);
-			this.OpenDonorButton.TabIndex = 10;
+			this.OpenDonorButton.TabIndex = 12;
 			this.OpenDonorButton.Text = "Open Donor";
 			this.OpenDonorButton.UseVisualStyleBackColor = true;
 			this.OpenDonorButton.Click += new System.EventHandler(this.OpenDonorButton_Click);
@@ -288,7 +288,7 @@
 			// ReadStateLabel
 			// 
 			this.ReadStateLabel.AutoSize = true;
-			this.ReadStateLabel.Location = new System.Drawing.Point(3, 258);
+			this.ReadStateLabel.Location = new System.Drawing.Point(3, 257);
 			this.ReadStateLabel.Name = "ReadStateLabel";
 			this.ReadStateLabel.Size = new System.Drawing.Size(64, 13);
 			this.ReadStateLabel.TabIndex = 11;
@@ -297,7 +297,7 @@
 			// CommentStateLabel
 			// 
 			this.CommentStateLabel.AutoSize = true;
-			this.CommentStateLabel.Location = new System.Drawing.Point(3, 285);
+			this.CommentStateLabel.Location = new System.Drawing.Point(3, 284);
 			this.CommentStateLabel.Name = "CommentStateLabel";
 			this.CommentStateLabel.Size = new System.Drawing.Size(82, 13);
 			this.CommentStateLabel.TabIndex = 12;
@@ -306,7 +306,7 @@
 			// BidStateLabel
 			// 
 			this.BidStateLabel.AutoSize = true;
-			this.BidStateLabel.Location = new System.Drawing.Point(3, 312);
+			this.BidStateLabel.Location = new System.Drawing.Point(3, 311);
 			this.BidStateLabel.Name = "BidStateLabel";
 			this.BidStateLabel.Size = new System.Drawing.Size(50, 13);
 			this.BidStateLabel.TabIndex = 13;
@@ -317,30 +317,30 @@
 			this.ReadStateBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ReadStateBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.ReadStateBox.FormattingEnabled = true;
-			this.ReadStateBox.Location = new System.Drawing.Point(91, 261);
+			this.ReadStateBox.Location = new System.Drawing.Point(91, 260);
 			this.ReadStateBox.Name = "ReadStateBox";
 			this.ReadStateBox.Size = new System.Drawing.Size(352, 21);
-			this.ReadStateBox.TabIndex = 14;
+			this.ReadStateBox.TabIndex = 8;
 			// 
 			// CommentStateBox
 			// 
 			this.CommentStateBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.CommentStateBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.CommentStateBox.FormattingEnabled = true;
-			this.CommentStateBox.Location = new System.Drawing.Point(91, 288);
+			this.CommentStateBox.Location = new System.Drawing.Point(91, 287);
 			this.CommentStateBox.Name = "CommentStateBox";
 			this.CommentStateBox.Size = new System.Drawing.Size(352, 21);
-			this.CommentStateBox.TabIndex = 15;
+			this.CommentStateBox.TabIndex = 9;
 			// 
 			// BidStateBox
 			// 
 			this.BidStateBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.BidStateBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.BidStateBox.FormattingEnabled = true;
-			this.BidStateBox.Location = new System.Drawing.Point(91, 315);
+			this.BidStateBox.Location = new System.Drawing.Point(91, 314);
 			this.BidStateBox.Name = "BidStateBox";
 			this.BidStateBox.Size = new System.Drawing.Size(352, 21);
-			this.BidStateBox.TabIndex = 16;
+			this.BidStateBox.TabIndex = 10;
 			// 
 			// DonorSelector
 			// 
@@ -350,7 +350,7 @@
 			this.DonorSelector.Name = "DonorSelector";
 			this.DonorSelector.Owner = null;
 			this.DonorSelector.Size = new System.Drawing.Size(352, 29);
-			this.DonorSelector.TabIndex = 17;
+			this.DonorSelector.TabIndex = 4;
 			this.DonorSelector.UseSelectionCache = false;
 			this.DonorSelector.Value = null;
 			// 

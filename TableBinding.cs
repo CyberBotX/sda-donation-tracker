@@ -113,8 +113,6 @@ namespace SDA_DonationTracker
 
 				if (cacheTable.TryGetRightToLeft(immediateValue, out fk))
 					trueValue = fk.ToString();
-				else
-					trueValue = null;
 			}
 			else
 			{
