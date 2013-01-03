@@ -190,6 +190,12 @@
     <Compile Include="SelectModelTypeDialog.Designer.cs">
       <DependentUpon>SelectModelTypeDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="SMSOpenIdVerificationDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SMSOpenIdVerificationDialog.Designer.cs">
+      <DependentUpon>SMSOpenIdVerificationDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="TaskManager.cs" />
     <Compile Include="TrackerErrorType.cs" />
     <Compile Include="ConnectOpenIDManualForm.cs">
@@ -377,6 +383,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SelectModelTypeDialog.resx">
       <DependentUpon>SelectModelTypeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SMSOpenIdVerificationDialog.resx">
+      <DependentUpon>SMSOpenIdVerificationDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">

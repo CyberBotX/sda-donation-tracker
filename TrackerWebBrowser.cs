@@ -213,6 +213,23 @@ HTTP Status Code: {1}", e.Url, e.StatusCode), "Navigation Error!", MessageBoxBut
 						"Google Login Failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					Application.ExitThread();
 				}
+				// leaving this out for now, turn off 2-step verification please
+				/*else if (e.Url.AbsolutePath == "/SmsAuth")
+				{
+					SMSOpenIdVerificationDialog dialog = new SMSOpenIdVerificationDialog();
+					dialog.ShowDialog();
+
+					if (dialog.ResultText != null)
+					{
+						HtmlElement userPin = this.Document.GetElementById("smsUserPin");
+						userPin.SetAttribute("value", dialog.ResultText);
+
+						HtmlElement verify = this.Document.GetElementById("smsVerifyPin");
+						verify.InvokeMember("Click");
+					}
+					else
+						Application.ExitThread();
+				}*/
 				// This block comes up if the tracker site was not authorized on the user's
 				// Google account, and asks the user to allow for the authorization.
 				else if (e.Url.AbsolutePath == "/o/openid2/auth")
