@@ -14,7 +14,7 @@ namespace SDA_DonationTracker
 
     private void LoginButton_Click(object sender, EventArgs e)
     {
-      this.Context.SetSessionId(this.SessionIdText.Text, this.DomainText.Text);
+		this.Context.SetSessionId(this.SessionIdText.Text.Trim(), this.DomainText.Text.Trim(), this.SubDomainText.Text.Trim());
       this.Close();
     }
 

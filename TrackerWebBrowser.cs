@@ -23,6 +23,11 @@ namespace SDA_DonationTracker
 			get;
 			set;
 		}
+		public string TrackerSubDomain
+		{
+			get;
+			set;
+		}
 		/// <summary>The sessionid that the browser got from the tracker.</summary>
 		public string SessionID
 		{
@@ -78,9 +83,10 @@ namespace SDA_DonationTracker
 
 		private string Email, Password;
 
-		public void DoLogin(string domain, string email, string password)
+		public void DoLogin(string domain, string subdomain, string email, string password)
 		{
 			this.TrackerDomain = domain;
+			this.TrackerSubDomain = subdomain;
 			this.Email = email;
 			this.Password = password;
 			this.LoggedIn = false;
@@ -121,7 +127,7 @@ namespace SDA_DonationTracker
 		{
 			if (e.StatusCode == 404 &&
 				e.Url == string.Format("http://{0}/openid/login/", this.TrackerDomain))
-				this.Navigate(string.Format("http://{0}/tracker/openid/login/", this.TrackerDomain));
+				this.Navigate(string.Format("http://{0}/{1}/openid/login/", this.TrackerDomain, this.TrackerSubDomain));
 			else
 			{
 				MessageBox.Show(this, string.Format(@"Unable to connect to {0}.
@@ -213,6 +219,11 @@ HTTP Status Code: {1}", e.Url, e.StatusCode), "Navigation Error!", MessageBoxBut
 						"Google Login Failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					Application.ExitThread();
 				}
+				else if (e.Url.AbsolutePath.IEquals("/SmsAuth"))
+				{
+					MessageBox.Show(this, "Turn off 2-step authentication, we didn't have time to implement it!", "Dammit!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					Application.ExitThread();
+				}
 				// leaving this out for now, turn off 2-step verification please
 				/*else if (e.Url.AbsolutePath == "/SmsAuth")
 				{
@@ -251,7 +262,7 @@ to access your account.  Do you wish to allow this?", "Google Authorization",
 				this.Navigate(string.Format("http://{0}/openid/login/", this.TrackerDomain));
 			// This block comes up for the tracker site, we only want to process it if the main
 			// tracker page has come up.
-			else if (e.Url.Host == this.TrackerDomain && e.Url.AbsolutePath == "/tracker/")
+			else if (e.Url.Host == this.TrackerDomain && e.Url.AbsolutePath.IEquals("/" + this.TrackerSubDomain + "/"))
 			{
 				this.LoggedIn = true;
 				string cookies = TrackerWebBrowser.GetGlobalCookies(e.Url.ToString(), "sessionid");

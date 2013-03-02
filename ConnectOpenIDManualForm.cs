@@ -28,7 +28,7 @@ namespace SDA_DonationTracker
 			TrackerWebBrowser Browser = new TrackerWebBrowser();
 			Thread thread = new Thread(() =>
 			{
-				Browser.DoLogin(this.DomainText.Text.Trim(), this.EmailText.Text.Trim(),
+				Browser.DoLogin(this.DomainText.Text.Trim(), this.SubdomainText.Text.Trim(), this.EmailText.Text.Trim(),
 					this.PasswordText.Text.Trim());
 				Application.Run();
 			});
@@ -36,7 +36,7 @@ namespace SDA_DonationTracker
 			thread.Start();
 			thread.Join();
 			if (Browser.LoggedIn)
-				this.Context.SetSessionId(Browser.SessionID, this.DomainText.Text.Trim());
+				this.Context.SetSessionId(Browser.SessionID, this.DomainText.Text.Trim(), this.SubdomainText.Text.Trim());
 			this.Close();
 		}
 

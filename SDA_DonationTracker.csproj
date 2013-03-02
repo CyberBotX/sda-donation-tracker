@@ -384,6 +384,9 @@
     <EmbeddedResource Include="SelectModelTypeDialog.resx">
       <DependentUpon>SelectModelTypeDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SetSessionIdForm.resx">
+      <DependentUpon>SetSessionIdForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SMSOpenIdVerificationDialog.resx">
       <DependentUpon>SMSOpenIdVerificationDialog.cs</DependentUpon>
     </EmbeddedResource>

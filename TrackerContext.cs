@@ -75,11 +75,11 @@ namespace SDA_DonationTracker
 			this.EntityCaches = new Dictionary<string, EntitySelectionCache>();
 		}
 
-		public void SetSessionId(string sessionId, string domain)
+		public void SetSessionId(string sessionId, string domain, string subdomain)
 		{
 			this.ClearSessionId();
 
-			this.Domain = new Uri(string.Format("http://{0}/", domain));
+			this.Domain = new Uri(string.Format("http://{0}/{1}/", domain, subdomain));
 			this.SessionId = sessionId;
 
 			this.ClientCookie = new Cookie()
@@ -141,7 +141,7 @@ namespace SDA_DonationTracker
 
 		private Uri CreateSearchUri(string model, IEnumerable<KeyValuePair<string, string>> searchParams)
 		{
-			return new Uri(Domain, "tracker/search/" + SearchParams(model, searchParams));
+			return new Uri(Domain, "search/" + SearchParams(model, searchParams));
 		}
 
 		private string StringParams(IEnumerable<KeyValuePair<string, string>> searchParams)
@@ -179,7 +179,7 @@ namespace SDA_DonationTracker
 			if (!this.SessionSet)
 				throw new TrackerError(TrackerErrorType.NoConnection, "Error, session is not set.");
 
-			Uri u = new Uri(Domain, "tracker/search/"); //this.CreateSearchUri(model, searchParams);
+			Uri u = new Uri(Domain, "search/"); //this.CreateSearchUri(model, searchParams);
 
 			WebClientEx client = this.CreateClient();
 
@@ -237,11 +237,11 @@ namespace SDA_DonationTracker
 
 			if (saveParams.Any(p => string.Equals(p.Key, "id", StringComparison.OrdinalIgnoreCase)))
 			{
-				u = new Uri(Domain, "tracker/edit/");
+				u = new Uri(Domain, "edit/");
 			}
 			else
 			{
-				u = new Uri(Domain, "tracker/add/");
+				u = new Uri(Domain, "add/");
 			}
 
 			WebClientEx client = this.CreateClient();
@@ -271,7 +271,7 @@ namespace SDA_DonationTracker
 				{ "id", id.ToString() },
 			};
 
-			Uri u = new Uri(Domain, "tracker/delete/");
+			Uri u = new Uri(Domain, "delete/");
 
 			WebClientEx client = this.CreateClient();
 			string response = null;
@@ -290,7 +290,7 @@ namespace SDA_DonationTracker
 
 		public string RunScheduleMerge()
 		{
-			Uri u = new Uri(Domain, "tracker/merge_schedule/" + this.EventId.ToString());
+			Uri u = new Uri(Domain, "merge_schedule/" + this.EventId.ToString());
 			WebClientEx client = this.CreateClient();
 
 			string response = null;
@@ -311,7 +311,7 @@ namespace SDA_DonationTracker
 		{
 			string parameters = this.StringParams(Util.CreateRequestParams("action", "merge", "event", this.ShortEventName));
 
-			Uri u = new Uri(Domain, "tracker/chipin/?event=" + Uri.EscapeUriString(this.ShortEventName));
+			Uri u = new Uri(Domain, "chipin/?event=" + Uri.EscapeUriString(this.ShortEventName));
 			WebClientEx client = this.CreateClient();
 
 			string response = null;
@@ -330,7 +330,7 @@ namespace SDA_DonationTracker
 
 		public string DrawPrize(int prizeId)
 		{
-			Uri u = new Uri(Domain, "tracker/draw_prize/" + prizeId.ToString());
+			Uri u = new Uri(Domain, "draw_prize/" + prizeId.ToString());
 
 			string response = null;
 			WebClientEx client = this.CreateClient();
